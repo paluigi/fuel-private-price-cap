@@ -163,8 +163,9 @@ def _normalized_gestori(frame: pl.DataFrame) -> pl.DataFrame:
 
 
 class CapCompliance:
-    """Share of price observations strictly below the cap threshold
-    (Benzina < 2.0 EUR/l, Gasolio < 2.2 EUR/l).
+    """Share of price observations at or below the self-imposed cap
+    (Benzina <= 2.0 EUR/l, Gasolio <= 2.2 EUR/l): pricing exactly at the
+    cap does not violate it.
 
     ``from_date`` bounds the window (default: the cap date, included);
     ``None`` keeps the full period. When ``top1_gestori`` (from
@@ -176,7 +177,7 @@ class CapCompliance:
     def __init__(
         self,
         prices: pl.DataFrame,
-        from_date: dt.date | None = config.CAP_DATE,
+        from_date: dt.date | None = config.COMPLIANCE_FROM,
         top1_gestori: pl.DataFrame | None = None,
     ) -> None:
         base = (
@@ -186,7 +187,7 @@ class CapCompliance:
             threshold=pl.col("fuel").replace_strict(
                 config.THRESHOLDS, return_dtype=pl.Float64
             )
-        ).with_columns(is_below=pl.col("prezzo") < pl.col("threshold"))
+        ).with_columns(is_below=pl.col("prezzo") <= pl.col("threshold"))
         if top1_gestori is not None:
             flagged = self._flag_gestore_top1(flagged, top1_gestori)
         self._df = flagged
@@ -387,8 +388,7 @@ def top1_compliance_report(period_bandiera: pl.DataFrame) -> pl.DataFrame:
         top1.join(altri, on=["fuel", "canonical_name"], how="full", coalesce=True)
         .with_columns(
             # null when the brand has no station of that operator class
-            delta_top1_altri_pp=pl.col("pct_below_top1")
-            - pl.col("pct_below_altri")
+            delta_top1_altri_pp=pl.col("pct_below_top1") - pl.col("pct_below_altri")
         )
         .sort(
             "fuel",
