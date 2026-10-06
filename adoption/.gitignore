@@ -1,0 +1,18 @@
+# data inputs (zips and extracts, re-downloadable)
+data/
+istat_grid/
+istat_borders/
+
+# heavyweight derived panels (regenerable)
+output/tables/*.parquet
+output/tables/adoption_panel.csv
+
+# LaTeX build artifacts
+paper.aux
+paper.log
+paper.bbl
+paper.bcf
+paper.blg
+paper.run.xml
+paper.out
+paper.spl
