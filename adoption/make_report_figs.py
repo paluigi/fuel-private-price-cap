@@ -13,11 +13,12 @@ Same outputs as v1 (1_..7_ prefixed PNGs in output/figures/), restyled:
 
 Figures 4-7 remain as-is copies of the paper's figures 3, 4, 9, 10.
 
-v3: square-format figures 10-12 — same content as figures 1-3, on a
-square canvas, +50% font size, sparser date ticks (weekly for figs
-10-11, every 4 days for fig 12). Fig 11's cap labels wrap onto two
-lines so they can hug their dotted cap lines without reaching the
-mid-September price ascent. Like figures 1-3, the data window follows
+v3: square-format figures 10-14 — same content as figures 1-3 and 8-9,
+on a square canvas, +50% font size, sparser date ticks (weekly except
+fig 12: every 4 days). Cap labels wrap onto two lines, left-aligned, so
+they can hug their dotted cap lines without reaching the price series
+(fig 13's label sits under its line: above it the brand bundle climbs
+through the text band). Like figures 1-9, the data window follows
 whatever the caches contain when the script runs.
 
 Run from the repo root:  uv run python adoption/make_report_figs.py
@@ -245,7 +246,17 @@ BRAND_COLORS = {
 BRAND_EN = {"Pompe Bianche": "Independent"}
 
 
-def brand_price_chart(fuel: str, show_excise_vline: bool, stem: str) -> Path:
+def brand_price_chart(
+    fuel: str,
+    show_excise_vline: bool,
+    stem: str,
+    *,
+    size: tuple[int, int] = (1400, 620),
+    font: int = FONT,
+    xdtick_days: int = 3,
+    cap_labels: str = "inline",
+    label_side: str = "top",
+) -> Path:
     """Numbered variant of the brand chart: from 1 Sep, aggregate line added,
     Pompe Bianche renamed Independent, style of figs 1/2 (no title, FONT,
     thick lines, 3-day ticks, tight y range incl. cap lines)."""
@@ -278,18 +289,21 @@ def brand_price_chart(fuel: str, show_excise_vline: bool, stem: str) -> Path:
 
     threshold = config.THRESHOLDS[fuel]
     caps = [threshold]
+    # square variant: two-line cap labels hug their dotted line while staying
+    # clear of the price series (label_side picks the clear side per fuel)
+    sep = "<br>" if cap_labels == "wrapped" else " "
     fig.add_hline(
         y=threshold, line_dash="dot", line_color="firebrick",
-        annotation_text=f"cap {threshold:.2f} EUR/l from 28 Sep",
-        annotation_position="top left",
-        annotation_font=dict(size=FONT, color="firebrick"),
+        annotation_text=f"cap {threshold:.2f} EUR/l{sep}from 28 Sep",
+        annotation_position=f"{label_side} left", annotation_align="left",
+        annotation_font=dict(size=font, color="firebrick"),
     )
     if fuel == "Gasolio":
         fig.add_hline(
             y=config.GASOLIO_CAP_AFTER, line_dash="dot", line_color="firebrick",
-            annotation_text=f"cap {config.GASOLIO_CAP_AFTER:.3f} EUR/l from 6 Oct",
-            annotation_position="top left",
-            annotation_font=dict(size=FONT, color="firebrick"),
+            annotation_text=f"cap {config.GASOLIO_CAP_AFTER:.3f} EUR/l{sep}from 6 Oct",
+            annotation_position=f"{label_side} left", annotation_align="left",
+            annotation_font=dict(size=font, color="firebrick"),
         )
         caps.append(config.GASOLIO_CAP_AFTER)
     fig.add_vline(x=CAP_DATE.isoformat(), line_dash="dash", line_color="black")
@@ -302,22 +316,22 @@ def brand_price_chart(fuel: str, show_excise_vline: bool, stem: str) -> Path:
     pad_hi = (y_max - y_min) * 0.12
     pad_lo = pad * 2.5
     fig.update_layout(
-        font=dict(size=FONT),
+        font=dict(size=font),
         margin=dict(l=10, r=30, t=15, b=10),
         template="plotly_white",
         hovermode="x unified",
-        width=1400,
-        height=620,
+        width=size[0],
+        height=size[1],
         showlegend=True,
         legend=dict(orientation="h", yanchor="bottom", y=1.0, xanchor="left", x=0),
     )
     fig.update_xaxes(
-        tickformat="%d %b", tickangle=0, dtick=3 * 86400000,
+        tickformat="%d %b", tickangle=0, dtick=xdtick_days * 86400000,
         range=[CUT, d["date"].max() + dt.timedelta(days=1)],
     )
     fig.update_yaxes(
         tickformat=".2f", range=[y_min - pad_lo, y_max + pad_hi],
-        title=dict(text="EUR/l", font=dict(size=FONT)),
+        title=dict(text="EUR/l", font=dict(size=font)),
     )
     out = FIG / f"{stem}.png"
     fig.write_image(out, scale=2)
@@ -336,7 +350,7 @@ def main() -> None:
     parser.add_argument(
         "--new-only",
         action="store_true",
-        help="only regenerate the square-format figures 10-12",
+        help="only regenerate the square-format figures 10-14",
     )
     args = parser.parse_args()
 
@@ -357,8 +371,8 @@ def main() -> None:
             copy_fig("amap_price_post7_ben.png", "6_map_price_oct5_petrol"),
             copy_fig("amap_price_post7_gas.png", "7_map_price_oct5_diesel"),
         ]
-    # square variants of figures 1-3: weekly ticks (fig 12: every 4 days),
-    # +50% fonts, data window follows the caches
+    # square variants of figures 1-3 and 8-9: weekly ticks (fig 12: every 4
+    # days), +50% fonts, data window follows the caches
     outs += [
         group_price_chart_en("Benzina", show_excise_line=False,
                              stem="10_benzina_mean_price_brands",
@@ -369,6 +383,16 @@ def main() -> None:
                              cap_labels="wrapped"),
         fig3_adoption_share(stem="12_adoption_share_daily",
                             size=SQ_SIZE, font=FONT_SQ, xdtick_days=4),
+        # fig 13's label sits under the cap line: above it the brand bundle
+        # climbs through the text band within days of the window start
+        brand_price_chart("Benzina", show_excise_vline=False,
+                          stem="13_benzina_mean_price_bandiera",
+                          size=SQ_SIZE, font=FONT_SQ, xdtick_days=7,
+                          cap_labels="wrapped", label_side="bottom"),
+        brand_price_chart("Gasolio", show_excise_vline=True,
+                          stem="14_gasolio_mean_price_bandiera",
+                          size=SQ_SIZE, font=FONT_SQ, xdtick_days=7,
+                          cap_labels="wrapped"),
     ]
     for p in outs:
         print(f"saved {p}")
