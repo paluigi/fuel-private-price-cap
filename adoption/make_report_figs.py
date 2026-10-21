@@ -18,8 +18,11 @@ on a square canvas, +50% font size, sparser date ticks (weekly except
 fig 12: every 4 days). Cap labels wrap onto two lines, left-aligned, so
 they can hug their dotted cap lines without reaching the price series
 (fig 13's label sits under its line: above it the brand bundle climbs
-through the text band). Like figures 1-9, the data window follows
-whatever the caches contain when the script runs.
+through the text band). Figures 10/11/13/14 are further restyled: fonts
++30% on top of that, all text black (cap labels stay firebrick, they
+match the red dotted lines), data lines thicker (aggregate +100%,
+others +50%) and EUR replaced by €. Like figures 1-9, the data window
+follows whatever the caches contain when the script runs.
 
 Run from the repo root:  uv run python adoption/make_report_figs.py
 (add --new-only to regenerate only figures 10-12)
@@ -59,9 +62,15 @@ FIG3_CUT = dt.date(2026, 9, 26)  # two days before the cap
 FONT = 22   # base font: ticks, legend, annotations
 LINE_W = 3  # base 2 -> +50%
 
-# figures 10-12: square canvas, +50% font over the report base; the data
-# window follows the caches (end=None), like figures 1-3
-FONT_SQ = 33
+# figures 10-14: square canvas, +50% font over the report base, sparser
+# date ticks; the square set is further restyled: +30% font on top of that,
+# black text, thicker data lines (aggregate +100%, others +50%) and € units.
+# The red cap labels keep the pre-bump size: at 43 they run into the price
+# series. The data window follows the caches (end=None), like figures 1-3.
+FONT_SQ = 43        # 33 * 1.3
+CAP_FONT_SQ = 33    # red cap-label annotations
+LINE_W_SQ = 4.5     # 3 * 1.5
+AGG_LINE_W_SQ = 8.0  # 4 * 2.0
 SQ_SIZE = (1100, 1100)
 
 GROUP_EN = {"Majors": "Majors", "Large": "Large", "Pompe Bianche": "Independents"}
@@ -81,6 +90,11 @@ def group_price_chart_en(
     xdtick_days: int = 3,
     end: dt.date | None = None,
     cap_labels: str = "inline",
+    currency: str = "EUR",
+    line_w: float = LINE_W,
+    agg_line_w: float = LINE_W + 1,
+    text_color: str | None = None,
+    cap_font: int | None = None,
 ) -> Path:
     prices = pl.read_parquet(config.DATA_DIR / "prices_enriched.parquet")
     tipo = "Stradale"
@@ -104,7 +118,7 @@ def group_price_chart_en(
     fig.add_trace(
         go.Scatter(
             x=overall["date"], y=overall["mean_prezzo"], mode="lines",
-            name=AGG_EN, line=dict(color=AGG_COLOR, width=LINE_W + 1, dash="dot"),
+            name=AGG_EN, line=dict(color=AGG_COLOR, width=agg_line_w, dash="dot"),
         )
     )
     for group in config.GROUP_ORDER:
@@ -114,7 +128,7 @@ def group_price_chart_en(
                 go.Scatter(
                     x=s["date"], y=s["mean_prezzo"], mode="lines",
                     name=GROUP_EN[group],
-                    line=dict(color=GROUP_COLORS[group], width=LINE_W),
+                    line=dict(color=GROUP_COLORS[group], width=line_w),
                 )
             )
 
@@ -139,18 +153,19 @@ def group_price_chart_en(
     # square variant: two-line cap labels hug their dotted line while staying
     # clear of the mid-September price ascent (the one-line text reaches it)
     sep = "<br>" if cap_labels == "wrapped" else " "
+    cap_size = cap_font if cap_font is not None else font
     fig.add_hline(
         y=threshold, line_dash="dot", line_color="firebrick",
-        annotation_text=f"cap {threshold:.2f} EUR/l{sep}from 28 Sep",
+        annotation_text=f"cap {threshold:.2f} {currency}/l{sep}from 28 Sep",
         annotation_position="top left", annotation_align="left",
-        annotation_font=dict(size=font, color="firebrick"),
+        annotation_font=dict(size=cap_size, color="firebrick"),
     )
     if second_cap is not None:
         fig.add_hline(
             y=second_cap, line_dash="dot", line_color="firebrick",
-            annotation_text=f"cap {second_cap:.3f} EUR/l{sep}from 6 Oct",
+            annotation_text=f"cap {second_cap:.3f} {currency}/l{sep}from 6 Oct",
             annotation_position="top left", annotation_align="left",
-            annotation_font=dict(size=font, color="firebrick"),
+            annotation_font=dict(size=cap_size, color="firebrick"),
         )
     # vlines carry no text labels (d)
     fig.add_vline(x=CAP_DATE.isoformat(), line_dash="dash", line_color="black")
@@ -158,7 +173,7 @@ def group_price_chart_en(
         fig.add_vline(x=EXCISE_STEP.isoformat(), line_dash="dash", line_color="black")
 
     fig.update_layout(
-        font=dict(size=font),
+        font=dict(size=font, color=text_color),
         margin=dict(l=10, r=30, t=15, b=10),
         template="plotly_white",
         hovermode="x unified",
@@ -174,7 +189,7 @@ def group_price_chart_en(
     )
     fig.update_yaxes(
         tickformat=".2f", range=[y_min - pad_lo, y_max + pad_hi],
-        title=dict(text="EUR/l", font=dict(size=font)),
+        title=dict(text=f"{currency}/l", font=dict(size=font, color=text_color)),
     )
     out = FIG / f"{stem}.png"
     fig.write_image(out, scale=2)
@@ -256,6 +271,11 @@ def brand_price_chart(
     xdtick_days: int = 3,
     cap_labels: str = "inline",
     label_side: str = "top",
+    currency: str = "EUR",
+    line_w: float = LINE_W,
+    agg_line_w: float = LINE_W + 1,
+    text_color: str | None = None,
+    cap_font: int | None = None,
 ) -> Path:
     """Numbered variant of the brand chart: from 1 Sep, aggregate line added,
     Pompe Bianche renamed Independent, style of figs 1/2 (no title, FONT,
@@ -275,7 +295,7 @@ def brand_price_chart(
     agg = d.group_by("date").agg(p=pl.col("mean_price").mean()).sort("date")
     fig.add_trace(
         go.Scatter(x=agg["date"], y=agg["p"], mode="lines", name=AGG_EN,
-                   line=dict(color=AGG_COLOR, width=LINE_W + 1, dash="dot"))
+                   line=dict(color=AGG_COLOR, width=agg_line_w, dash="dot"))
     )
     for brand in BRAND_ORDER:
         s = d.filter(pl.col("canonical_name") == brand).sort("date")
@@ -284,7 +304,7 @@ def brand_price_chart(
         fig.add_trace(
             go.Scatter(x=s["date"], y=s["mean_price"], mode="lines",
                        name=BRAND_EN.get(brand, brand),
-                       line=dict(color=BRAND_COLORS[brand], width=LINE_W))
+                       line=dict(color=BRAND_COLORS[brand], width=line_w))
         )
 
     threshold = config.THRESHOLDS[fuel]
@@ -292,18 +312,19 @@ def brand_price_chart(
     # square variant: two-line cap labels hug their dotted line while staying
     # clear of the price series (label_side picks the clear side per fuel)
     sep = "<br>" if cap_labels == "wrapped" else " "
+    cap_size = cap_font if cap_font is not None else font
     fig.add_hline(
         y=threshold, line_dash="dot", line_color="firebrick",
-        annotation_text=f"cap {threshold:.2f} EUR/l{sep}from 28 Sep",
+        annotation_text=f"cap {threshold:.2f} {currency}/l{sep}from 28 Sep",
         annotation_position=f"{label_side} left", annotation_align="left",
-        annotation_font=dict(size=font, color="firebrick"),
+        annotation_font=dict(size=cap_size, color="firebrick"),
     )
     if fuel == "Gasolio":
         fig.add_hline(
             y=config.GASOLIO_CAP_AFTER, line_dash="dot", line_color="firebrick",
-            annotation_text=f"cap {config.GASOLIO_CAP_AFTER:.3f} EUR/l{sep}from 6 Oct",
+            annotation_text=f"cap {config.GASOLIO_CAP_AFTER:.3f} {currency}/l{sep}from 6 Oct",
             annotation_position=f"{label_side} left", annotation_align="left",
-            annotation_font=dict(size=font, color="firebrick"),
+            annotation_font=dict(size=cap_size, color="firebrick"),
         )
         caps.append(config.GASOLIO_CAP_AFTER)
     fig.add_vline(x=CAP_DATE.isoformat(), line_dash="dash", line_color="black")
@@ -316,7 +337,7 @@ def brand_price_chart(
     pad_hi = (y_max - y_min) * 0.12
     pad_lo = pad * 2.5
     fig.update_layout(
-        font=dict(size=font),
+        font=dict(size=font, color=text_color),
         margin=dict(l=10, r=30, t=15, b=10),
         template="plotly_white",
         hovermode="x unified",
@@ -331,7 +352,7 @@ def brand_price_chart(
     )
     fig.update_yaxes(
         tickformat=".2f", range=[y_min - pad_lo, y_max + pad_hi],
-        title=dict(text="EUR/l", font=dict(size=font)),
+        title=dict(text=f"{currency}/l", font=dict(size=font, color=text_color)),
     )
     out = FIG / f"{stem}.png"
     fig.write_image(out, scale=2)
@@ -372,27 +393,39 @@ def main() -> None:
             copy_fig("amap_price_post7_gas.png", "7_map_price_oct5_diesel"),
         ]
     # square variants of figures 1-3 and 8-9: weekly ticks (fig 12: every 4
-    # days), +50% fonts, data window follows the caches
+    # days), +50% fonts, data window follows the caches; 10/11/13/14 are
+    # further restyled (+30% font, black text, thicker lines, € units; the
+    # red cap labels keep the pre-bump size and 10-day ticks fit at that size)
     outs += [
         group_price_chart_en("Benzina", show_excise_line=False,
                              stem="10_benzina_mean_price_brands",
-                             size=SQ_SIZE, font=FONT_SQ, xdtick_days=7),
+                             size=SQ_SIZE, font=FONT_SQ, xdtick_days=10,
+                             currency="€", line_w=LINE_W_SQ,
+                             agg_line_w=AGG_LINE_W_SQ, text_color="black",
+                             cap_font=CAP_FONT_SQ),
         group_price_chart_en("Gasolio", show_excise_line=True,
                              stem="11_gasolio_mean_price_brands",
-                             size=SQ_SIZE, font=FONT_SQ, xdtick_days=7,
-                             cap_labels="wrapped"),
+                             size=SQ_SIZE, font=FONT_SQ, xdtick_days=10,
+                             cap_labels="wrapped", currency="€",
+                             line_w=LINE_W_SQ, agg_line_w=AGG_LINE_W_SQ,
+                             text_color="black", cap_font=CAP_FONT_SQ),
         fig3_adoption_share(stem="12_adoption_share_daily",
                             size=SQ_SIZE, font=FONT_SQ, xdtick_days=4),
         # fig 13's label sits under the cap line: above it the brand bundle
         # climbs through the text band within days of the window start
         brand_price_chart("Benzina", show_excise_vline=False,
                           stem="13_benzina_mean_price_bandiera",
-                          size=SQ_SIZE, font=FONT_SQ, xdtick_days=7,
-                          cap_labels="wrapped", label_side="bottom"),
+                          size=SQ_SIZE, font=FONT_SQ, xdtick_days=10,
+                          cap_labels="wrapped", label_side="bottom",
+                          currency="€", line_w=LINE_W_SQ,
+                          agg_line_w=AGG_LINE_W_SQ, text_color="black",
+                          cap_font=CAP_FONT_SQ),
         brand_price_chart("Gasolio", show_excise_vline=True,
                           stem="14_gasolio_mean_price_bandiera",
-                          size=SQ_SIZE, font=FONT_SQ, xdtick_days=7,
-                          cap_labels="wrapped"),
+                          size=SQ_SIZE, font=FONT_SQ, xdtick_days=10,
+                          cap_labels="wrapped", currency="€",
+                          line_w=LINE_W_SQ, agg_line_w=AGG_LINE_W_SQ,
+                          text_color="black", cap_font=CAP_FONT_SQ),
     ]
     for p in outs:
         print(f"saved {p}")

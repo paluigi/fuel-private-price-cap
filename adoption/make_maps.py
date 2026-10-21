@@ -10,11 +10,12 @@ Outputs (size tuned so two figures fill one A4 text page):
 """
 import os
 
-os.environ.setdefault(
-    "BROWSER_PATH",
+_BROWSER = (
     "/home/ubuntu/.cache/ms-playwright/chromium_headless_shell-1243/"
-    "chrome-headless-shell-linux-arm64/chrome-headless-shell",
+    "chrome-headless-shell-linux-arm64/chrome-headless-shell"
 )
+if os.path.exists(_BROWSER):  # pin the browser only on the machine that has it
+    os.environ.setdefault("BROWSER_PATH", _BROWSER)
 
 import datetime as dt
 import sys
@@ -78,18 +79,24 @@ BLUE_RED = [
 ]
 
 
-def choropleth(fid, z, zmin, zmax, fname, cb_title, fmt=".1f"):
-    """Tight-zoom map, horizontal colorbar underneath (horizontal ticks)."""
+def choropleth(fid, z, zmin, zmax, fname, cb_title, fmt=".1f",
+               cb_tick_size=20, cb_title_size=None, font_color=None):
+    """Tight-zoom map, horizontal colorbar underneath (horizontal ticks).
+
+    cb_tick_size/cb_title_size/font_color override the colorbar text
+    styling (used by the restyled report figure 4 variant)."""
     fig = go.Figure(go.Choroplethmap(
         geojson=geojson, locations=fid, z=z, featureidkey="id",
         colorscale=BLUE_RED, zmin=zmin, zmax=zmax,
         marker_line_width=0.4, marker_line_color="white",
         hovertemplate="%{z:" + fmt + "}<extra></extra>",
         colorbar=dict(
-            title=dict(text=cb_title, side="top"),
+            title=dict(text=cb_title, side="top",
+                       font=dict(size=cb_title_size, color=font_color)),
             orientation="h", thickness=14, len=0.5,
             x=0.5, xanchor="center", y=-0.015, yanchor="top",
-            tickfont=dict(size=20), ticklen=4, outlinewidth=0),
+            tickfont=dict(size=cb_tick_size, color=font_color),
+            ticklen=4, outlinewidth=0),
     ))
     fig.update_layout(
         margin=dict(l=0, r=0, t=10, b=95), width=1400, height=840,
@@ -143,11 +150,17 @@ prov = attach_fid(
 print("matched provinces:", prov.height)
 for col, fname in [("share_all", "map_adoption_share.png"),
                    ("share_pb", "map_pb_adoption_share.png")]:
-    sub = prov.filter(pl.col(col).is_not_null())
-    sub_pd = sub.with_columns((pl.col(col) * 100).alias("pct")).to_pandas()
-    choropleth(sub_pd["fid"], sub_pd["pct"],
-               float(sub_pd["pct"].min()), float(sub_pd["pct"].max()),
-               fname, "% adopting")
+    sub = prov.filter(pl.col(col).is_not_null()).with_columns(
+        (pl.col(col) * 100).alias("pct")
+    )
+    # report figure 4 variant: +30% colorbar text, fully black
+    restyle = fname == "map_adoption_share.png"
+    choropleth(sub["fid"], sub["pct"],
+               float(sub["pct"].min()), float(sub["pct"].max()),
+               fname, "% adopting",
+               cb_tick_size=26 if restyle else 20,
+               cb_title_size=26 if restyle else None,
+               font_color="black" if restyle else None)
 
 # ==== SD pre/post =========================================================
 disp = pl.read_csv(os.path.join(TAB, "province_dispersion.csv"))
