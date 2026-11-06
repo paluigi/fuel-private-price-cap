@@ -1,11 +1,16 @@
 # ARDL counterfactual for net fuel prices on Brent (EUR).
 #
 # Per fuel: log-log ARDL ln(net price) ~ lags(ln net) + lags(ln Brent EUR/bbl),
-# estimated on the pre-cap window 2026-07-01..2026-09-27. Lag order (p,q)
-# selected over 0..MAX_ORDER by AIC and BIC on an explicit-lag lm grid
-# (cross-checked against ARDL::auto_ardl), then estimated with lm so the
-# recursive projection is fully transparent. Diagnostics: Breusch-Godfrey,
-# RESET, long-run pass-through elasticity = sum(theta)/(1 - sum(phi)).
+# estimated on the pre-cap window 2026-07-01..2026-09-27. The target is the
+# net-of-tax price (prezzo/1.22 - excise, reconstructed from published pump
+# prices), so the tax calendar is stripped by construction and NO excise
+# dummy enters the regression: statutory tax changes have no place in a
+# net-price equation, and any staggered pass-through around them stays in
+# the error. Lag order (p,q) selected over 0..MAX_ORDER by AIC and BIC on an
+# explicit-lag lm grid (cross-checked against ARDL::auto_ardl), then
+# estimated with lm so the recursive projection is fully transparent.
+# Diagnostics: Breusch-Godfrey, RESET, long-run pass-through elasticity =
+# sum(theta)/(1 - sum(phi)).
 #
 # Counterfactual: recursive no-cap projection 2026-09-28..2026-10-31 given the
 # actual Brent path and the model's own projected lags (actual post-cap net
@@ -72,19 +77,16 @@ make_lagged <- function(d, p, q) {
   for (i in seq_len(p)) out[[paste0("yl", i)]] <- shift(out$y, i)
   for (j in seq_len(q)) out[[paste0("xl", j)]] <- shift(out$x, j)
   out$xl0 <- out$x
-  # excise-transition dummy (contemporaneous + 1 lag), see add_step_dummy
-  out[["zl1"]] <- shift(out$z, 1)
-  cols <- c("y", grep("^yl|^xl|^z", names(out), value = TRUE))
+  cols <- c("y", grep("^yl|^xl", names(out), value = TRUE))
   out[stats::complete.cases(out[, ..cols])]
 }
 
-fit_ardl <- function(d, p, q, with_step = TRUE) {
+fit_ardl <- function(d, p, q) {
   lag <- make_lagged(d, p, q)
   # note: paste0("yl", seq_len(0)) yields "yl" (zero-length recycles to ""),
   # so the p = 0 case needs an explicit guard
   yl_names <- if (p > 0) paste0("yl", seq_len(p)) else character(0)
   xs <- c(yl_names, paste0("xl", 0:q))
-  if (with_step) xs <- c(xs, "z", "zl1")
   f <- as.formula(paste("y ~", paste(xs, collapse = " + ")))
   fit <- lm(f, data = lag)
   list(fit = fit, lag = lag, p = p, q = q, xs = xs)
@@ -112,9 +114,7 @@ coefs <- function(obj) {
     a = cc[["(Intercept)"]],
     phi = if (obj$p > 0) cc[paste0("yl", seq_len(obj$p))] else numeric(0),
     th0 = cc[["xl0"]],
-    th = if (obj$q > 0) cc[paste0("xl", seq_len(obj$q))] else numeric(0),
-    g0 = if ("z" %in% names(cc)) cc[["z"]] else 0,
-    g1 = if ("zl1" %in% names(cc)) cc[["zl1"]] else 0
+    th = if (obj$q > 0) cc[paste0("xl", seq_len(obj$q))] else numeric(0)
   )
 }
 
@@ -123,21 +123,18 @@ long_run <- function(obj) {
   as.numeric((k$th0 + sum(k$th)) / (1 - sum(k$phi)))
 }
 
-project_ardl <- function(obj, hist_y, x_path, n_ahead, z_path,
+project_ardl <- function(obj, hist_y, x_path, n_ahead,
                          n_sim = N_SIM, seed = SEED) {
-  # hist_y: historical y up to the fit end; x_path, z_path: full series
-  # (history+future). z_path is the excise-transition dummy, known in advance
-  # from the tax calendar. Returns list(point, lo, hi) (bootstrap 95% bands).
+  # hist_y: historical y up to the fit end; x_path: full series
+  # (history+future). Returns list(point, lo, hi) (bootstrap 95% bands).
   k <- coefs(obj); p <- obj$p; q <- obj$q
   set.seed(seed)
   res <- residuals(obj$fit)
   idx0 <- length(hist_y)
-  stopifnot(length(x_path) >= idx0 + n_ahead, length(z_path) >= idx0 + n_ahead,
-            idx0 >= max(p, q, 1))
+  stopifnot(length(x_path) >= idx0 + n_ahead, idx0 >= max(p, q, 1))
   step <- function(yv, h, eps = 0) {
     t <- idx0 + h
-    val <- k$a + k$th0 * x_path[t] + k$g0 * z_path[t] +
-      k$g1 * z_path[t - 1] + eps
+    val <- k$a + k$th0 * x_path[t] + eps
     if (p > 0) for (i in seq_len(p)) val <- val + k$phi[i] * yv[t - i]
     if (q > 0) for (j in seq_len(q)) val <- val + k$th[j] * x_path[t - j]
     val
@@ -170,18 +167,6 @@ run_fuel <- function(dall, fuel_name) {
   d <- dall[fuel == fuel_name & date >= FIT_FROM & date <= ANALYSIS_TO]
   d <- d[order(date), .(date, eff_mean_gross, eff_mean_net,
                         y = log(eff_mean_net), x = log(brent_eur))]
-  # excise-transition dummy: 1 on a step day and the K_TRANS days after.
-  # Around excise changes stations adjust margins mechanically for a few
-  # days; the dummy soaks this noise in the fit, and its future values are
-  # known in the projection (tax calendar is policy, unaffected by the cap).
-  K_TRANS <- 2
-  d[, excise := eff_mean_gross / VAT - eff_mean_net]
-  d[, step := as.numeric(abs(excise - shift(excise)) > 1e-9)]
-  d[is.na(step), step := 0]
-  d[, z := 0]
-  for (ii in which(d$step == 1)) {
-    d[max(1, ii):min(ii + K_TRANS, nrow(d)), z := 1]
-  }
   fit <- d[date <= FIT_TO]
   sel <- select_order(fit)
   p <- sel$best_aic$p; q <- sel$best_aic$q
@@ -229,7 +214,7 @@ run_fuel <- function(dall, fuel_name) {
   obj_bt <- fit_ardl(fit_bt, sel_bt$best_aic$p, sel_bt$best_aic$q)
   bt_win <- d[date >= BT_FROM & date <= FIT_TO]
   n_bt <- nrow(bt_win)
-  proj_bt <- project_ardl(obj_bt, fit_bt$y, d$x, n_bt, d$z)
+  proj_bt <- project_ardl(obj_bt, fit_bt$y, d$x, n_bt)
   rw_path <- rep(fit_bt$y[length(fit_bt$y)], n_bt) # random-walk benchmark
   bt <- data.table(
     date = bt_win$date, fuel = fuel_name,
@@ -250,7 +235,7 @@ run_fuel <- function(dall, fuel_name) {
   proj_win <- d[date >= PROJ_FROM]
   n_p <- nrow(proj_win)
   hist_y <- fit$y # actual (uncapped) net logs up to 09-27
-  proj <- project_ardl(obj, hist_y, d$x, n_p, d$z)
+  proj <- project_ardl(obj, hist_y, d$x, n_p)
   cf <- data.table(
     date = proj_win$date, fuel = fuel_name,
     actual_gross_eff = proj_win$eff_mean_gross,

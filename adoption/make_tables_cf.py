@@ -25,19 +25,21 @@ head = (
 rows = []
 for r in ardl.iter_rows(named=True):
     f = FUEL_EN[r["fuel"]]
+    order_aic = f"({r['p']},{r['q']})"
+    order = order_aic if r["order_bic"] == order_aic else f"{order_aic} / {r['order_bic']}"
     rows.append(
-        f"{f} & ({r['p']},{r['q']}) & {r['lr_elasticity']:.3f} & "
+        f"{f} & {order} & {r['lr_elasticity']:.3f} & "
         f"{r['backtest_rmse_cpl']:.2f} & {r['backtest_rmse_rw_cpl']:.2f} & "
         f"{r['n_fit']} \\\\"
     )
-    ardl_table = f"""{head}\\begin{{table}}[htbp]
+ardl_table = f"""{head}\\begin{{table}}[htbp]
 \\centering\\small\\setlength{{\\tabcolsep}}{{4pt}}
 \\caption{{ARDL net-price models: specification and out-of-sample fit}}
 \\label{{tab:ardl}}
 \\begin{{tabular}}{{lccccc}}
 \\toprule
  & Order ($p,q$) & Long-run elasticity & {{RMSE ARDL}} & {{RMSE random walk}} & $N$ \\\\
- & (AIC $=$ BIC) & (net price vs Brent \\euro/bbl) & (c/l) & (c/l) & \\\\
+ & (AIC / BIC) & (net price vs Brent \\euro/bbl) & (c/l) & (c/l) & \\\\
 \\midrule
 {chr(10).join(rows)}
 \\bottomrule
@@ -46,11 +48,13 @@ for r in ardl.iter_rows(named=True):
 \\medskip
 \\footnotesize Dependent variable: log national average net price
 (self-service, stradale), daily, 1 Jul--27 Sep 2026; regressor: log Brent
-in \\euro/bbl (ECB reference rate), lags as shown. Both lag orders selected
-by AIC and BIC over $(p,q)\\in[0,10]^2$ with an excise-step dummy (day of a
-change and the two following days). Backtest: refit to 13 Sep, projected
-14--27 Sep (pre-cap) recursively; RMSE on the net price in c/l against a
-no-change random walk. See \\cref{{sec:counterfactual}}.
+in \\euro/bbl (ECB reference rate), lags as shown. The target is net of
+excise and VAT by construction, so no tax dummy enters the regression.
+Lag orders selected by AIC and by BIC over $(p,q)\\in[0,10]^2$ (the AIC
+selection is used throughout; where the two differ both are shown).
+Backtest: refit to 13 Sep, projected 14--27 Sep (pre-cap) recursively;
+RMSE on the net price in c/l against a no-change random walk. See
+\\cref{{sec:counterfactual}}.
 \\end{{table}}
 
 """

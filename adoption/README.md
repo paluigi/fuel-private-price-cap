@@ -133,16 +133,18 @@ Adoption (communications 2026-09-28 → 10-12; diesel cap 2.261 from 10-06):
 Counterfactual and inflation (effective prices 2026-07-01 → 10-31):
 
 - Brent EUR/bbl: index 100 (1 Jul) → 173 (cap date) → 177 (31 Oct).
-- ARDL net price ~ Brent EUR: petrol ARDL(2,4), long-run elasticity
-  0.454, half-life ~16 d; diesel ARDL(1,1), 0.632, half-life ~9 d.
-  Placebo backtest (14–27 Sep): RMSE 1.58 / 3.55 c/l vs random-walk
-  3.69 / 5.07.
-- No-cap counterfactual pump prices average 16.6 (petrol) / 27.2
+- ARDL net price ~ Brent EUR (no tax dummy: the target is net of excise
+  and VAT by construction): petrol ARDL(4,5) by AIC, (5,0) by BIC,
+  long-run elasticity 0.44, half-life ~25 d; diesel ARDL(1,1) by both,
+  0.63, half-life ~9 d. Placebo backtest (14–27 Sep): RMSE 1.80 / 5.03
+  c/l vs random-walk 3.69 / 5.07 (diesel excl. excise-transition days
+  18–20/26–27 Sep: 4.05).
+- No-cap counterfactual pump prices average 16.5 (petrol) / 27.5
   (diesel) c/l above realised over 28 Sep–31 Oct; gap at window end
-  20.8 / 30.8 c/l.
+  20.7 / 31.8 c/l.
 - ISTAT reference days (avg of 1/11/21): MoM Sep→Oct realised −2.34%
-  (petrol) / +1.58% (diesel) vs counterfactual +5.02% / +13.26%;
-  cap effect −7.36 / −11.68 pp; headline CPI contribution ≈ −0.43 pp
+  (petrol) / +1.58% (diesel) vs counterfactual +4.92% / +13.37%;
+  cap effect −7.26 / −11.79 pp; headline CPI contribution ≈ −0.43 pp
   (weight of ECOICOP 07.2.2 = 4.5219%, split evenly across fuels).
 - Snapshot bias on 1 Oct (stradale sample): recorded extract average
   overstates effective average by 4.2 / 4.9 c/l (3.47 / 4.06 c/l on the
