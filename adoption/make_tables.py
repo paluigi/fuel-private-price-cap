@@ -19,7 +19,7 @@ ROW_LABEL = {
     "pop_density_cell": "Population per 1-km cell",
     "pre_gap_vs_cap": "Pre-cap gap (\\euro/l)",
     "n_stations_gestore": "Chain size (Gestore, stations)",
-    "fuelGasolio": "Gasolio",
+    "fuelGasolio": "Diesel",
 }
 
 ROW_RE = re.compile(
@@ -97,7 +97,7 @@ for s in SAMPLES:
 head = (
     "% Auto-generated: do not edit by hand.\n"
     "% Source: R/revision_samples.R -> output/revision_{cox,lpm}.txt\n"
-    "% Panel window: 2026-09-28 .. 2026-10-07, gasolio cap tax-adjusted "
+    "% Panel window: 2026-09-28 .. 2026-10-07, diesel cap tax-adjusted "
     "(+6.1 c/l from 2026-10-06).\n\n"
 )
 
@@ -132,7 +132,7 @@ Events & {n_ev['S1_universe'][1]:,}\\ & {n_ev['S2_excl_agip_q8'][1]:,}\\ & {n_ev
 
 \\medskip
 \\footnotesize Gestore-clustered robust standard errors. All models
-include a Gasolio dummy. The gasolio cap threshold is adjusted for the
+include a diesel dummy. The diesel cap threshold is adjusted for the
 excise change of 6 October 2026 (see \\cref{{sec:data}}).
 \\end{{table}}
 
@@ -184,7 +184,7 @@ Adj.~$R^2$ & {fr(fits[0][2])} & {fr(fits[1][2])} & {fr(fits[2][2])} \\\\
 
 \\medskip
 \\footnotesize Dependent variable: adopted (=1 if the station--fuel unit
-priced at or below the cap on any day 28 Sep -- 7 Oct 2026; the gasolio
+priced at or below the cap on any day 28 Sep -- 7 Oct 2026; the diesel
 cap is tax-adjusted from 6 Oct). OLS with gestore-clustered standard
 errors. Brand reference: Agip Eni in columns (1), Ala in column (2);
 region reference: Abruzzo. Full brand and region coefficients in

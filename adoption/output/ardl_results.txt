@@ -1,0 +1,194 @@
+
+===== Benzina =====
+fit window: 2026-07-01 - 2026-09-27 ( 85 obs after lags )
+order by AIC: ( 2 , 4 )  by BIC: ( 2 , 4 )
+
+Call:
+lm(formula = f, data = lag)
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-0.0046821 -0.0015110 -0.0000796  0.0011035  0.0065094 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -0.0829029  0.0325852  -2.544  0.01301 *  
+yl1          1.3032246  0.0861625  15.125  < 2e-16 ***
+yl2         -0.3448308  0.0802208  -4.299  5.1e-05 ***
+xl0          0.0143323  0.0080492   1.781  0.07903 .  
+xl1          0.0238986  0.0108058   2.212  0.03004 *  
+xl2         -0.0032446  0.0109860  -0.295  0.76855    
+xl3         -0.0163682  0.0108939  -1.503  0.13716    
+xl4          0.0002664  0.0086667   0.031  0.97556    
+z            0.0094911  0.0034994   2.712  0.00828 ** 
+zl1         -0.0020514  0.0026759  -0.767  0.44571    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.002538 on 75 degrees of freedom
+Multiple R-squared:  0.9988,	Adjusted R-squared:  0.9987 
+F-statistic:  7123 on 9 and 75 DF,  p-value: < 2.2e-16
+
+
+Newey-West (lag 7, prewhite=FALSE) robust coefficients:
+
+t test of coefficients:
+
+               Estimate  Std. Error t value  Pr(>|t|)    
+(Intercept) -0.08290286  0.03414591 -2.4279  0.017585 *  
+yl1          1.30322455  0.08142112 16.0060 < 2.2e-16 ***
+yl2         -0.34483083  0.07633822 -4.5171 2.291e-05 ***
+xl0          0.01433227  0.00710360  2.0176  0.047210 *  
+xl1          0.02389862  0.00793766  3.0108  0.003549 ** 
+xl2         -0.00324464  0.01429837 -0.2269  0.821100    
+xl3         -0.01636818  0.00960969 -1.7033  0.092653 .  
+xl4          0.00026640  0.00857583  0.0311  0.975301    
+z            0.00949107  0.00162821  5.8292 1.315e-07 ***
+zl1         -0.00205141  0.00077336 -2.6526  0.009744 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+
+Breusch-Godfrey (order 7 and 14):
+
+	Breusch-Godfrey test for serial correlation of order up to 7
+
+data:  obj$fit
+LM test = 24.306, df = 7, p-value = 0.001007
+
+
+	Breusch-Godfrey test for serial correlation of order up to 14
+
+data:  obj$fit
+LM test = 27.243, df = 14, p-value = 0.0179
+
+
+RESET (powers 2:3):
+
+	RESET test
+
+data:  obj$fit
+RESET = 1.8644, df1 = 2, df2 = 73, p-value = 0.1623
+
+
+long-run pass-through elasticity (AIC spec): 0.4539 
+long-run pass-through elasticity (BIC spec): 0.4539 
+half-life of shock (days, AIC spec): 16.3 
+auto_ardl cross-check, best order:
+y x 
+4 5 
+
+backtest 2026-09-14 - 2026-09-27 : RMSE ARDL 1.584 c/l | RW 3.687 c/l | mean bias 1.546 c/l
+
+projection 2026-09-28 - 2026-10-31 : mean gap actual - counterfactual -16.64 c/l  (net path 1.096 -> 1.144 EUR/l)
+
+===== Gasolio =====
+fit window: 2026-07-01 - 2026-09-27 ( 88 obs after lags )
+order by AIC: ( 1 , 1 )  by BIC: ( 1 , 1 )
+
+Call:
+lm(formula = f, data = lag)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.025143 -0.002682 -0.000213  0.002642  0.049780 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -0.1912870  0.0467634  -4.091   0.0001 ***
+yl1          0.9258135  0.0150936  61.338   <2e-16 ***
+xl0         -0.0290665  0.0239025  -1.216   0.2275    
+xl1          0.0759890  0.0248419   3.059   0.0030 ** 
+z           -0.0040710  0.0032938  -1.236   0.2200    
+zl1          0.0003515  0.0034332   0.102   0.9187    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.007907 on 82 degrees of freedom
+Multiple R-squared:  0.9954,	Adjusted R-squared:  0.9951 
+F-statistic:  3529 on 5 and 82 DF,  p-value: < 2.2e-16
+
+
+Newey-West (lag 7, prewhite=FALSE) robust coefficients:
+
+t test of coefficients:
+
+               Estimate  Std. Error t value  Pr(>|t|)    
+(Intercept) -0.19128699  0.03358328 -5.6959 1.859e-07 ***
+yl1          0.92581345  0.01052006 88.0046 < 2.2e-16 ***
+xl0         -0.02906645  0.02896675 -1.0034   0.31860    
+xl1          0.07598899  0.02763225  2.7500   0.00733 ** 
+z           -0.00407100  0.00825095 -0.4934   0.62305    
+zl1          0.00035152  0.00622771  0.0564   0.95512    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+
+Breusch-Godfrey (order 7 and 14):
+
+	Breusch-Godfrey test for serial correlation of order up to 7
+
+data:  obj$fit
+LM test = 2.9176, df = 7, p-value = 0.8925
+
+
+	Breusch-Godfrey test for serial correlation of order up to 14
+
+data:  obj$fit
+LM test = 5.1222, df = 14, p-value = 0.984
+
+
+RESET (powers 2:3):
+
+	RESET test
+
+data:  obj$fit
+RESET = 4.1176, df1 = 2, df2 = 80, p-value = 0.01986
+
+
+long-run pass-through elasticity (AIC spec): 0.6325 
+long-run pass-through elasticity (BIC spec): 0.6325 
+half-life of shock (days, AIC spec): 9 
+auto_ardl cross-check, best order:
+y x 
+1 1 
+
+backtest 2026-09-14 - 2026-09-27 : RMSE ARDL 3.552 c/l | RW 5.075 c/l | mean bias -1.279 c/l
+
+projection 2026-09-28 - 2026-10-31 : mean gap actual - counterfactual -27.22 c/l  (net path 1.323 -> 1.455 EUR/l)
+
+===== ISTAT reference days (1/11/21) =====
+Index: <fuel>
+        period    fuel actual_gross cf_gross    gap_cpl
+        <char>  <char>        <num>    <num>      <num>
+ 1: 2026-09-01 Benzina     2.023770 2.023770   0.000000
+ 2: 2026-09-01 Gasolio     2.129651 2.129651   0.000000
+ 3: 2026-09-11 Benzina     2.094519 2.094519   0.000000
+ 4: 2026-09-11 Gasolio     2.201240 2.201240   0.000000
+ 5: 2026-09-21 Benzina     2.154139 2.154139   0.000000
+ 6: 2026-09-21 Gasolio     2.337892 2.337892   0.000000
+ 7: 2026-10-01 Benzina     2.068271 2.162722  -9.445094
+ 8: 2026-10-01 Gasolio     2.265985 2.399874 -13.388928
+ 9: 2026-10-11 Benzina     2.034625 2.213379 -17.875371
+10: 2026-10-11 Gasolio     2.250071 2.558375 -30.830385
+11: 2026-10-21 Benzina     2.022990 2.211367 -18.837607
+12: 2026-10-21 Gasolio     2.258087 2.594819 -33.673169
+
+Sep avg vs Oct avg, actual vs counterfactual (weight carburanti = 0.045219, split 50/50):
+             fuel sep_avg_actual sep_avg_cf oct_avg_actual oct_avg_cf
+           <char>          <num>      <num>          <num>      <num>
+1:        Benzina       2.090809   2.090809       2.041962   2.195822
+2:        Gasolio       2.222928   2.222928       2.258048   2.517689
+3: TOT carburanti       2.156868   2.156868       2.150005   2.356756
+   mom_actual_pct mom_cf_pct cap_effect_pp cpi_actual_pp cpi_cf_pp
+            <num>      <num>         <num>         <num>     <num>
+1:     -2.3362624   5.022623     -7.358885   -0.05282172 0.1135590
+2:      1.5799003  13.260065    -11.680165    0.03572076 0.2998034
+3:     -0.3781811   9.141344     -9.519525   -0.01710097 0.4133624
+   cpi_effect_pp
+           <num>
+1:    -0.1663807
+2:    -0.2640827
+3:    -0.4304634
+
+Done.

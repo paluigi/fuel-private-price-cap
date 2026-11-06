@@ -20,6 +20,7 @@ for _p in (DATA_DIR, OUT_DIR, OUT_DIR / "tables", OUT_DIR / "figures", R_DIR):
 # Analysis window
 # ---------------------------------------------------------------- #
 SERIES_FROM = dt.date(2026, 7, 1)  # requested long window start (user override)
+ANALYSIS_TO = dt.date(2026, 10, 31)  # analysis window end (user override)
 CAP_DATE = dt.date(2026, 9, 28)  # self-imposed cap effective date
 PRE_WINDOW = (dt.date(2026, 9, 21), dt.date(2026, 9, 27))  # 7d pre-cap
 # Nominal cap thresholds announced by Agip Eni (EUR/l, Stradale self-service).
@@ -57,6 +58,8 @@ FUELS = ("Benzina", "Gasolio")
 _REPO_ROOT = ADOPTION_DIR.parent
 PRICES_PARQUET = _REPO_ROOT / "data" / "prices_raw.parquet"  # all dates
 STATIONS_PARQUET = _REPO_ROOT / "data" / "stations.parquet"  # weekly anagrafica
+TAX_PARQUET = _REPO_ROOT / "data" / "tax.parquet"  # excise calendar
+EXTERNAL_DIR = _REPO_ROOT / "data" / "external"  # committed raw downloads
 ANAGRAFICA_CSV = DATA_DIR / "anagrafica_impianti_attivi.csv"  # MIMIT, has Comune
 GRID_CSV = DATA_DIR / "istat_grid" / "GrigliaPop2021_Ind_ITA_CSV.txt"
 # NOTE: the 2026 zip extracts WITHOUT a top-level folder (unlike earlier
@@ -67,6 +70,13 @@ BORDERS_DIR = DATA_DIR / "istat_borders"
 # Outputs
 # ---------------------------------------------------------------- #
 STATION_DAY = OUT_DIR / "tables" / "station_day_prices.parquet"
+OIL_FX_CSV = OUT_DIR / "tables" / "oil_fx_daily.csv"  # business days
+OIL_FX_FFILL_CSV = OUT_DIR / "tables" / "oil_fx_daily_ffill.csv"  # calendar days
+FUEL_DAILY_CSV = OUT_DIR / "tables" / "fuel_daily_prices.csv"
+COUNTERFACTUAL_CSV = OUT_DIR / "tables" / "counterfactual_daily.csv"
+BACKTEST_CSV = OUT_DIR / "tables" / "backtest_daily.csv"
+INFLATION_DAYS_CSV = OUT_DIR / "tables" / "inflation_days.csv"
+INFLATION_SUMMARY_CSV = OUT_DIR / "tables" / "inflation_summary.csv"
 STATION_STATIC = OUT_DIR / "tables" / "station_covariates.parquet"
 DISTANCES = OUT_DIR / "tables" / "station_day_distances.parquet"
 ADOPTION_PANEL = OUT_DIR / "tables" / "adoption_panel.parquet"
