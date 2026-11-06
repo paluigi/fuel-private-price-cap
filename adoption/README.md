@@ -47,6 +47,8 @@ Rscript adoption/R/analysis_panel.R        # station-FE event study
 Rscript adoption/R/revision_samples.R      # 3-sample Cox + LPM (paper tables)
 Rscript adoption/R/analysis_ardl.R         # ARDL counterfactual + backtest
                                            # + ISTAT reference-day inflation
+Rscript adoption/R/spec_robustness.R       # lag-grid / DL-only / no-oil
+                                           # specification robustness
 
 # 7. Figures and tables for the paper
 uv run python adoption/revision_analysis.py    # event-study coefs + tercile fig
@@ -97,6 +99,9 @@ regenerable and mostly not committed.
 - `R/analysis_ardl.R` — log-log ARDL net price ~ Brent EUR (AIC/BIC lag
   grid + `auto_ardl` cross-check), recursive no-cap projection with
   bootstrap bands, placebo backtest, ISTAT reference-day MoM/CPI table.
+- `R/spec_robustness.R` — re-runs selection/backtest/projection under
+  alternative grids (max 15 lags; min 2 oil lags; DL-only; AR-only
+  no-oil reference) + HAC block-exclusion Wald tests for the Brent terms.
 - `revision_analysis.py` — event-study coefficients + tercile figure.
 - `make_fig1_v2.py` — Fig 1 (per-fuel panels; diesel carries the
   6 Oct excise line, petrol none).
@@ -146,6 +151,12 @@ Counterfactual and inflation (effective prices 2026-07-01 → 10-31):
   (petrol) / +1.58% (diesel) vs counterfactual +4.92% / +13.37%;
   cap effect −7.26 / −11.79 pp; headline CPI contribution ≈ −0.43 pp
   (weight of ECOICOP 07.2.2 = 4.5219%, split evenly across fuels).
+- Specification robustness (R/spec_robustness.R): max-15-lag grid
+  re-selects the same orders; min-2-oil-lags moves the diesel gap to
+  −24.7 c/l; DL-only leaves petrol at −15.1 c/l (best backtest) but
+  degrades diesel; a no-oil AR (economically untenable) understates the
+  effect. Oil block significant everywhere (HAC Wald p < 1e-6). Combined
+  CPI effect across sensible specs: −0.41 to −0.46 pp.
 - Snapshot bias on 1 Oct (stradale sample): recorded extract average
   overstates effective average by 4.2 / 4.9 c/l (3.47 / 4.06 c/l on the
   all-station sample).

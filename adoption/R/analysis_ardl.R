@@ -359,4 +359,6 @@ main <- function() {
   sink()
 }
 
-main()
+# Skip when sourced (spec_robustness.R sets ARDL_SKIP_MAIN=1 to reuse the
+# machinery above without rerunning the full analysis)
+if (tolower(Sys.getenv("ARDL_SKIP_MAIN")) != "1") main()

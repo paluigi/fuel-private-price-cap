@@ -1,9 +1,13 @@
 """Regenerate the counterfactual LaTeX tables from the pipeline outputs.
 
 Reads output/tables/ardl_summary.csv and output/tables/inflation_summary.csv
-(written by R/analysis_ardl.R) and rewrites paper_tables_cf.tex.
+(written by R/analysis_ardl.R) and output/tables/spec_robustness.csv +
+spec_block_tests.csv (written by R/spec_robustness.R); rewrites
+paper_tables_cf.tex, paper_tables_infl.tex and paper_appendix_ardl.tex.
 Run after every data refresh.
 """
+import math
+
 import polars as pl
 
 FUEL_EN = {"Benzina": "Petrol", "Gasolio": "Diesel",
@@ -96,3 +100,71 @@ of the basket), split evenly between petrol and diesel.
 open(OUT_ARDL, "w").write(ardl_table)
 open(OUT_INFL, "w").write(infl_table)
 print(f"wrote {OUT_ARDL} and {OUT_INFL}")
+
+# ---- appendix table: specification robustness -------------------------------
+OUT_ROBUST = "paper_appendix_ardl.tex"
+rob = pl.read_csv("output/tables/spec_robustness.csv")
+blk = pl.read_csv("output/tables/spec_block_tests.csv")
+
+
+def p_fmt(p):
+    if p < 1e-4:
+        exp = math.floor(math.log10(p))
+        mant = p / 10**exp
+        return f"$p={mant:.1f}\\times10^{{{exp}}}$"
+    return f"$p={p:.3f}$"
+
+VARIANT_LABEL = {
+    "V1_baseline": "Baseline (max 10)",
+    "V2_max15": "Max 15 lags",
+    "V3_minq2": "Min 2 oil lags",
+    "V4_dl_only": "DL only (no AR)",
+    "V5_ar_only": "AR only (no oil)",
+}
+VARIANT_ORDER = list(VARIANT_LABEL)
+
+rows = []
+for f in ("Benzina", "Gasolio"):
+    for key in VARIANT_ORDER:
+        r = rob.filter(
+            (pl.col("fuel") == f) & (pl.col("variant") == key)
+        ).row(0, named=True)
+        order = f"({r['p']},{r['q']})" if r["q"] is not None else f"({r['p']},.)"
+        elas = f"{r['lr_elasticity']:.3f}" if r["lr_elasticity"] is not None else "--"
+        rows.append(
+            f"{FUEL_EN[f]} & {VARIANT_LABEL[key]} & {order} & {elas} & "
+            f"{r['backtest_rmse_cpl']:.2f} & {r['backtest_rmse_rw_cpl']:.2f} & "
+            f"${r['mean_gap_cpl']:+.1f}$ & ${r['mom_cf_pct']:+.1f}$ \\\\"
+        )
+
+blk_txt = " ; ".join(
+    f"{FUEL_EN[r['fuel']]}: $F={r['oil_block_F']:.1f}$, {p_fmt(r['oil_block_p'])}"
+    for r in blk.iter_rows(named=True)
+)
+
+robust_table = f"""{head}\\begin{{table}}[H]
+\\centering\\footnotesize\\setlength{{\\tabcolsep}}{{3pt}}
+\\caption{{ARDL specification robustness: lag grids, forced oil lags, and distributed-lag / autoregression-only extremes}}
+\\label{{tab:ardl-robust}}
+\\begin{{tabular}}{{llcccccc}}
+\\toprule
+ & Specification & Order (AIC) & Long-run & {{RMSE}} & {{RMSE RW}} & Mean gap & {{MoM no cap}} \\\\
+ & & & elasticity & (c/l) & (c/l) & (c/l) & (\\%) \\\\
+\\midrule
+{chr(10).join(rows)}
+\\bottomrule
+\\end{{tabular}}
+
+\\medskip
+\\footnotesize Each row re-selects $(p,q)$ by AIC on the stated grid,
+refits the placebo backtest (14--27 Sep) and the no-cap projection.
+``Order'' counts oil lags beyond the contemporaneous term. ``DL only''
+= pure distributed lag (no autoregressive term); ``AR only'' has no oil
+term at all and is an economically misspecified reference, not a
+counterfactual. HAC block-exclusion of the Brent terms
+in the baseline models: {blk_txt}. RW: no-change random walk.
+\\end{{table}}
+
+"""
+open(OUT_ROBUST, "w").write(robust_table)
+print(f"wrote {OUT_ROBUST}")

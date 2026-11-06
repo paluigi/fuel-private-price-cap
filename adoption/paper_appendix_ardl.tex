@@ -1,0 +1,37 @@
+% Auto-generated: do not edit by hand.
+% Source: R/analysis_ardl.R -> output/tables/{ardl,inflation}_summary.csv
+% Fit window 2026-07-01..2026-09-27; projection 2026-09-28..2026-10-31;
+% backtest window 2026-09-14..2026-09-27.
+
+\begin{table}[H]
+\centering\footnotesize\setlength{\tabcolsep}{3pt}
+\caption{ARDL specification robustness: lag grids, forced oil lags, and distributed-lag / autoregression-only extremes}
+\label{tab:ardl-robust}
+\begin{tabular}{llcccccc}
+\toprule
+ & Specification & Order (AIC) & Long-run & {RMSE} & {RMSE RW} & Mean gap & {MoM no cap} \\
+ & & & elasticity & (c/l) & (c/l) & (c/l) & (\%) \\
+\midrule
+Petrol & Baseline (max 10) & (4,5) & 0.437 & 1.80 & 3.69 & $-16.5$ & $+4.9$ \\
+Petrol & Max 15 lags & (4,5) & 0.437 & 1.80 & 3.69 & $-16.5$ & $+4.9$ \\
+Petrol & Min 2 oil lags & (4,5) & 0.437 & 1.80 & 3.69 & $-16.5$ & $+4.9$ \\
+Petrol & DL only (no AR) & (0,7) & 0.466 & 1.51 & 3.69 & $-15.1$ & $+4.7$ \\
+Petrol & AR only (no oil) & (5,.) & -- & 3.19 & 3.69 & $-12.7$ & $+3.5$ \\
+Diesel & Baseline (max 10) & (1,1) & 0.630 & 5.03 & 5.07 & $-27.5$ & $+13.4$ \\
+Diesel & Max 15 lags & (1,1) & 0.630 & 5.03 & 5.07 & $-27.5$ & $+13.4$ \\
+Diesel & Min 2 oil lags & (1,4) & 0.523 & 5.43 & 5.07 & $-24.7$ & $+12.3$ \\
+Diesel & DL only (no AR) & (0,15) & 0.620 & 9.80 & 5.07 & $-30.4$ & $+15.1$ \\
+Diesel & AR only (no oil) & (1,.) & -- & 3.20 & 5.07 & $-19.4$ & $+10.1$ \\
+\bottomrule
+\end{tabular}
+
+\medskip
+\footnotesize Each row re-selects $(p,q)$ by AIC on the stated grid,
+refits the placebo backtest (14--27 Sep) and the no-cap projection.
+``Order'' counts oil lags beyond the contemporaneous term. ``DL only''
+= pure distributed lag (no autoregressive term); ``AR only'' has no oil
+term at all and is an economically misspecified reference, not a
+counterfactual. HAC block-exclusion of the Brent terms
+in the baseline models: Petrol: $F=10.6$, $p=2.0\times10^{-8}$ ; Diesel: $F=17.0$, $p=6.2\times10^{-7}$. RW: no-change random walk.
+\end{table}
+

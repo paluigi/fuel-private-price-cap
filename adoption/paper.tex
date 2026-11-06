@@ -805,16 +805,28 @@ cap start. Black dots: ISTAT reference days.}
 \end{figure}
 
 \paragraph{Robustness.}
-Four checks. First, for petrol BIC selects the more parsimonious ARDL$(5,0)$; its
+Five checks. First, for petrol BIC selects the more parsimonious ARDL$(5,0)$; its
 long-run elasticity (0.46) sits within 0.02 of the AIC selection's, and
-for diesel both criteria agree on $(1,1)$ (\cref{tab:ardl}). Second, restricting the sample to the 98\% of
+for diesel both criteria agree on $(1,1)$ (\cref{tab:ardl}). Second, the
+lag structure itself is not doing the work: widening the grid to 15 lags
+re-selects the same orders, forcing at least two oil lags moves the
+diesel gap only from $-27.5$ to $-24.7$~c/l, and collapsing to a pure
+distributed lag on Brent (no autoregressive term) leaves petrol
+essentially unchanged --- indeed with the best backtest of all --- while
+degrading diesel's, whose margins adjust too persistently for a static
+lag polynomial. Oil is indispensable in every specification: HAC
+block-exclusion of the Brent terms rejects massively in both fuels
+($p < 10^{-6}$), whereas an autoregression with \emph{no} oil term ---
+economically untenable --- fits almost as well in sample yet forecasts
+worse and understates the effect (\cref{tab:ardl-robust}). Third,
+restricting the sample to the 98\% of
 stations that report essentially every day (a balanced panel) moves the
 national daily means by fractions of a cent --- composition is not
-driving the gap. Third, using the naive 8am-cut extract averages
+driving the gap. Fourth, using the naive 8am-cut extract averages
 instead of effective prices would add the snapshot bias of
 \cref{sec:dtcomu} to the actual series on reference days (4--5~c/l
 \emph{against} the cap), making the counterfactual gap larger, not
-smaller. Fourth, the result is not an artefact of the euro: the
+smaller. Fifth, the result is not an artefact of the euro: the
 USD/\euro{} rate moved less than 2\% over the window, and converting
 Brent at any pre-window average rate changes the October gaps by well
 under 1~c/l. The main caveat is sample length: 85--88 daily
@@ -1033,6 +1045,28 @@ over $(p,q)\in[0,10]^2$ select $(4,5)$ and $(5,0)$ for petrol (both
 reported in \cref{tab:ardl}) and $(1,1)$ for diesel; the
 \textsf{ARDL} package's \texttt{auto\_ardl} reproduces the AIC
 selections.
+
+\paragraph{Specification robustness.}
+\Cref{tab:ardl-robust} re-runs the entire exercise --- lag selection,
+backtest, projection and reference-day inflation --- under the
+specification variants discussed in \cref{sec:cfresults}: a wider grid
+(15 lags), a minimum of two oil lags, a pure distributed lag with no
+autoregressive term, and, as an economically misspecified reference, an
+autoregression with no oil term at all. The last is instructive: daily
+net prices are so persistent that a no-oil autoregression fits almost
+as well in sample ($R^2$ 0.9985 versus 0.9989 for petrol) --- which is
+exactly why in-sample fit cannot arbitrate this question --- yet it
+forecasts worse out of sample (petrol RMSE 3.19 versus 1.80~c/l) and
+understates the effect; excluding the Brent block is rejected with
+$p < 10^{-6}$ in both fuels. Conversely, dropping the autoregressive
+dimension entirely leaves petrol essentially unchanged (best backtest
+of all variants) but degrades diesel badly, whose multi-week margin
+persistence only the autoregressive part carries. Across all
+economically sensible specifications the October mean gaps stay within
+15.1--16.5~c/l (petrol) and 24.7--30.4~c/l (diesel), and the combined
+CPI effect within $-0.41$ to $-0.46$~percentage points.
+
+\input{paper_appendix_ardl}
 
 \clearpage
 \section{Provincial maps by fuel}
