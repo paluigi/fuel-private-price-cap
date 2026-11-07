@@ -1,16 +1,15 @@
 """Paper figures refresh (post tax-adjustment data update).
 
-fig1_raw_adoption_share.png — exact daily at-cap share, tax marker.
+fig1_overlay.png — legacy single-panel at-cap share (paper fig 1 comes from make_fig1_v2.py).
 event_study_by_capdist.png  — exact daily share by day-0 adopter tercile.
 fig_prices_daily.png        — daily mean price, all + 5 brands, from Sep 1.
 """
 import os
 
-os.environ.setdefault(
-    "BROWSER_PATH",
-    "/home/ubuntu/.cache/ms-playwright/chromium_headless_shell-1243/"
-    "chrome-headless-shell-linux-arm64/chrome-headless-shell",
-)
+_BROWSER = ("/home/ubuntu/.cache/ms-playwright/chromium_headless_shell-1243/"
+            "chrome-headless-shell-linux-arm64/chrome-headless-shell")
+if os.path.exists(_BROWSER):  # pin the browser only on the machine that has it
+    os.environ.setdefault("BROWSER_PATH", _BROWSER)
 
 import sys
 from pathlib import Path
@@ -53,7 +52,7 @@ fig.update_layout(
     xaxis_title="Date", yaxis_title="Stations at or below cap (%)",
     template="plotly_white", width=1300, height=620, font=dict(size=15),
     legend=dict(x=0.02, y=0.02))
-fig.write_image(os.path.join(FIG, "fig1_raw_adoption_share.png"), scale=2)
+fig.write_image(os.path.join(FIG, "fig1_overlay.png"), scale=2)  # legacy single-panel; paper uses the two-panel fig1 from make_fig1_v2
 print("fig1 saved; last-day shares:",
       d.filter(pl.col("date") == pl.date(2026, 10, 6))
       .select(["fuel", (pl.col("share") * 100).round(1)]).to_dicts())

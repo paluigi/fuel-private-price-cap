@@ -1,79 +1,79 @@
 
 ===== m1 =====
 OLS estimation, Dep. Var.: at_cap
-Observations: 354,384
-Fixed-effects: id_fuel: 39,418
+Observations: 353,790
+Fixed-effects: id_fuel: 39,352
 Standard-errors: Clustered (gestore) 
       Estimate Std. Error  t value   Pr(>|t|)    
-ev::0 0.192758   0.036551  5.27365 1.3672e-07 ***
-ev::1 0.242910   0.036949  6.57427 5.1506e-11 ***
-ev::2 0.276813   0.037344  7.41243 1.3477e-13 ***
-ev::3 0.450907   0.045543  9.90078  < 2.2e-16 ***
-ev::4 0.492064   0.043744 11.24862  < 2.2e-16 ***
-ev::5 0.507228   0.042242 12.00763  < 2.2e-16 ***
-ev::6 0.509022   0.042118 12.08574  < 2.2e-16 ***
-ev::7 0.526430   0.040463 13.01008  < 2.2e-16 ***
+ev::0 0.193031   0.036570  5.27844 1.3321e-07 ***
+ev::1 0.243217   0.036973  6.57818 5.0178e-11 ***
+ev::2 0.277126   0.037375  7.41480 1.3241e-13 ***
+ev::3 0.451104   0.045555  9.90248  < 2.2e-16 ***
+ev::4 0.492280   0.043754 11.25111  < 2.2e-16 ***
+ev::5 0.507470   0.042248 12.01177  < 2.2e-16 ***
+ev::6 0.509266   0.042123 12.09007  < 2.2e-16 ***
+ev::7 0.526703   0.040464 13.01669  < 2.2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-RMSE: 0.254327     Adj. R2: 0.68936 
-                 Within R2: 0.320915
+RMSE: 0.254341     Adj. R2: 0.689371
+                 Within R2: 0.320996
 
 ===== m2 =====
 OLS estimation, Dep. Var.: at_cap
-Observations: 353,838
-Fixed-effects: id_fuel: 39,338
+Observations: 353,244
+Fixed-effects: id_fuel: 39,272
 Standard-errors: Clustered (gestore) 
-                         Estimate Std. Error    t value   Pr(>|t|)    
-ev::0                   -0.024887   0.001292  -19.25614  < 2.2e-16 ***
-ev::1                    0.011499   0.000976   11.78237  < 2.2e-16 ***
-ev::2                    0.029137   0.000931   31.28111  < 2.2e-16 ***
-ev::3                    0.012896   0.000557   23.15892  < 2.2e-16 ***
-ev::4                   -0.009570   0.000106  -89.91083  < 2.2e-16 ***
-ev::5                   -0.022482   0.000462  -48.61641  < 2.2e-16 ***
-ev::6                   -0.023694   0.000856  -27.68178  < 2.2e-16 ***
-ev::7                   -0.029768   0.000150 -198.79857  < 2.2e-16 ***
-cap_dist_terrnear:ev::0  0.237949   0.044894    5.30022 1.1830e-07 ***
-cap_dist_terrmid:ev::0   0.232112   0.039907    5.81631 6.2138e-09 ***
-cap_dist_terrfar:ev::0   0.182337   0.027787    6.56204 5.5894e-11 ***
-cap_dist_terrnear:ev::1  0.259818   0.047022    5.52549 3.3739e-08 ***
-cap_dist_terrmid:ev::1   0.250786   0.040387    6.20961 5.5379e-10 ***
-cap_dist_terrfar:ev::1   0.182450   0.027631    6.60302 4.2480e-11 ***
-cap_dist_terrnear:ev::2  0.280493   0.048644    5.76621 8.3650e-09 ***
-cap_dist_terrmid:ev::2   0.271213   0.040949    6.62324 3.7078e-11 ***
-cap_dist_terrfar:ev::2   0.190356   0.027793    6.84893 7.9095e-12 ***
-cap_dist_terrnear:ev::3  0.509574   0.053723    9.48529  < 2.2e-16 ***
-cap_dist_terrmid:ev::3   0.457688   0.045347   10.09308  < 2.2e-16 ***
-cap_dist_terrfar:ev::3   0.346474   0.033165   10.44685  < 2.2e-16 ***
-cap_dist_terrnear:ev::4  0.579102   0.051357   11.27605  < 2.2e-16 ***
-cap_dist_terrmid:ev::4   0.522725   0.043665   11.97136  < 2.2e-16 ***
-cap_dist_terrfar:ev::4   0.402815   0.032529   12.38310  < 2.2e-16 ***
-cap_dist_terrnear:ev::5  0.608879   0.048654   12.51443  < 2.2e-16 ***
-cap_dist_terrmid:ev::5   0.552266   0.041749   13.22838  < 2.2e-16 ***
-cap_dist_terrfar:ev::5   0.427841   0.031620   13.53088  < 2.2e-16 ***
-cap_dist_terrnear:ev::6  0.611759   0.048139   12.70806  < 2.2e-16 ***
-cap_dist_terrmid:ev::6   0.554794   0.041367   13.41151  < 2.2e-16 ***
-cap_dist_terrfar:ev::6   0.431368   0.031299   13.78217  < 2.2e-16 ***
-cap_dist_terrnear:ev::7  0.637095   0.046190   13.79291  < 2.2e-16 ***
-cap_dist_terrmid:ev::7   0.578315   0.040415   14.30939  < 2.2e-16 ***
-cap_dist_terrfar:ev::7   0.452859   0.030956   14.62931  < 2.2e-16 ***
+                         Estimate Std. Error   t value   Pr(>|t|)    
+ev::0                   -0.024553   0.000761 -32.26408  < 2.2e-16 ***
+ev::1                    0.011285   0.000986  11.44931  < 2.2e-16 ***
+ev::2                    0.028743   0.000991  29.00609  < 2.2e-16 ***
+ev::3                    0.012619   0.000082 153.10989  < 2.2e-16 ***
+ev::4                   -0.009715   0.000224 -43.37122  < 2.2e-16 ***
+ev::5                   -0.022284   0.000307 -72.50839  < 2.2e-16 ***
+ev::6                   -0.023472   0.000373 -62.92250  < 2.2e-16 ***
+ev::7                   -0.029327   0.000329 -89.21569  < 2.2e-16 ***
+cap_dist_terrnear:ev::0  0.238147   0.044739   5.32304 1.0442e-07 ***
+cap_dist_terrmid:ev::0   0.232029   0.039820   5.82693 5.8328e-09 ***
+cap_dist_terrfar:ev::0   0.182146   0.027667   6.58341 4.8456e-11 ***
+cap_dist_terrnear:ev::1  0.260313   0.046935   5.54623 2.9986e-08 ***
+cap_dist_terrmid:ev::1   0.251471   0.040313   6.23795 4.6261e-10 ***
+cap_dist_terrfar:ev::1   0.182798   0.027424   6.66563 2.7846e-11 ***
+cap_dist_terrnear:ev::2  0.281065   0.048546   5.78961 7.2830e-09 ***
+cap_dist_terrmid:ev::2   0.271986   0.040819   6.66321 2.8306e-11 ***
+cap_dist_terrfar:ev::2   0.191092   0.027515   6.94495 4.0390e-12 ***
+cap_dist_terrnear:ev::3  0.510221   0.054298   9.39665  < 2.2e-16 ***
+cap_dist_terrmid:ev::3   0.457897   0.045868   9.98291  < 2.2e-16 ***
+cap_dist_terrfar:ev::3   0.347025   0.033596  10.32934  < 2.2e-16 ***
+cap_dist_terrnear:ev::4  0.579682   0.051663  11.22053  < 2.2e-16 ***
+cap_dist_terrmid:ev::4   0.522779   0.043956  11.89333  < 2.2e-16 ***
+cap_dist_terrfar:ev::4   0.403156   0.032760  12.30619  < 2.2e-16 ***
+cap_dist_terrnear:ev::5  0.609153   0.049332  12.34804  < 2.2e-16 ***
+cap_dist_terrmid:ev::5   0.552023   0.042383  13.02454  < 2.2e-16 ***
+cap_dist_terrfar:ev::5   0.427875   0.032149  13.30918  < 2.2e-16 ***
+cap_dist_terrnear:ev::6  0.612068   0.049204  12.43929  < 2.2e-16 ***
+cap_dist_terrmid:ev::6   0.554607   0.042348  13.09631  < 2.2e-16 ***
+cap_dist_terrfar:ev::6   0.431438   0.032137  13.42515  < 2.2e-16 ***
+cap_dist_terrnear:ev::7  0.637192   0.046558  13.68607  < 2.2e-16 ***
+cap_dist_terrmid:ev::7   0.577881   0.040724  14.19028  < 2.2e-16 ***
+cap_dist_terrfar:ev::7   0.452728   0.031197  14.51208  < 2.2e-16 ***
 ... 2 variables were removed because of collinearity (cap_dist_terrmid
 and cap_dist_terrfar)
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-RMSE: 0.25298     Adj. R2: 0.692576
-                Within R2: 0.328499
+RMSE: 0.252992     Adj. R2: 0.692589
+                 Within R2: 0.328585
 
 ===== m4 =====
 OLS estimation, Dep. Var.: at_cap
-Observations: 576,132
-Fixed-effects: id_fuel: 39,410,  date: 15
+Observations: 574,007
+Fixed-effects: id_fuel: 39,344,  date: 15
 Standard-errors: Clustered (gestore) 
-            Estimate Std. Error  t value Pr(>|t|)    
-nn_dist_km  0.020629   0.010181 2.026288 0.042764 *  
-cap_dist_km 0.000057   0.000339 0.168711 0.866028    
+            Estimate Std. Error  t value Pr(>|t|) 
+nn_dist_km  0.020049   0.014653 1.368250  0.17127 
+cap_dist_km 0.000097   0.000333 0.292151  0.77018 
 ... 146 variables were removed because of collinearity (log1p(pop_k),
 chain_k and 144 others [full set in $collin.var])
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-RMSE: 0.267079     Adj. R2: 0.576366
-                 Within R2: 1.784e-5
+RMSE: 0.26705     Adj. R2: 0.577055
+                Within R2: 1.44e-5 

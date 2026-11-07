@@ -97,7 +97,7 @@ for s in SAMPLES:
 head = (
     "% Auto-generated: do not edit by hand.\n"
     "% Source: R/revision_samples.R -> output/revision_{cox,lpm}.txt\n"
-    "% Panel window: 2026-09-28 .. 2026-10-07, diesel cap tax-adjusted "
+    "% Panel window: 2026-09-28 .. 2026-10-31, diesel cap tax-adjusted "
     "(+6.1 c/l from 2026-10-06).\n\n"
 )
 
@@ -184,7 +184,7 @@ Adj.~$R^2$ & {fr(fits[0][2])} & {fr(fits[1][2])} & {fr(fits[2][2])} \\\\
 
 \\medskip
 \\footnotesize Dependent variable: adopted (=1 if the station--fuel unit
-priced at or below the cap on any day 28 Sep -- 7 Oct 2026; the diesel
+priced at or below the cap on any day 28 Sep -- 31 Oct 2026; the diesel
 cap is tax-adjusted from 6 Oct). OLS with gestore-clustered standard
 errors. Brand reference: Agip Eni in columns (1), Ala in column (2);
 region reference: Abruzzo. Full brand and region coefficients in

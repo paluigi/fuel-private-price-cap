@@ -121,20 +121,21 @@ regenerable and mostly not committed.
 
 ## Key numbers
 
-Adoption (communications 2026-09-28 → 10-12; diesel cap 2.261 from 10-06):
+Adoption (effective prices 2026-09-28 → 10-31; diesel cap 2.261 from 10-06):
 
-- 39,423 station×fuel units; 70.2% priced at or below the (tax-adjusted)
-  cap on at least one day within 15 days; final-day shares 52.9% petrol /
-  70.3% diesel (median adoption: day 3). The 6 Oct excise change lifts
-  diesel compliance by ~11 pp overnight — verified as genuine repricing
-  (fresh dtComu on 6 Oct, +4–8 c/l moves into the new band), not a
-  threshold artifact.
+- 39,423 station×fuel units (4.7M station-day rows); 84.5% priced at or
+  below the (tax-adjusted) cap on at least one day by 31 Oct (71.3%
+  within 15 days); final-day shares 81.8% petrol / 73.0% diesel (median
+  adoption: day 4). The 6 Oct excise change lifts diesel compliance by
+  ~11 pp overnight — verified as genuine repricing (fresh dtComu on
+  6 Oct, +4–8 c/l moves into the new band), not a threshold artifact.
 - Adoption hazard falls with distance to competitors/adopters, rises
   with population density and chain size; pre-cap gap dominates
   (Cox; holds in all three samples, strongest for Pompe Bianche).
-- Province SD of effective prices rose in 214/220 province×fuel cells
-  (median 50 → 90 c/l); non-adopters' gap to provincial mean
-  +1.1 → +6.6 c/l.
+- Province SD of effective prices rose in 208/222 province×fuel cells
+  (mean 5.8 → 8.0 c/l; median 5.0 → 7.6 — earlier vintages were
+  mis-scaled ×10, fixed in make_hist/make_maps); non-adopters' gap to
+  provincial mean +2.0 → +9.1 c/l (province medians).
 
 Counterfactual and inflation (effective prices 2026-07-01 → 10-31):
 

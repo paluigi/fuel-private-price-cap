@@ -22,6 +22,8 @@ import config  # noqa: E402
 
 def build() -> None:
     panel = pl.read_parquet(config.STATION_DAY)
+    # analysis window: clip to ANALYSIS_TO (extracts run a few days past it)
+    panel = panel.filter(pl.col("date") <= config.ANALYSIS_TO)
     cov = pl.read_parquet(config.STATION_STATIC)
     dist = pl.read_parquet(config.DISTANCES)
 
@@ -77,6 +79,11 @@ def build() -> None:
         "latitude",
         "longitude",
     ).write_parquet(config.ADOPTION_PANEL)
+
+    # legacy CSV export consumed by R/analysis_panel.R (gitignored)
+    pl.read_parquet(config.ADOPTION_PANEL).write_csv(
+        config.OUT_DIR / "tables" / "adoption_panel.csv"
+    )
 
     # ---- survival input (station x fuel level) ----
     surv = (

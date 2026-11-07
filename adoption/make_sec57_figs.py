@@ -3,12 +3,12 @@
 §7 figs: province dispersion (IQR pre vs post) and non-adopter
 competitiveness gap distribution."""
 import os
+from pathlib import Path
 
-os.environ.setdefault(
-    "BROWSER_PATH",
-    "/home/ubuntu/.cache/ms-playwright/chromium_headless_shell-1243/"
-    "chrome-headless-shell-linux-arm64/chrome-headless-shell",
-)
+_BROWSER = ("/home/ubuntu/.cache/ms-playwright/chromium_headless_shell-1243/"
+            "chrome-headless-shell-linux-arm64/chrome-headless-shell")
+if Path(_BROWSER).exists():  # pin the browser only on the machine that has it
+    os.environ.setdefault("BROWSER_PATH", _BROWSER)
 
 import polars as pl
 import plotly.graph_objects as go
