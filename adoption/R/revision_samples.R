@@ -68,6 +68,9 @@ for (s in names(SAMPLES)) {
                             adopted == "TRUE" | adopted == TRUE)]
   x[, fuel := factor(fuel)]
   x[, regione := factor(regione)]
+  # explicit reference: without this the dropped level is the empty-string
+  # region (unassigned stations), and Abruzzo is estimated like any other
+  x[, regione := relevel(regione, ref = "Abruzzo")]
   x <- x[!is.na(regione)]
   cat("\n\n==================================================\n")
   cat("SAMPLE:", s, "\n")
@@ -106,6 +109,9 @@ for (s in names(SAMPLES)) {
                             adopted == "TRUE" | adopted == TRUE)]
   x[, fuel := factor(fuel)]
   x[, regione := factor(regione)]
+  # explicit reference: without this the dropped level is the empty-string
+  # region (unassigned stations), and Abruzzo is estimated like any other
+  x[, regione := relevel(regione, ref = "Abruzzo")]
   x <- x[!is.na(regione)]
   if (length(unique(x$bandiera_g)) > 1) {
     form <- adopted ~ nn_dist_km + cap_dist_km_d0 + pop_density_cell +

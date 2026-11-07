@@ -38,7 +38,7 @@ d = (
     .agg(pl.col("at_cap").mean().alias("share"))
     .sort(["fuel", "days_since_cap"])
 )
-fuel_names = {"Benzina": "Petrol (Benzina)", "Gasolio": "Diesel (Gasolio)"}
+fuel_names = {"Benzina": "Petrol", "Gasolio": "Diesel"}
 colors = {"Benzina": "#1f77b4", "Gasolio": "#d62728"}
 fig = go.Figure()
 for fuel in ["Benzina", "Gasolio"]:

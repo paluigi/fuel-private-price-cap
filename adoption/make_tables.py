@@ -10,7 +10,7 @@ SAMPLES = ["S1_universe", "S2_excl_agip_q8", "S3_pompe_bianche"]
 SAMPLE_LABEL = {
     "S1_universe": "(1) Universe",
     "S2_excl_agip_q8": "(2) Excl.\\ Agip Eni + Q8",
-    "S3_pompe_bianche": "(3) Pompe Bianche",
+    "S3_pompe_bianche": "(3) Independents",
 }
 ROW_LABEL = {
     "(Intercept)": "Intercept",
@@ -189,7 +189,7 @@ cap is tax-adjusted from 6 Oct). OLS with gestore-clustered standard
 errors. Brand reference: Agip Eni in columns (1), Ala in column (2);
 region reference: Abruzzo. Full brand and region coefficients in
 \\cref{{app:lpm-s1,app:lpm-s2}}. In column (3) the sample is single-brand
-(Pompe Bianche), so brand FE are undefined.
+(independents), so brand FE are undefined.
 \\end{{table}}
 
 """
@@ -201,7 +201,8 @@ txt = open(f"{DIR}/revision_lpm.txt").read()
 
 def fe_table(sample, label, note, lab=None):
     j = txt.find("SAMPLE: " + sample)
-    seg = txt[j: j + 9000]
+    k = txt.find("SAMPLE: ", j + 10)
+    seg = txt[j: k if k > 0 else len(txt)]
     rows = []
     for m in re.finditer(
         r"^(bandiera_g|bandiera|regione)?([A-Za-z0-9\-'/:.&\s]+?)\s+"
@@ -213,20 +214,37 @@ def fe_table(sample, label, note, lab=None):
             continue
         pv = float(p.replace("<", "").strip()) if "<" not in p else 1e-16
         st = 3 if pv < 0.001 else 2 if pv < 0.01 else 1 if pv < 0.05 else 0
+        raw = name.strip()
+        if raw == "Pompe Bianche":
+            disp_name = "Independents"
+        elif raw == "":  # unassigned-region dummy (relevelled reference)
+            disp_name = "(no region)"
+        else:
+            disp_name = raw
         rows.append(("bandiera" if kind.startswith("bandiera") else "regione",
-                     name.strip(), float(coef), st))
-    body = "\n".join(
-        f"{'Brand' if k == 'bandiera' else 'Region'}: {n} & {fmt(c, st)} \\\\"
-        for k, n, c, st in rows
-    )
+                     disp_name, float(coef), st))
+    # two side-by-side halves so the table fits one page
+    half = (len(rows) + 1) // 2
+    left, right = rows[:half], rows[half:]
+    lines = []
+    for i in range(half):
+        lk, ln, lc, lst = left[i]
+        cell_l = f"{'Brand' if lk == 'bandiera' else 'Region'}: {ln} & {fmt(lc, lst)}"
+        if i < len(right):
+            rk, rn, rc, rst = right[i]
+            cell_r = f"{'Brand' if rk == 'bandiera' else 'Region'}: {rn} & {fmt(rc, rst)}"
+        else:
+            cell_r = " & "
+        lines.append(cell_l + " & " + cell_r + " \\\\")
+    body = "\n".join(lines)
     labline = f"\\label{{{lab}}}" if lab else ""
     return f"""{head}\\begin{{table}}[htbp]
 \\centering
 \\caption{{{label}}}
 {labline}
-\\begin{{tabular}}{{lr}}
+\\begin{{tabular}}{{lrlr}}
 \\toprule
- & Coefficient \\\\
+ & Coefficient & & Coefficient \\\\
 \\midrule
 {body}
 \\bottomrule

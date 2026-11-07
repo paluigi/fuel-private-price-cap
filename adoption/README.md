@@ -129,13 +129,22 @@ Adoption (effective prices 2026-09-28 → 10-31; diesel cap 2.261 from 10-06):
   adoption: day 4). The 6 Oct excise change lifts diesel compliance by
   ~11 pp overnight — verified as genuine repricing (fresh dtComu on
   6 Oct, +4–8 c/l moves into the new band), not a threshold artifact.
-- Adoption hazard falls with distance to competitors/adopters, rises
-  with population density and chain size; pre-cap gap dominates
-  (Cox; holds in all three samples, strongest for Pompe Bianche).
-- Province SD of effective prices rose in 208/222 province×fuel cells
-  (mean 5.8 → 8.0 c/l; median 5.0 → 7.6 — earlier vintages were
-  mis-scaled ×10, fixed in make_hist/make_maps); non-adopters' gap to
-  provincial mean +2.0 → +9.1 c/l (province medians).
+- Adoption hazard falls with distance to competitors (−9%/km) and
+  adopters (−3 to −6%/km, stronger excl. leaders), rises with chain
+  size (significant only excl. leaders); pre-cap gap dominates
+  (Cox −4.4/−6.6/−6.1; hazard ratio 1.2e-2 per EUR/l in the universe).
+  LPM: pre-gap −1.07/−1.34/−1.03; adopter-distance −0.011/−0.016/−0.017;
+  competitor-distance now significant everywhere (−0.022..−0.029);
+  adj R2 0.19–0.24. NOTE: the 7-Nov Cox/LPM run had raced the panel
+  rebuild and used the 12-Oct survival file; values above are the true
+  full-window estimates (regione reference also fixed to Abruzzo).
+- Dispersion pre phase = 1–27 Sep (PRE_WINDOW_DISP; the survival
+  pre-gap covariate keeps the 7-day PRE_WINDOW): SD rose in 95/222
+  province×fuel cells; petrol mean 6.8 → 7.8 c/l, diesel 10.1 → 8.2
+  (vs the 7-day pre baseline: 208/222, petrol 5.1→7.8, diesel 6.5→8.2);
+  non-adopters' gap to provincial mean +1.7 → +9.1 c/l (province
+  medians). Earlier vintages were also mis-scaled ×10, fixed in
+  make_hist/make_maps.
 
 Counterfactual and inflation (effective prices 2026-07-01 → 10-31):
 

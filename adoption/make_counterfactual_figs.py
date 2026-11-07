@@ -30,7 +30,8 @@ pio.templates.default = "plotly_white"
 
 CAP_DATE = dt.date(2026, 9, 28)
 EXCISE_STEP = dt.date(2026, 10, 6)
-REF_DAYS = (dt.date(2026, 10, 1), dt.date(2026, 10, 11), dt.date(2026, 10, 21))
+SEP_REF_DAYS = (dt.date(2026, 9, 1), dt.date(2026, 9, 11), dt.date(2026, 9, 21))
+OCT_REF_DAYS = (dt.date(2026, 10, 1), dt.date(2026, 10, 11), dt.date(2026, 10, 21))
 
 FONT = 22
 LINE_W = 3.5
@@ -98,10 +99,13 @@ def fig_index(df: pl.DataFrame) -> Path:
 def fig_counterfactual(cf: pl.DataFrame, daily: pl.DataFrame) -> Path:
     """Actual vs counterfactual pump prices, one panel per fuel.
 
-    The actual series is shown from 14 Sep (pre-cap context); the
-    counterfactual and its band exist only from the cap date (28 Sep).
+    The actual series is shown from 1 Sep; the counterfactual and its
+    band exist only from the cap date (28 Sep). ISTAT reference days
+    (1st, 11th, 21st) are marked with filled dots on the actual line
+    (Sep and Oct) and open dots on the counterfactual line (Oct only,
+    where a counterfactual exists).
     """
-    daily = daily.filter(pl.col("date") >= dt.date(2026, 9, 14))
+    daily = daily.filter(pl.col("date") >= dt.date(2026, 9, 1))
     fig = make_subplots(
         rows=1, cols=2, shared_yaxes=False,
         subplot_titles=list(FUEL_EN.values()),
@@ -137,11 +141,19 @@ def fig_counterfactual(cf: pl.DataFrame, daily: pl.DataFrame) -> Path:
             legendgroup="act", showlegend=(k == 0),
             line=dict(color=FUEL_COLOR[fuel], width=LINE_W)),
             row=1, col=col)
-        # ISTAT reference-day markers on the actual series
-        rd = d.filter(pl.col("date").is_in(list(REF_DAYS)))
+        # ISTAT reference days: filled dots on the actual line (Sep + Oct)
+        rd = act.filter(pl.col("date").is_in(
+            list(SEP_REF_DAYS) + list(OCT_REF_DAYS)))
         fig.add_trace(go.Scatter(
             x=rd["date"], y=rd["actual_gross_eff"], mode="markers",
             marker=dict(color="black", size=10, symbol="circle"),
+            showlegend=False, hoverinfo="skip"), row=1, col=col)
+        # open dots on the counterfactual line (Oct only)
+        rd_cf = d.filter(pl.col("date").is_in(list(OCT_REF_DAYS)))
+        fig.add_trace(go.Scatter(
+            x=rd_cf["date"], y=rd_cf["cf_gross"], mode="markers",
+            marker=dict(color=FIREBRICK, size=11, symbol="circle-open",
+                        line=dict(width=2.5)),
             showlegend=False, hoverinfo="skip"), row=1, col=col)
         # cap line (diesel is tax-adjusted from 6 Oct)
         cap_pre, cap_post = (2.20, 2.261) if fuel == "Gasolio" else (2.00, 2.00)
@@ -163,8 +175,8 @@ def fig_counterfactual(cf: pl.DataFrame, daily: pl.DataFrame) -> Path:
         margin=dict(l=70, r=30, t=70, b=60),
     )
     fig.update_yaxes(tickprefix="€", tickformat=".2f")
-    n = act["date"].n_unique() + cf["date"].n_unique()
-    fig.update_xaxes(dtick=max(1, n // 8) * 86_400_000,
+    n = daily["date"].n_unique()  # spans 1 Sep .. 31 Oct
+    fig.update_xaxes(dtick=max(1, n // 6) * 86_400_000,
                      tickformat="%d %b", tickangle=0)
     out = FIG / "fig_counterfactual.png"
     fig.write_image(out, scale=2)

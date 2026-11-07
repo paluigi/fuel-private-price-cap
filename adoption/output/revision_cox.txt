@@ -8,16 +8,16 @@ coxph(formula = Surv(duration, event) ~ nn_dist_km + cap_dist_km_d0 +
     pop_density_cell + pre_gap_vs_cap + n_stations_gestore + 
     fuel, data = x, ties = "efron", cluster = gestore)
 
-  n= 39338, number of events= 27632 
-   (85 observations deleted due to missingness)
+  n= 39272, number of events= 33187 
+   (151 observations deleted due to missingness)
 
                          coef  exp(coef)   se(coef)  robust se       z Pr(>|z|)
-nn_dist_km         -9.942e-02  9.054e-01  6.100e-03  1.212e-02  -8.202 2.36e-16
-cap_dist_km_d0     -2.506e-02  9.752e-01  2.368e-03  5.586e-03  -4.487 7.22e-06
-pop_density_cell    9.568e-06  1.000e+00  1.655e-06  3.035e-06   3.153  0.00162
-pre_gap_vs_cap     -4.271e+00  1.397e-02  7.419e-02  3.168e-01 -13.482  < 2e-16
-n_stations_gestore  6.530e-04  1.001e+00  1.326e-05  9.229e-05   7.075 1.49e-12
-fuelGasolio         2.522e-01  1.287e+00  1.218e-02  3.553e-02   7.098 1.26e-12
+nn_dist_km         -9.853e-02  9.062e-01  5.405e-03  1.013e-02  -9.724  < 2e-16
+cap_dist_km_d0     -3.151e-02  9.690e-01  2.126e-03  4.872e-03  -6.467 9.97e-11
+pop_density_cell    7.533e-06  1.000e+00  1.531e-06  2.677e-06   2.814  0.00489
+pre_gap_vs_cap     -4.401e+00  1.227e-02  7.174e-02  3.236e-01 -13.600  < 2e-16
+n_stations_gestore  6.531e-04  1.001e+00  1.305e-05  9.229e-05   7.077 1.47e-12
+fuelGasolio         8.545e-02  1.089e+00  1.108e-02  1.661e-02   5.146 2.66e-07
                       
 nn_dist_km         ***
 cap_dist_km_d0     ***
@@ -29,17 +29,17 @@ fuelGasolio        ***
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
                    exp(coef) exp(-coef) lower .95 upper .95
-nn_dist_km           0.90537     1.1045  0.884112   0.92713
-cap_dist_km_d0       0.97525     1.0254  0.964630   0.98598
-pop_density_cell     1.00001     1.0000  1.000004   1.00002
-pre_gap_vs_cap       0.01397    71.5972  0.007507   0.02599
+nn_dist_km           0.90617     1.1035  0.888350   0.92435
+cap_dist_km_d0       0.96898     1.0320  0.959777   0.97828
+pop_density_cell     1.00001     1.0000  1.000002   1.00001
+pre_gap_vs_cap       0.01227    81.5029  0.006507   0.02313
 n_stations_gestore   1.00065     0.9993  1.000472   1.00083
-fuelGasolio          1.28690     0.7771  1.200321   1.37972
+fuelGasolio          1.08921     0.9181  1.054330   1.12524
 
-Concordance= 0.642  (se = 0.015 )
-Likelihood ratio test= 6770  on 6 df,   p=<2e-16
-Wald test            = 821.7  on 6 df,   p=<2e-16
-Score (logrank) test = 7801  on 6 df,   p=<2e-16,   Robust = 292  p=<2e-16
+Concordance= 0.64  (se = 0.015 )
+Likelihood ratio test= 7356  on 6 df,   p=<2e-16
+Wald test            = 822.2  on 6 df,   p=<2e-16
+Score (logrank) test = 8175  on 6 df,   p=<2e-16,   Robust = 240.2  p=<2e-16
 
   (Note: the likelihood ratio and score tests assume independence of
      observations within a cluster, the Wald and robust score tests do not).
@@ -48,51 +48,51 @@ coxph(formula = Surv(duration, event) ~ nn_dist_km + cap_dist_km_d0 +
     pop_density_cell + pre_gap_vs_cap + n_stations_gestore + 
     fuel + bandiera_g, data = x, ties = "efron", cluster = gestore)
 
-  n= 39338, number of events= 27632 
-   (85 observations deleted due to missingness)
+  n= 39272, number of events= 33187 
+   (151 observations deleted due to missingness)
 
                                   coef  exp(coef)   se(coef)  robust se       z
-nn_dist_km                  -5.271e-02  9.487e-01  5.933e-03  1.014e-02  -5.198
-cap_dist_km_d0              -3.108e-02  9.694e-01  2.367e-03  4.787e-03  -6.491
-pop_density_cell            -2.289e-06  1.000e+00  1.705e-06  4.667e-06  -0.490
-pre_gap_vs_cap              -4.384e+00  1.247e-02  7.850e-02  4.217e-01 -10.396
-n_stations_gestore           4.836e-04  1.000e+00  1.714e-05  5.921e-05   8.167
-fuelGasolio                  2.725e-01  1.313e+00  1.216e-02  3.628e-02   7.511
-bandiera_gAla               -4.010e+00  1.813e-02  1.290e-01  1.692e-01 -23.705
-bandiera_gApi-Ip            -2.752e+00  6.380e-02  2.136e-02  1.779e-01 -15.470
-bandiera_gAquila            -4.633e+00  9.723e-03  2.431e-01  3.884e-01 -11.930
-bandiera_gBeyfin            -3.541e+00  2.898e-02  1.223e-01  2.314e-01 -15.302
-bandiera_gCOIL              -2.345e+00  9.582e-02  9.605e-02  1.993e-01 -11.767
-bandiera_gCONAD             -1.828e+00  1.607e-01  1.011e-01  1.522e-01 -12.009
-bandiera_gCostantin         -1.982e+00  1.379e-01  7.478e-02  2.287e-01  -8.662
-bandiera_gEgo               -3.542e+00  2.896e-02  1.223e-01  4.667e-01  -7.589
-bandiera_gEnergas           -1.728e+00  1.777e-01  6.239e-02  4.125e-01  -4.188
-bandiera_gEnerpetroli       -2.891e+00  5.554e-02  1.196e-01  1.657e-01 -17.441
-bandiera_gEsso              -2.980e+00  5.080e-02  2.582e-02  1.749e-01 -17.043
-bandiera_gEuropam           -2.362e+00  9.419e-02  6.120e-02  4.642e-01  -5.090
-bandiera_gGiap              -2.964e+00  5.159e-02  7.373e-02  1.840e-01 -16.110
-bandiera_gItala Petroli     -3.008e+00  4.937e-02  1.129e-01  2.262e-01 -13.300
-bandiera_gKEROPETROL        -4.569e+00  1.037e-02  1.630e-01  2.386e-01 -19.153
-bandiera_gLoro              -4.386e+00  1.245e-02  1.723e-01  2.536e-01 -17.299
-bandiera_gLukoil            -2.988e+00  5.037e-02  1.333e-01  2.365e-01 -12.634
-bandiera_gOTHER             -3.119e+00  4.418e-02  2.751e-02  1.803e-01 -17.305
-bandiera_gPetrol Gamma      -3.468e+00  3.117e-02  1.516e-01  3.091e-01 -11.222
-bandiera_gPompe Bianche     -3.435e+00  3.223e-02  2.670e-02  1.838e-01 -18.692
-bandiera_gQ8                -2.170e+00  1.142e-01  2.447e-02  1.756e-01 -12.358
-bandiera_gRetitalia         -3.705e+00  2.460e-02  9.300e-02  2.143e-01 -17.288
-bandiera_gSan Marco Petroli -5.519e+00  4.009e-03  2.891e-01  3.041e-01 -18.150
-bandiera_gShell             -3.846e+00  2.136e-02  9.667e-02  2.323e-01 -16.555
-bandiera_gSia fuel          -2.726e+00  6.550e-02  1.158e-01  1.599e-01 -17.042
-bandiera_gTamoil            -2.551e+00  7.800e-02  2.690e-02  1.934e-01 -13.191
-bandiera_gToil              -2.865e+00  5.700e-02  9.254e-02  5.040e-01  -5.684
-bandiera_gVega              -2.699e+00  6.730e-02  7.214e-02  1.860e-01 -14.512
+nn_dist_km                  -5.823e-02  9.434e-01  5.287e-03  9.153e-03  -6.362
+cap_dist_km_d0              -3.402e-02  9.666e-01  2.122e-03  4.286e-03  -7.938
+pop_density_cell            -1.894e-06  1.000e+00  1.572e-06  4.433e-06  -0.427
+pre_gap_vs_cap              -4.512e+00  1.098e-02  7.568e-02  3.954e-01 -11.410
+n_stations_gestore           4.892e-04  1.000e+00  1.672e-05  5.942e-05   8.233
+fuelGasolio                  1.090e-01  1.115e+00  1.107e-02  1.989e-02   5.482
+bandiera_gAla               -3.622e+00  2.674e-02  9.055e-02  1.556e-01 -23.276
+bandiera_gApi-Ip            -2.539e+00  7.897e-02  1.975e-02  1.604e-01 -15.823
+bandiera_gAquila            -2.791e+00  6.135e-02  9.882e-02  1.614e-01 -17.291
+bandiera_gBeyfin            -2.875e+00  5.641e-02  8.448e-02  1.952e-01 -14.732
+bandiera_gCOIL              -2.304e+00  9.982e-02  9.474e-02  2.270e-01 -10.152
+bandiera_gCONAD             -1.735e+00  1.765e-01  1.000e-01  1.525e-01 -11.373
+bandiera_gCostantin         -1.928e+00  1.455e-01  7.233e-02  2.222e-01  -8.676
+bandiera_gEgo               -2.972e+00  5.120e-02  9.071e-02  2.394e-01 -12.412
+bandiera_gEnergas           -1.771e+00  1.702e-01  6.159e-02  4.603e-01  -3.847
+bandiera_gEnerpetroli       -2.623e+00  7.261e-02  9.871e-02  1.481e-01 -17.704
+bandiera_gEsso              -2.766e+00  6.292e-02  2.312e-02  1.605e-01 -17.235
+bandiera_gEuropam           -2.259e+00  1.045e-01  5.584e-02  3.735e-01  -6.048
+bandiera_gGiap              -2.980e+00  5.081e-02  7.125e-02  1.716e-01 -17.362
+bandiera_gItala Petroli     -2.760e+00  6.328e-02  9.326e-02  1.984e-01 -13.915
+bandiera_gKEROPETROL        -3.566e+00  2.826e-02  8.778e-02  1.790e-01 -19.919
+bandiera_gLoro              -3.942e+00  1.940e-02  1.197e-01  1.946e-01 -20.256
+bandiera_gOTHER             -2.954e+00  5.215e-02  2.437e-02  1.624e-01 -18.191
+bandiera_gPetrol Gamma      -3.349e+00  3.514e-02  1.197e-01  3.350e-01  -9.997
+bandiera_gPompe Bianche     -3.299e+00  3.692e-02  2.357e-02  1.616e-01 -20.411
+bandiera_gQ8                -2.078e+00  1.252e-01  2.377e-02  1.725e-01 -12.046
+bandiera_gRetitalia         -3.146e+00  4.302e-02  6.529e-02  1.824e-01 -17.250
+bandiera_gSan Marco Petroli -4.022e+00  1.792e-02  1.173e-01  2.010e-01 -20.006
+bandiera_gShell             -3.037e+00  4.798e-02  6.203e-02  1.626e-01 -18.674
+bandiera_gSia fuel          -2.370e+00  9.349e-02  9.331e-02  1.576e-01 -15.037
+bandiera_gSommese Petroli   -3.302e+00  3.682e-02  1.240e-01  1.958e-01 -16.866
+bandiera_gTamoil            -2.521e+00  8.041e-02  2.534e-02  1.794e-01 -14.053
+bandiera_gToil              -2.851e+00  5.778e-02  8.170e-02  4.124e-01  -6.914
+bandiera_gVega              -2.439e+00  8.725e-02  6.636e-02  1.774e-01 -13.751
                             Pr(>|z|)    
-nn_dist_km                  2.01e-07 ***
-cap_dist_km_d0              8.51e-11 ***
-pop_density_cell               0.624    
+nn_dist_km                  1.99e-10 ***
+cap_dist_km_d0              2.05e-15 ***
+pop_density_cell             0.66926    
 pre_gap_vs_cap               < 2e-16 ***
-n_stations_gestore          3.16e-16 ***
-fuelGasolio                 5.88e-14 ***
+n_stations_gestore           < 2e-16 ***
+fuelGasolio                 4.20e-08 ***
 bandiera_gAla                < 2e-16 ***
 bandiera_gApi-Ip             < 2e-16 ***
 bandiera_gAquila             < 2e-16 ***
@@ -100,16 +100,15 @@ bandiera_gBeyfin             < 2e-16 ***
 bandiera_gCOIL               < 2e-16 ***
 bandiera_gCONAD              < 2e-16 ***
 bandiera_gCostantin          < 2e-16 ***
-bandiera_gEgo               3.22e-14 ***
-bandiera_gEnergas           2.81e-05 ***
+bandiera_gEgo                < 2e-16 ***
+bandiera_gEnergas            0.00012 ***
 bandiera_gEnerpetroli        < 2e-16 ***
 bandiera_gEsso               < 2e-16 ***
-bandiera_gEuropam           3.59e-07 ***
+bandiera_gEuropam           1.47e-09 ***
 bandiera_gGiap               < 2e-16 ***
 bandiera_gItala Petroli      < 2e-16 ***
 bandiera_gKEROPETROL         < 2e-16 ***
 bandiera_gLoro               < 2e-16 ***
-bandiera_gLukoil             < 2e-16 ***
 bandiera_gOTHER              < 2e-16 ***
 bandiera_gPetrol Gamma       < 2e-16 ***
 bandiera_gPompe Bianche      < 2e-16 ***
@@ -118,52 +117,53 @@ bandiera_gRetitalia          < 2e-16 ***
 bandiera_gSan Marco Petroli  < 2e-16 ***
 bandiera_gShell              < 2e-16 ***
 bandiera_gSia fuel           < 2e-16 ***
+bandiera_gSommese Petroli    < 2e-16 ***
 bandiera_gTamoil             < 2e-16 ***
-bandiera_gToil              1.32e-08 ***
+bandiera_gToil              4.70e-12 ***
 bandiera_gVega               < 2e-16 ***
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
                             exp(coef) exp(-coef) lower .95 upper .95
-nn_dist_km                   0.948650     1.0541  0.929981  0.967695
-cap_dist_km_d0               0.969401     1.0316  0.960347  0.978540
-pop_density_cell             0.999998     1.0000  0.999989  1.000007
-pre_gap_vs_cap               0.012470    80.1898  0.005456  0.028502
-n_stations_gestore           1.000484     0.9995  1.000368  1.000600
-fuelGasolio                  1.313199     0.7615  1.223071  1.409967
-bandiera_gAla                0.018129    55.1611  0.013013  0.025256
-bandiera_gApi-Ip             0.063801    15.6736  0.045020  0.090418
-bandiera_gAquila             0.009723   102.8527  0.004542  0.020814
-bandiera_gBeyfin             0.028978    34.5088  0.018412  0.045609
-bandiera_gCOIL               0.095821    10.4361  0.064834  0.141618
-bandiera_gCONAD              0.160732     6.2215  0.119270  0.216608
-bandiera_gCostantin          0.137860     7.2537  0.088050  0.215849
-bandiera_gEgo                0.028957    34.5334  0.011601  0.072282
-bandiera_gEnergas            0.177692     5.6277  0.079169  0.398824
-bandiera_gEnerpetroli        0.055539    18.0052  0.040135  0.076857
-bandiera_gEsso               0.050796    19.6868  0.036057  0.071558
-bandiera_gEuropam            0.094195    10.6163  0.037926  0.233948
-bandiera_gGiap               0.051588    19.3845  0.035968  0.073991
-bandiera_gItala Petroli      0.049367    20.2565  0.031688  0.076910
-bandiera_gKEROPETROL         0.010367    96.4627  0.006495  0.016546
-bandiera_gLoro               0.012448    80.3343  0.007573  0.020461
-bandiera_gLukoil             0.050369    19.8534  0.031682  0.080077
-bandiera_gOTHER              0.044181    22.6344  0.031030  0.062903
-bandiera_gPetrol Gamma       0.031165    32.0869  0.017005  0.057116
-bandiera_gPompe Bianche      0.032228    31.0286  0.022481  0.046202
-bandiera_gQ8                 0.114151     8.7603  0.080908  0.161051
-bandiera_gRetitalia          0.024602    40.6472  0.016164  0.037444
-bandiera_gSan Marco Petroli  0.004009   249.4297  0.002209  0.007276
-bandiera_gShell              0.021361    46.8140  0.013548  0.033681
-bandiera_gSia fuel           0.065498    15.2675  0.047873  0.089614
-bandiera_gTamoil             0.078003    12.8200  0.053394  0.113954
-bandiera_gToil               0.056997    17.5447  0.021225  0.153058
-bandiera_gVega               0.067295    14.8599  0.046740  0.096890
+nn_dist_km                    0.94343     1.0600  0.926656   0.96051
+cap_dist_km_d0                0.96655     1.0346  0.958469   0.97471
+pop_density_cell              1.00000     1.0000  0.999989   1.00001
+pre_gap_vs_cap                0.01098    91.0745  0.005059   0.02383
+n_stations_gestore            1.00049     0.9995  1.000373   1.00061
+fuelGasolio                   1.11518     0.8967  1.072552   1.15951
+bandiera_gAla                 0.02674    37.4030  0.019708   0.03627
+bandiera_gApi-Ip              0.07897    12.6626  0.057665   0.10815
+bandiera_gAquila              0.06135    16.3012  0.044707   0.08418
+bandiera_gBeyfin              0.05641    17.7280  0.038478   0.08269
+bandiera_gCOIL                0.09982    10.0181  0.063974   0.15575
+bandiera_gCONAD               0.17648     5.6665  0.130877   0.23796
+bandiera_gCostantin           0.14549     6.8736  0.094122   0.22488
+bandiera_gEgo                 0.05120    19.5299  0.032025   0.08187
+bandiera_gEnergas             0.17022     5.8746  0.069060   0.41958
+bandiera_gEnerpetroli         0.07261    13.7725  0.054311   0.09707
+bandiera_gEsso                0.06292    15.8922  0.045943   0.08618
+bandiera_gEuropam             0.10449     9.5704  0.050253   0.21726
+bandiera_gGiap                0.05081    19.6806  0.036298   0.07113
+bandiera_gItala Petroli       0.06328    15.8035  0.042894   0.09335
+bandiera_gKEROPETROL          0.02826    35.3824  0.019898   0.04014
+bandiera_gLoro                0.01940    51.5421  0.013249   0.02841
+bandiera_gOTHER               0.05215    19.1744  0.037938   0.07169
+bandiera_gPetrol Gamma        0.03514    28.4616  0.018223   0.06774
+bandiera_gPompe Bianche       0.03692    27.0840  0.026898   0.05068
+bandiera_gQ8                  0.12522     7.9859  0.089304   0.17559
+bandiera_gRetitalia           0.04302    23.2457  0.030089   0.06150
+bandiera_gSan Marco Petroli   0.01792    55.7986  0.012086   0.02658
+bandiera_gShell               0.04798    20.8426  0.034883   0.06599
+bandiera_gSia fuel            0.09349    10.6966  0.068643   0.12732
+bandiera_gSommese Petroli     0.03682    27.1617  0.025084   0.05404
+bandiera_gTamoil              0.08041    12.4360  0.056577   0.11429
+bandiera_gToil                0.05778    17.3075  0.025750   0.12965
+bandiera_gVega                0.08725    11.4617  0.061627   0.12352
 
-Concordance= 0.821  (se = 0.018 )
-Likelihood ratio test= 32172  on 34 df,   p=<2e-16
-Wald test            = 5857  on 34 df,   p=<2e-16
-Score (logrank) test = 51924  on 34 df,   p=<2e-16,   Robust = 1386  p=<2e-16
+Concordance= 0.807  (se = 0.017 )
+Likelihood ratio test= 31607  on 34 df,   p=<2e-16
+Wald test            = 6105  on 34 df,   p=<2e-16
+Score (logrank) test = 51067  on 34 df,   p=<2e-16,   Robust = 1021  p=<2e-16
 
   (Note: the likelihood ratio and score tests assume independence of
      observations within a cluster, the Wald and robust score tests do not).
@@ -177,20 +177,20 @@ coxph(formula = Surv(duration, event) ~ nn_dist_km + cap_dist_km_d0 +
     pop_density_cell + pre_gap_vs_cap + n_stations_gestore + 
     fuel, data = x, ties = "efron", cluster = gestore)
 
-  n= 26662, number of events= 15278 
-   (52 observations deleted due to missingness)
+  n= 26622, number of events= 20701 
+   (100 observations deleted due to missingness)
 
-                         coef  exp(coef)   se(coef)  robust se      z Pr(>|z|)
-nn_dist_km         -7.901e-02  9.240e-01  8.153e-03  1.408e-02 -5.610 2.02e-08
-cap_dist_km_d0     -5.161e-02  9.497e-01  3.421e-03  5.639e-03 -9.151  < 2e-16
-pop_density_cell    9.404e-06  1.000e+00  2.241e-06  3.633e-06  2.589  0.00963
-pre_gap_vs_cap     -6.504e+00  1.497e-03  9.252e-02  7.352e-01 -8.846  < 2e-16
-n_stations_gestore  9.796e-04  1.001e+00  3.338e-05  6.162e-05 15.897  < 2e-16
-fuelGasolio         4.398e-01  1.552e+00  1.666e-02  5.180e-02  8.490  < 2e-16
+                         coef  exp(coef)   se(coef)  robust se       z Pr(>|z|)
+nn_dist_km         -8.536e-02  9.182e-01  6.733e-03  1.092e-02  -7.820 5.29e-15
+cap_dist_km_d0     -5.236e-02  9.490e-01  2.815e-03  4.618e-03 -11.337  < 2e-16
+pop_density_cell    6.496e-06  1.000e+00  1.966e-06  3.107e-06   2.091   0.0365
+pre_gap_vs_cap     -6.633e+00  1.317e-03  9.036e-02  6.984e-01  -9.496  < 2e-16
+n_stations_gestore  9.611e-04  1.001e+00  3.089e-05  1.114e-04   8.629  < 2e-16
+fuelGasolio         1.167e-01  1.124e+00  1.410e-02  2.679e-02   4.356 1.32e-05
                       
 nn_dist_km         ***
 cap_dist_km_d0     ***
-pop_density_cell   ** 
+pop_density_cell   *  
 pre_gap_vs_cap     ***
 n_stations_gestore ***
 fuelGasolio        ***
@@ -198,17 +198,17 @@ fuelGasolio        ***
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
                    exp(coef) exp(-coef) lower .95 upper .95
-nn_dist_km          0.924032     1.0822 0.8988745  0.949894
-cap_dist_km_d0      0.949702     1.0530 0.9392632  0.960257
-pop_density_cell    1.000009     1.0000 1.0000023  1.000017
-pre_gap_vs_cap      0.001497   667.8356 0.0003544  0.006327
-n_stations_gestore  1.000980     0.9990 1.0008592  1.001101
-fuelGasolio         1.552399     0.6442 1.4025227  1.718290
+nn_dist_km          0.918184     1.0891 0.8987486  0.938039
+cap_dist_km_d0      0.948989     1.0538 0.9404374  0.957618
+pop_density_cell    1.000006     1.0000 1.0000004  1.000013
+pre_gap_vs_cap      0.001317   759.5089 0.0003349  0.005176
+n_stations_gestore  1.000962     0.9990 1.0007431  1.001180
+fuelGasolio         1.123768     0.8899 1.0662937  1.184339
 
-Concordance= 0.674  (se = 0.009 )
-Likelihood ratio test= 6092  on 6 df,   p=<2e-16
-Wald test            = 675.8  on 6 df,   p=<2e-16
-Score (logrank) test = 7141  on 6 df,   p=<2e-16,   Robust = 292.5  p=<2e-16
+Concordance= 0.666  (se = 0.009 )
+Likelihood ratio test= 6479  on 6 df,   p=<2e-16
+Wald test            = 730.3  on 6 df,   p=<2e-16
+Score (logrank) test = 6948  on 6 df,   p=<2e-16,   Robust = 232.4  p=<2e-16
 
   (Note: the likelihood ratio and score tests assume independence of
      observations within a cluster, the Wald and robust score tests do not).
@@ -217,116 +217,116 @@ coxph(formula = Surv(duration, event) ~ nn_dist_km + cap_dist_km_d0 +
     pop_density_cell + pre_gap_vs_cap + n_stations_gestore + 
     fuel + bandiera_g, data = x, ties = "efron", cluster = gestore)
 
-  n= 26662, number of events= 15278 
-   (52 observations deleted due to missingness)
+  n= 26622, number of events= 20701 
+   (100 observations deleted due to missingness)
 
-                                  coef  exp(coef)   se(coef)  robust se      z
-nn_dist_km                  -6.587e-02  9.363e-01  8.118e-03  1.282e-02 -5.138
-cap_dist_km_d0              -5.345e-02  9.480e-01  3.434e-03  5.727e-03 -9.333
-pop_density_cell             4.871e-06  1.000e+00  2.270e-06  3.383e-06  1.440
-pre_gap_vs_cap              -7.185e+00  7.580e-04  9.446e-02  7.514e-01 -9.562
-n_stations_gestore           3.912e-04  1.000e+00  3.837e-05  1.540e-04  2.540
-fuelGasolio                  4.382e-01  1.550e+00  1.668e-02  5.232e-02  8.375
-bandiera_gApi-Ip             1.263e+00  3.537e+00  1.290e-01  4.861e-02 25.992
-bandiera_gAquila            -6.387e-01  5.280e-01  2.743e-01  3.506e-01 -1.822
-bandiera_gBeyfin             4.985e-01  1.646e+00  1.764e-01  1.665e-01  2.994
-bandiera_gCOIL               1.613e+00  5.017e+00  1.595e-01  1.458e-01 11.058
-bandiera_gCONAD              2.056e+00  7.817e+00  1.628e-01  1.107e-01 18.576
-bandiera_gCostantin          2.066e+00  7.890e+00  1.477e-01  1.932e-01 10.690
-bandiera_gEgo                4.352e-01  1.545e+00  1.764e-01  4.624e-01  0.941
-bandiera_gEnergas            2.241e+00  9.401e+00  1.420e-01  3.906e-01  5.737
-bandiera_gEnerpetroli        1.111e+00  3.038e+00  1.746e-01  7.464e-02 14.889
-bandiera_gEsso               1.043e+00  2.838e+00  1.298e-01  7.208e-02 14.474
-bandiera_gEuropam            1.584e+00  4.875e+00  1.413e-01  4.250e-01  3.727
-bandiera_gGiap               1.214e+00  3.367e+00  1.471e-01  4.444e-02 27.318
-bandiera_gItala Petroli      9.764e-01  2.655e+00  1.701e-01  1.728e-01  5.650
-bandiera_gKEROPETROL        -5.341e-01  5.862e-01  2.067e-01  1.791e-01 -2.983
-bandiera_gLoro              -4.260e-01  6.531e-01  2.141e-01  1.963e-01 -2.170
-bandiera_gLukoil             1.019e+00  2.769e+00  1.843e-01  1.759e-01  5.791
-bandiera_gOTHER              8.804e-01  2.412e+00  1.301e-01  8.844e-02  9.955
-bandiera_gPetrol Gamma       5.192e-01  1.681e+00  1.978e-01  2.492e-01  2.083
-bandiera_gPompe Bianche      4.785e-01  1.614e+00  1.301e-01  6.940e-02  6.894
-bandiera_gRetitalia          3.219e-01  1.380e+00  1.575e-01  1.365e-01  2.359
-bandiera_gSan Marco Petroli -1.467e+00  2.306e-01  3.158e-01  2.620e-01 -5.600
-bandiera_gShell              1.436e-01  1.154e+00  1.597e-01  1.846e-01  0.778
-bandiera_gSia fuel           1.348e+00  3.850e+00  1.720e-01  5.682e-02 23.727
-bandiera_gTamoil             1.468e+00  4.342e+00  1.302e-01  1.096e-01 13.400
-bandiera_gToil               1.149e+00  3.154e+00  1.574e-01  4.868e-01  2.360
-bandiera_gVega               1.365e+00  3.917e+00  1.463e-01  4.507e-02 30.293
+                                  coef  exp(coef)   se(coef)  robust se       z
+nn_dist_km                  -7.213e-02  9.304e-01  6.705e-03  1.007e-02  -7.162
+cap_dist_km_d0              -5.243e-02  9.489e-01  2.821e-03  4.651e-03 -11.272
+pop_density_cell             1.904e-06  1.000e+00  1.994e-06  2.996e-06   0.636
+pre_gap_vs_cap              -7.436e+00  5.894e-04  9.098e-02  7.235e-01 -10.278
+n_stations_gestore           4.052e-04  1.000e+00  3.582e-05  1.390e-04   2.916
+fuelGasolio                  1.180e-01  1.125e+00  1.413e-02  2.829e-02   4.173
+bandiera_gApi-Ip             1.127e+00  3.085e+00  9.025e-02  3.410e-02  33.037
+bandiera_gAquila             8.418e-01  2.320e+00  1.324e-01  5.497e-02  15.313
+bandiera_gBeyfin             7.853e-01  2.193e+00  1.220e-01  1.260e-01   6.232
+bandiera_gCOIL               1.308e+00  3.700e+00  1.295e-01  2.093e-01   6.253
+bandiera_gCONAD              1.836e+00  6.272e+00  1.338e-01  1.128e-01  16.276
+bandiera_gCostantin          1.778e+00  5.915e+00  1.141e-01  1.894e-01   9.388
+bandiera_gEgo                6.445e-01  1.905e+00  1.265e-01  2.142e-01   3.010
+bandiera_gEnergas            1.846e+00  6.333e+00  1.077e-01  4.566e-01   4.043
+bandiera_gEnerpetroli        1.002e+00  2.724e+00  1.323e-01  4.092e-02  24.491
+bandiera_gEsso               8.872e-01  2.428e+00  9.105e-02  5.333e-02  16.637
+bandiera_gEuropam            1.332e+00  3.787e+00  1.045e-01  3.326e-01   4.004
+bandiera_gGiap               8.209e-01  2.273e+00  1.133e-01  3.561e-02  23.051
+bandiera_gItala Petroli      8.634e-01  2.371e+00  1.283e-01  1.429e-01   6.041
+bandiera_gKEROPETROL         7.189e-02  1.075e+00  1.243e-01  1.014e-01   0.709
+bandiera_gLoro              -3.900e-01  6.771e-01  1.485e-01  1.246e-01  -3.130
+bandiera_gOTHER              6.572e-01  1.929e+00  9.134e-02  6.816e-02   9.642
+bandiera_gPetrol Gamma       2.587e-01  1.295e+00  1.485e-01  2.959e-01   0.874
+bandiera_gPompe Bianche      2.416e-01  1.273e+00  9.124e-02  5.203e-02   4.644
+bandiera_gRetitalia          4.906e-01  1.633e+00  1.096e-01  1.019e-01   4.812
+bandiera_gSan Marco Petroli -3.798e-01  6.840e-01  1.466e-01  1.402e-01  -2.709
+bandiera_gShell              5.820e-01  1.790e+00  1.076e-01  5.810e-02  10.018
+bandiera_gSia fuel           1.348e+00  3.851e+00  1.283e-01  6.612e-02  20.391
+bandiera_gSommese Petroli    2.945e-01  1.342e+00  1.521e-01  1.345e-01   2.190
+bandiera_gTamoil             1.121e+00  3.067e+00  9.187e-02  9.610e-02  11.663
+bandiera_gToil               7.747e-01  2.170e+00  1.202e-01  3.910e-01   1.981
+bandiera_gVega               1.277e+00  3.587e+00  1.104e-01  4.244e-02  30.099
                             Pr(>|z|)    
-nn_dist_km                  2.77e-07 ***
+nn_dist_km                  7.97e-13 ***
 cap_dist_km_d0               < 2e-16 ***
-pop_density_cell            0.149836    
+pop_density_cell             0.52496    
 pre_gap_vs_cap               < 2e-16 ***
-n_stations_gestore          0.011071 *  
-fuelGasolio                  < 2e-16 ***
+n_stations_gestore           0.00355 ** 
+fuelGasolio                 3.01e-05 ***
 bandiera_gApi-Ip             < 2e-16 ***
-bandiera_gAquila            0.068519 .  
-bandiera_gBeyfin            0.002756 ** 
-bandiera_gCOIL               < 2e-16 ***
+bandiera_gAquila             < 2e-16 ***
+bandiera_gBeyfin            4.60e-10 ***
+bandiera_gCOIL              4.03e-10 ***
 bandiera_gCONAD              < 2e-16 ***
 bandiera_gCostantin          < 2e-16 ***
-bandiera_gEgo               0.346682    
-bandiera_gEnergas           9.65e-09 ***
+bandiera_gEgo                0.00262 ** 
+bandiera_gEnergas           5.28e-05 ***
 bandiera_gEnerpetroli        < 2e-16 ***
 bandiera_gEsso               < 2e-16 ***
-bandiera_gEuropam           0.000194 ***
+bandiera_gEuropam           6.24e-05 ***
 bandiera_gGiap               < 2e-16 ***
-bandiera_gItala Petroli     1.61e-08 ***
-bandiera_gKEROPETROL        0.002858 ** 
-bandiera_gLoro              0.030026 *  
-bandiera_gLukoil            6.98e-09 ***
+bandiera_gItala Petroli     1.54e-09 ***
+bandiera_gKEROPETROL         0.47820    
+bandiera_gLoro               0.00175 ** 
 bandiera_gOTHER              < 2e-16 ***
-bandiera_gPetrol Gamma      0.037247 *  
-bandiera_gPompe Bianche     5.41e-12 ***
-bandiera_gRetitalia         0.018336 *  
-bandiera_gSan Marco Petroli 2.15e-08 ***
-bandiera_gShell             0.436544    
+bandiera_gPetrol Gamma       0.38201    
+bandiera_gPompe Bianche     3.42e-06 ***
+bandiera_gRetitalia         1.49e-06 ***
+bandiera_gSan Marco Petroli  0.00674 ** 
+bandiera_gShell              < 2e-16 ***
 bandiera_gSia fuel           < 2e-16 ***
+bandiera_gSommese Petroli    0.02852 *  
 bandiera_gTamoil             < 2e-16 ***
-bandiera_gToil              0.018291 *  
+bandiera_gToil               0.04754 *  
 bandiera_gVega               < 2e-16 ***
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
                             exp(coef) exp(-coef) lower .95 upper .95
-nn_dist_km                   0.936255     1.0681 0.9130251  0.960077
-cap_dist_km_d0               0.947955     1.0549 0.9373733  0.958655
-pop_density_cell             1.000005     1.0000 0.9999982  1.000012
-pre_gap_vs_cap               0.000758  1319.2474 0.0001738  0.003306
-n_stations_gestore           1.000391     0.9996 1.0000894  1.000693
-fuelGasolio                  1.549844     0.6452 1.3987987  1.717199
-bandiera_gApi-Ip             3.537315     0.2827 3.2158869  3.890871
-bandiera_gAquila             0.528000     1.8939 0.2655801  1.049716
-bandiera_gBeyfin             1.646223     0.6075 1.1878374  2.281500
-bandiera_gCOIL               5.016932     0.1993 3.7695713  6.677048
-bandiera_gCONAD              7.817467     0.1279 6.2927280  9.711652
-bandiera_gCostantin          7.889501     0.1268 5.4023769 11.521637
-bandiera_gEgo                1.545200     0.6472 0.6242755  3.824664
-bandiera_gEnergas            9.400531     0.1064 4.3719769 20.212820
-bandiera_gEnerpetroli        3.038328     0.3291 2.6248333  3.516961
-bandiera_gEsso               2.838472     0.3523 2.4645057  3.269184
-bandiera_gEuropam            4.875140     0.2051 2.1193468 11.214299
-bandiera_gGiap               3.366734     0.2970 3.0859115  3.673112
-bandiera_gItala Petroli      2.654880     0.3767 1.8920487  3.725268
-bandiera_gKEROPETROL         0.586185     1.7059 0.4126699  0.832659
-bandiera_gLoro               0.653112     1.5311 0.4444918  0.959647
-bandiera_gLukoil             2.769178     0.3611 1.9617706  3.908890
-bandiera_gOTHER              2.411886     0.4146 2.0280438  2.868377
-bandiera_gPetrol Gamma       1.680604     0.5950 1.0311517  2.739103
-bandiera_gPompe Bianche      1.613646     0.6197 1.4084200  1.848775
-bandiera_gRetitalia          1.379780     0.7248 1.0559366  1.802943
-bandiera_gSan Marco Petroli  0.230593     4.3367 0.1379830  0.385359
-bandiera_gShell              1.154413     0.8662 0.8040215  1.657503
-bandiera_gSia fuel           3.850125     0.2597 3.4443876  4.303658
-bandiera_gTamoil             4.341757     0.2303 3.5026291  5.381916
-bandiera_gToil               3.153885     0.3171 1.2147915  8.188230
-bandiera_gVega               3.916586     0.2553 3.5854729  4.278277
+nn_dist_km                  0.9304127     1.0748 0.9122271  0.948961
+cap_dist_km_d0              0.9489221     1.0538 0.9403109  0.957612
+pop_density_cell            1.0000019     1.0000 0.9999960  1.000008
+pre_gap_vs_cap              0.0005894  1696.6171 0.0001428  0.002434
+n_stations_gestore          1.0004053     0.9996 1.0001329  1.000678
+fuelGasolio                 1.1252991     0.8887 1.0646008  1.189458
+bandiera_gApi-Ip            3.0852888     0.3241 2.8858110  3.298555
+bandiera_gAquila            2.3204879     0.4309 2.0834769  2.584461
+bandiera_gBeyfin            2.1931447     0.4560 1.7131763  2.807583
+bandiera_gCOIL              3.7003618     0.2702 2.4554152  5.576522
+bandiera_gCONAD             6.2715413     0.1595 5.0275463  7.823345
+bandiera_gCostantin         5.9153820     0.1691 4.0813633  8.573543
+bandiera_gEgo               1.9050939     0.5249 1.2520574  2.898735
+bandiera_gEnergas           6.3334037     0.1579 2.5883065 15.497393
+bandiera_gEnerpetroli       2.7244493     0.3670 2.5144556  2.951980
+bandiera_gEsso              2.4282583     0.4118 2.1872793  2.695787
+bandiera_gEuropam           3.7872149     0.2640 1.9733458  7.268364
+bandiera_gGiap              2.2726422     0.4400 2.1194178  2.436944
+bandiera_gItala Petroli     2.3712025     0.4217 1.7918544  3.137867
+bandiera_gKEROPETROL        1.0745398     0.9306 0.8809181  1.310719
+bandiera_gLoro              0.6770678     1.4770 0.5303694  0.864343
+bandiera_gOTHER             1.9293611     0.5183 1.6880905  2.205115
+bandiera_gPetrol Gamma      1.2952368     0.7721 0.7252085  2.313318
+bandiera_gPompe Bianche     1.2733397     0.7853 1.1498808  1.410054
+bandiera_gRetitalia         1.6333329     0.6122 1.3375032  1.994594
+bandiera_gSan Marco Petroli 0.6839805     1.4620 0.5196475  0.900282
+bandiera_gShell             1.7896934     0.5588 1.5970692  2.005550
+bandiera_gSia fuel          3.8506023     0.2597 3.3825809  4.383380
+bandiera_gSommese Petroli   1.3424461     0.7449 1.0314186  1.747265
+bandiera_gTamoil            3.0673134     0.3260 2.5407431  3.703016
+bandiera_gToil              2.1698973     0.4609 1.0084218  4.669132
+bandiera_gVega              3.5871257     0.2788 3.3008330  3.898249
 
-Concordance= 0.716  (se = 0.008 )
-Likelihood ratio test= 8673  on 32 df,   p=<2e-16
-Wald test            = 4000  on 32 df,   p=<2e-16
-Score (logrank) test = 9761  on 32 df,   p=<2e-16,   Robust = 885.6  p=<2e-16
+Concordance= 0.704  (se = 0.007 )
+Likelihood ratio test= 9259  on 32 df,   p=<2e-16
+Wald test            = 6527  on 32 df,   p=<2e-16
+Score (logrank) test = 9759  on 32 df,   p=<2e-16,   Robust = 822.6  p=<2e-16
 
   (Note: the likelihood ratio and score tests assume independence of
      observations within a cluster, the Wald and robust score tests do not).
@@ -340,38 +340,38 @@ coxph(formula = Surv(duration, event) ~ nn_dist_km + cap_dist_km_d0 +
     pop_density_cell + pre_gap_vs_cap + n_stations_gestore + 
     fuel, data = x, ties = "efron", cluster = gestore)
 
-  n= 5180, number of events= 2104 
-   (18 observations deleted due to missingness)
+  n= 5164, number of events= 3045 
+   (28 observations deleted due to missingness)
 
                          coef  exp(coef)   se(coef)  robust se      z Pr(>|z|)
-nn_dist_km         -1.306e-01  8.776e-01  2.092e-02  2.910e-02 -4.487 7.23e-06
-cap_dist_km_d0     -6.226e-02  9.396e-01  8.967e-03  1.271e-02 -4.900 9.57e-07
-pop_density_cell   -9.979e-07  1.000e+00  6.945e-06  1.224e-05 -0.082    0.935
-pre_gap_vs_cap     -5.496e+00  4.103e-03  1.848e-01  7.724e-01 -7.115 1.12e-12
-n_stations_gestore  7.115e-03  1.007e+00  7.382e-04  1.501e-03  4.739 2.15e-06
-fuelGasolio         6.421e-01  1.900e+00  4.701e-02  9.751e-02  6.585 4.55e-11
+nn_dist_km         -1.355e-01  8.733e-01  1.704e-02  2.290e-02 -5.916 3.29e-09
+cap_dist_km_d0     -6.265e-02  9.393e-01  7.280e-03  1.010e-02 -6.203 5.55e-10
+pop_density_cell   -1.396e-06  1.000e+00  5.867e-06  9.673e-06 -0.144   0.8852
+pre_gap_vs_cap     -6.123e+00  2.192e-03  1.814e-01  7.246e-01 -8.450  < 2e-16
+n_stations_gestore  5.503e-03  1.006e+00  7.109e-04  1.238e-03  4.444 8.83e-06
+fuelGasolio         6.622e-02  1.068e+00  3.767e-02  3.531e-02  1.875   0.0607
                       
 nn_dist_km         ***
 cap_dist_km_d0     ***
 pop_density_cell      
 pre_gap_vs_cap     ***
 n_stations_gestore ***
-fuelGasolio        ***
+fuelGasolio        .  
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
                    exp(coef) exp(-coef) lower .95 upper .95
-nn_dist_km          0.877608     1.1395 0.8289587   0.92911
-cap_dist_km_d0      0.939640     1.0642 0.9165301   0.96333
-pop_density_cell    0.999999     1.0000 0.9999750   1.00002
-pre_gap_vs_cap      0.004103   243.7348 0.0009028   0.01865
-n_stations_gestore  1.007140     0.9929 1.0041811   1.01011
-fuelGasolio         1.900491     0.5262 1.5698707   2.30074
+nn_dist_km          0.873275     1.1451 0.8349396  0.913370
+cap_dist_km_d0      0.939275     1.0647 0.9208648  0.958054
+pop_density_cell    0.999999     1.0000 0.9999796  1.000018
+pre_gap_vs_cap      0.002192   456.1266 0.0005298  0.009072
+n_stations_gestore  1.005519     0.9945 1.0030809  1.007962
+fuelGasolio         1.068459     0.9359 0.9970160  1.145020
 
-Concordance= 0.769  (se = 0.021 )
-Likelihood ratio test= 2016  on 6 df,   p=<2e-16
-Wald test            = 224.5  on 6 df,   p=<2e-16
-Score (logrank) test = 4151  on 6 df,   p=<2e-16,   Robust = 326.2  p=<2e-16
+Concordance= 0.748  (se = 0.018 )
+Likelihood ratio test= 2115  on 6 df,   p=<2e-16
+Wald test            = 147.2  on 6 df,   p=<2e-16
+Score (logrank) test = 3759  on 6 df,   p=<2e-16,   Robust = 196.8  p=<2e-16
 
   (Note: the likelihood ratio and score tests assume independence of
      observations within a cluster, the Wald and robust score tests do not).

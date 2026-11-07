@@ -23,6 +23,11 @@ SERIES_FROM = dt.date(2026, 7, 1)  # requested long window start (user override)
 ANALYSIS_TO = dt.date(2026, 10, 31)  # analysis window end (user override)
 CAP_DATE = dt.date(2026, 9, 28)  # self-imposed cap effective date
 PRE_WINDOW = (dt.date(2026, 9, 21), dt.date(2026, 9, 27))  # 7d pre-cap
+# Pre phase for the DESCRIPTIVE dispersion/competitiveness tables and maps
+# (sec 7 + appendix D): the full September run-up. Kept separate from
+# PRE_WINDOW, which feeds the pre_gap_vs_cap covariate in the survival/LPM
+# models and must stay the 7-day window closest to the cap.
+PRE_WINDOW_DISP = (dt.date(2026, 9, 1), dt.date(2026, 9, 27))
 # Nominal cap thresholds announced by Agip Eni (EUR/l, Stradale self-service).
 THRESHOLDS = {"Benzina": 2.00, "Gasolio": 2.20}
 # Gasolio cap tracks the excise: the 5 c/l discount removed on 2026-10-06

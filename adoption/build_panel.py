@@ -136,7 +136,7 @@ def build() -> None:
     # ---- province dispersion, pre vs post ----
     phases = (
         pl.when(
-            (pl.col("date") >= config.PRE_WINDOW[0])
+            (pl.col("date") >= config.PRE_WINDOW_DISP[0])
             & (pl.col("date") < config.CAP_DATE)
         )
         .then(pl.lit("pre"))

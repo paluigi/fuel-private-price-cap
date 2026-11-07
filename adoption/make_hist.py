@@ -41,7 +41,7 @@ fig = make_subplots(rows=2, cols=1, vertical_spacing=0.12,
                                     "Non-adopters' gap to the provincial mean (c/l), by province"))
 PRE, POST = "#2166ac", "#b2182b"
 fig.add_trace(go.Histogram(x=sd.filter(pl.col("phase") == "pre")["sd_cl"],
-                           name="pre-cap (21–27 Sep)", marker_color=PRE,
+                           name="pre-cap (1–27 Sep)", marker_color=PRE,
                            opacity=0.65, nbinsx=30), row=1, col=1)
 fig.add_trace(go.Histogram(x=sd.filter(pl.col("phase") == "post")["sd_cl"],
                            name="post-cap (28 Sep–31 Oct)", marker_color=POST,
