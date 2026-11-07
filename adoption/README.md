@@ -151,12 +151,15 @@ Counterfactual and inflation (effective prices 2026-07-01 → 10-31):
   (petrol) / +1.58% (diesel) vs counterfactual +4.92% / +13.37%;
   cap effect −7.26 / −11.79 pp; headline CPI contribution ≈ −0.43 pp
   (weight of ECOICOP 07.2.2 = 4.5219%, split evenly across fuels).
-- Specification robustness (R/spec_robustness.R): max-15-lag grid
-  re-selects the same orders; min-2-oil-lags moves the diesel gap to
-  −24.7 c/l; DL-only leaves petrol at −15.1 c/l (best backtest) but
-  degrades diesel; a no-oil AR (economically untenable) understates the
-  effect. Oil block significant everywhere (HAC Wald p < 1e-6). Combined
-  CPI effect across sensible specs: −0.41 to −0.46 pp.
+- Specification robustness (R/spec_robustness.R; max lag 10 in all
+  grids): oil-lag floors of 2/5/7 move the diesel gap into −24.3..−24.8
+  c/l and improve its backtest (5.03 → 4.01); petrol is stable to a
+  floor of 5 (floor 7 makes AIC pick an explosive (8,8) — flagged; BIC
+  picks (4,7), elasticity 0.43); DL-only leaves petrol at −15.1 c/l
+  (best backtest) but degrades diesel; a no-oil AR (economically
+  untenable) understates the effect. Oil block significant everywhere
+  (HAC Wald p < 1e-6). Combined CPI effect across sensible specs:
+  −0.38 to −0.44 pp.
 - Snapshot bias on 1 Oct (stradale sample): recorded extract average
   overstates effective average by 4.2 / 4.9 c/l (3.47 / 4.06 c/l on the
   all-station sample).

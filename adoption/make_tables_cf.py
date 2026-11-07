@@ -115,11 +115,12 @@ def p_fmt(p):
     return f"$p={p:.3f}$"
 
 VARIANT_LABEL = {
-    "V1_baseline": "Baseline (max 10)",
-    "V2_max15": "Max 15 lags",
-    "V3_minq2": "Min 2 oil lags",
-    "V4_dl_only": "DL only (no AR)",
-    "V5_ar_only": "AR only (no oil)",
+    "V1_baseline": "Baseline (no floor)",
+    "V2_minq2": "Min 2 oil lags",
+    "V3_minq5": "Min 5 oil lags",
+    "V4_minq7": "Min 7 oil lags",
+    "V5_dl_only": "DL only (no AR)",
+    "V6_ar_only": "AR only (no oil)",
 }
 VARIANT_ORDER = list(VARIANT_LABEL)
 
@@ -130,7 +131,13 @@ for f in ("Benzina", "Gasolio"):
             (pl.col("fuel") == f) & (pl.col("variant") == key)
         ).row(0, named=True)
         order = f"({r['p']},{r['q']})" if r["q"] is not None else f"({r['p']},.)"
-        elas = f"{r['lr_elasticity']:.3f}" if r["lr_elasticity"] is not None else "--"
+        if r["lr_elasticity"] is None:
+            elas = "--"
+        elif abs(r["lr_elasticity"]) > 2:
+            # flag implausible multipliers (near-unit-root corner)
+            elas = f"{r['lr_elasticity']:.3f}$^{{\\dagger}}$"
+        else:
+            elas = f"{r['lr_elasticity']:.3f}"
         rows.append(
             f"{FUEL_EN[f]} & {VARIANT_LABEL[key]} & {order} & {elas} & "
             f"{r['backtest_rmse_cpl']:.2f} & {r['backtest_rmse_rw_cpl']:.2f} & "
@@ -144,7 +151,7 @@ blk_txt = " ; ".join(
 
 robust_table = f"""{head}\\begin{{table}}[H]
 \\centering\\footnotesize\\setlength{{\\tabcolsep}}{{3pt}}
-\\caption{{ARDL specification robustness: lag grids, forced oil lags, and distributed-lag / autoregression-only extremes}}
+\\caption{{ARDL specification robustness: forced oil-lag floors and distributed-lag / autoregression-only extremes (max 10 lags)}}
 \\label{{tab:ardl-robust}}
 \\begin{{tabular}}{{llcccccc}}
 \\toprule
@@ -156,13 +163,17 @@ robust_table = f"""{head}\\begin{{table}}[H]
 \\end{{tabular}}
 
 \\medskip
-\\footnotesize Each row re-selects $(p,q)$ by AIC on the stated grid,
-refits the placebo backtest (14--27 Sep) and the no-cap projection.
+\\footnotesize Each row re-selects $(p,q)$ by AIC on the stated grid
+(max lag 10 in all grids), refits the placebo backtest (14--27 Sep) and
+the no-cap projection.
 ``Order'' counts oil lags beyond the contemporaneous term. ``DL only''
 = pure distributed lag (no autoregressive term); ``AR only'' has no oil
 term at all and is an economically misspecified reference, not a
 counterfactual. HAC block-exclusion of the Brent terms
 in the baseline models: {blk_txt}. RW: no-change random walk.
+$^{{\\dagger}}$AIC selection under the seven-lag floor overfits an
+explosive autoregressive polynomial ($\\sum\\hat\\phi > 1$); the implied
+long-run multiplier is meaningless --- see the text above.
 \\end{{table}}
 
 """

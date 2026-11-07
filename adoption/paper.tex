@@ -808,9 +808,11 @@ cap start. Black dots: ISTAT reference days.}
 Five checks. First, for petrol BIC selects the more parsimonious ARDL$(5,0)$; its
 long-run elasticity (0.46) sits within 0.02 of the AIC selection's, and
 for diesel both criteria agree on $(1,1)$ (\cref{tab:ardl}). Second, the
-lag structure itself is not doing the work: widening the grid to 15 lags
-re-selects the same orders, forcing at least two oil lags moves the
-diesel gap only from $-27.5$ to $-24.7$~c/l, and collapsing to a pure
+lag structure itself is not doing the work: forcing a floor of two,
+five or seven oil lags under the same 10-lag grid moves the diesel gap
+only from $-27.5$ into the $-24.3$ to $-24.8$~c/l range --- deeper oil
+lags in fact improve diesel's backtest --- and leaves petrol's selected
+order untouched at floors of two and five. Collapsing to a pure
 distributed lag on Brent (no autoregressive term) leaves petrol
 essentially unchanged --- indeed with the best backtest of all --- while
 degrading diesel's, whose margins adjust too persistently for a static
@@ -1049,22 +1051,34 @@ selections.
 \paragraph{Specification robustness.}
 \Cref{tab:ardl-robust} re-runs the entire exercise --- lag selection,
 backtest, projection and reference-day inflation --- under the
-specification variants discussed in \cref{sec:cfresults}: a wider grid
-(15 lags), a minimum of two oil lags, a pure distributed lag with no
-autoregressive term, and, as an economically misspecified reference, an
-autoregression with no oil term at all. The last is instructive: daily
-net prices are so persistent that a no-oil autoregression fits almost
-as well in sample ($R^2$ 0.9985 versus 0.9989 for petrol) --- which is
-exactly why in-sample fit cannot arbitrate this question --- yet it
-forecasts worse out of sample (petrol RMSE 3.19 versus 1.80~c/l) and
-understates the effect; excluding the Brent block is rejected with
-$p < 10^{-6}$ in both fuels. Conversely, dropping the autoregressive
-dimension entirely leaves petrol essentially unchanged (best backtest
-of all variants) but degrades diesel badly, whose multi-week margin
-persistence only the autoregressive part carries. Across all
-economically sensible specifications the October mean gaps stay within
-15.1--16.5~c/l (petrol) and 24.7--30.4~c/l (diesel), and the combined
-CPI effect within $-0.41$ to $-0.46$~percentage points.
+specification variants of \cref{sec:cfresults}, all with a maximum lag
+of ten: oil-lag floors of two, five and seven lags; a pure distributed
+lag with no autoregressive term; and, as an economically misspecified
+reference, an autoregression with no oil term at all. Two readings.
+First, diesel welcomes deeper oil lags: its backtest RMSE improves from
+5.03~c/l without a floor to 4.01 with a floor of seven, and its mean
+gap settles around $-24$ to $-25$~c/l. Second, petrol is stable up to a
+floor of five (AIC keeps selecting $(4,5)$); at a floor of seven AIC
+overfits an ARDL$(8,8)$ whose autoregressive polynomial is literally
+explosive ($\sum\hat\phi = 1.0007$), turning the long-run multiplier
+into a meaningless 6.4 and degrading the backtest to the random-walk
+level, while BIC on the same grid picks the well-behaved $(4,7)$ with
+elasticity 0.43 --- a warning against forcing deep lag floors on
+85-observation samples rather than instability of the effect. The
+no-oil reference is instructive for the opposite reason: daily net
+prices are so persistent that it fits almost as well in sample ($R^2$
+0.9985 versus 0.9989 for petrol) --- exactly why in-sample fit cannot
+arbitrate this question --- yet it forecasts worse out of sample
+(petrol RMSE 3.19 versus 1.80~c/l) and understates the effect;
+excluding the Brent block is rejected with $p < 10^{-6}$ in both
+fuels. Dropping the autoregressive dimension entirely leaves petrol
+essentially unchanged (best backtest of all variants) but degrades
+diesel badly, whose multi-week margin persistence only the
+autoregressive part carries. Across the economically sensible
+specifications the October mean gaps stay within 13.7--16.5~c/l
+(petrol; 15.1--16.5 excluding the explosive floor-seven corner) and
+24.3--27.9~c/l (diesel), and the combined CPI effect within $-0.38$ to
+$-0.44$~percentage points.
 
 \input{paper_appendix_ardl}
 

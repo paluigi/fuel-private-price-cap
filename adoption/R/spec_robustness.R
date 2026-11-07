@@ -1,13 +1,15 @@
 # Specification robustness for the ARDL counterfactual.
 #
 # Variants (per fuel), each selecting (p, q) by AIC and BIC on its grid,
-# refitting the placebo backtest, and re-running the full no-cap projection:
-#   V1 baseline : p in [0,10], q in [0,10]            (= analysis_ardl.R; q
-#                 counts oil lags beyond the contemporaneous term)
-#   V2 max15    : p in [0,15], q in [0,15]
-#   V3 minq2    : p in [0,10], q in [2,10]            (>= 2 oil lags)
-#   V4 dl_only  : p = 0, q in [0,15]                  (no autoregressive term)
-#   V5 ar_only  : pure AR(p), NO oil term at all - economically untenable
+# refitting the placebo backtest, and re-running the full no-cap projection.
+# Max lag 10 in ALL specifications; q counts oil lags beyond the
+# contemporaneous term:
+#   V1_baseline : p in [0,10], q in [0,10]            (= analysis_ardl.R)
+#   V2_minq2    : p in [0,10], q in [2,10]            (>= 2 oil lags)
+#   V3_minq5    : p in [0,10], q in [5,10]            (>= 5 oil lags)
+#   V4_minq7    : p in [0,10], q in [7,10]            (>= 7 oil lags)
+#   V5_dl_only  : p = 0, q in [0,10]                  (no autoregressive term)
+#   V6_ar_only  : pure AR(p), NO oil term at all - economically untenable
 #                 reference (petrol cannot depend only on its own past);
 #                 shown to make that point, never used as counterfactual.
 #
@@ -35,10 +37,11 @@ OUT_CSV <- "output/tables/spec_robustness.csv"
 N_SIM_ROB <- 400L  # bands not needed here; keep the bootstrap light
 
 VARIANTS <- list(
-  list(key = "V1_baseline", label = "Baseline (max 10)", ps = 0:10, qs = 0:10),
-  list(key = "V2_max15",    label = "Max 15 lags",       ps = 0:15, qs = 0:15),
-  list(key = "V3_minq2",    label = "Min 2 oil lags",    ps = 0:10, qs = 2:10),
-  list(key = "V4_dl_only",  label = "Distributed lag only (no AR)", ps = 0, qs = 0:15)
+  list(key = "V1_baseline", label = "Baseline (no floor)", ps = 0:10, qs = 0:10),
+  list(key = "V2_minq2",    label = "Min 2 oil lags",      ps = 0:10, qs = 2:10),
+  list(key = "V3_minq5",    label = "Min 5 oil lags",      ps = 0:10, qs = 5:10),
+  list(key = "V4_minq7",    label = "Min 7 oil lags",      ps = 0:10, qs = 7:10),
+  list(key = "V5_dl_only",  label = "DL only (no AR)",     ps = 0,    qs = 0:10)
 )
 
 select_grid <- function(d, ps, qs) {
@@ -118,14 +121,14 @@ run_ar_only <- function(d, fuel_name) {
   w_f <- W_CARBURANTI / 2
 
   cat(sprintf("%-10s %-9s AIC (%d,.) BIC (%d,.) | NO OIL TERM | N %d | R2 %.4f\n",
-              "V5_ar_only", fuel_name, p_a, p_b,
+              "V6_ar_only", fuel_name, p_a, p_b,
               nrow(obj$lag), summary(obj$fit)$r.squared))
   cat(sprintf("           backtest RMSE %.2f (RW %.2f, bias %+.2f) | mean gap %.1f c/l, end gap %.1f c/l | MoM cf %+.2f%% | CPI effect %+.3f pp\n",
               rmse(err), rmse(err_rw), mean(err), mean(gap), gap[length(gap)],
               mom_c, w_f * (mom_a - mom_c)))
 
   data.table(
-    fuel = fuel_name, variant = "V5_ar_only",
+    fuel = fuel_name, variant = "V6_ar_only",
     label = "Autoregression only (no oil)",
     p = p_a, q = NA_integer_, order_bic = sprintf("(%d,.)", p_b),
     lr_elasticity = NA_real_, lr_elasticity_bic = NA_real_,
