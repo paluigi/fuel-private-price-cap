@@ -6,7 +6,7 @@
 # prices), so the tax calendar is stripped by construction and NO excise
 # dummy enters the regression: statutory tax changes have no place in a
 # net-price equation, and any staggered pass-through around them stays in
-# the error. Lag order (p,q) selected over 0..MAX_ORDER by AIC and BIC on an
+# the error. Lag order (p,q) selected over 0..MAX_ORDER by BIC on an
 # explicit-lag lm grid (cross-checked against ARDL::auto_ardl), then
 # estimated with lm so the recursive projection is fully transparent.
 # Diagnostics: Breusch-Godfrey, RESET, long-run pass-through elasticity =
@@ -169,15 +169,13 @@ run_fuel <- function(dall, fuel_name) {
                         y = log(eff_mean_net), x = log(brent_eur))]
   fit <- d[date <= FIT_TO]
   sel <- select_order(fit)
-  p <- sel$best_aic$p; q <- sel$best_aic$q
+  p <- sel$best_bic$p; q <- sel$best_bic$q
   obj <- fit_ardl(fit, p, q)
-  obj_bic <- fit_ardl(fit, sel$best_bic$p, sel$best_bic$q)
 
   cat("\n=====", fuel_name, "=====\n")
   cat("fit window:", format(FIT_FROM), "-", format(FIT_TO),
       "(", nrow(obj$lag), "obs after lags )\n")
-  cat("order by AIC: (", p, ",", q, ")  by BIC: (",
-      sel$best_bic$p, ",", sel$best_bic$q, ")\n")
+  cat("order selected by BIC: (", p, ",", q, ")\n")
   print(summary(obj$fit))
   cat("\nNewey-West (lag 7, prewhite=FALSE) robust coefficients:\n")
   print(coeftest(obj$fit,
@@ -187,19 +185,17 @@ run_fuel <- function(dall, fuel_name) {
   print(bgtest(obj$fit, order = 14))
   cat("\nRESET (powers 2:3):\n")
   print(resettest(obj$fit, power = 2:3))
-  cat("\nlong-run pass-through elasticity (AIC spec):",
+  cat("\nlong-run pass-through elasticity:",
       round(long_run(obj), 4), "\n")
-  cat("long-run pass-through elasticity (BIC spec):",
-      round(long_run(obj_bic), 4), "\n")
   ph <- sum(coefs(obj)$phi)
   if (ph > 0 && ph < 1) {
-    cat("half-life of shock (days, AIC spec):",
+    cat("half-life of shock (days):",
         round(log(0.5) / log(ph), 1), "\n")
   }
 
-  # cross-check: ARDL::auto_ardl best order (AIC)
+  # cross-check: ARDL::auto_ardl best order (BIC)
   aa <- tryCatch(auto_ardl(y ~ x, data = as.data.frame(fit),
-                           max_order = MAX_ORDER, selection = "AIC"),
+                           max_order = MAX_ORDER, selection = "BIC"),
                  error = function(e) {
                    cat("auto_ardl failed:", conditionMessage(e), "\n"); NULL
                  })
@@ -211,7 +207,7 @@ run_fuel <- function(dall, fuel_name) {
   # ---- placebo backtest: fit ..09-13, project 09-14..27 ----
   fit_bt <- d[date <= BT_FIT_TO]
   sel_bt <- select_order(fit_bt)
-  obj_bt <- fit_ardl(fit_bt, sel_bt$best_aic$p, sel_bt$best_aic$q)
+  obj_bt <- fit_ardl(fit_bt, sel_bt$best_bic$p, sel_bt$best_bic$q)
   bt_win <- d[date >= BT_FROM & date <= FIT_TO]
   n_bt <- nrow(bt_win)
   proj_bt <- project_ardl(obj_bt, fit_bt$y, d$x, n_bt)
@@ -260,9 +256,7 @@ run_fuel <- function(dall, fuel_name) {
     cf = cf, bt = bt, sel = sel, obj = obj,
     meta = data.table(
       fuel = fuel_name, p = p, q = q,
-      order_bic = sprintf("(%d,%d)", sel$best_bic$p, sel$best_bic$q),
       lr_elasticity = long_run(obj),
-      lr_elasticity_bic = long_run(obj_bic),
       backtest_rmse_cpl = rmse(bt$err_ardl_cpl),
       backtest_rmse_rw_cpl = rmse(bt$err_rw_cpl),
       backtest_bias_cpl = mean(bt$err_ardl_cpl),

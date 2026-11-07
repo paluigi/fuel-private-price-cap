@@ -96,9 +96,10 @@ regenerable and mostly not committed.
 - `R/analysis_panel.R` — daily event study (fixest).
 - `R/revision_samples.R` — Cox + LPM on 3 samples (universe / excl.
   Agip Eni+Q8 / Pompe Bianche) → `output/revision_{cox,lpm}.txt`.
-- `R/analysis_ardl.R` — log-log ARDL net price ~ Brent EUR (AIC/BIC lag
-  grid + `auto_ardl` cross-check), recursive no-cap projection with
-  bootstrap bands, placebo backtest, ISTAT reference-day MoM/CPI table.
+- `R/analysis_ardl.R` — log-log ARDL net price ~ Brent EUR (BIC-only
+  lag selection, `auto_ardl` cross-check), recursive no-cap projection
+  with bootstrap bands, placebo backtest, ISTAT reference-day MoM/CPI
+  table.
 - `R/spec_robustness.R` — re-runs selection/backtest/projection under
   alternative grids (max 15 lags; min 2 oil lags; DL-only; AR-only
   no-oil reference) + HAC block-exclusion Wald tests for the Brent terms.
@@ -139,27 +140,28 @@ Counterfactual and inflation (effective prices 2026-07-01 → 10-31):
 
 - Brent EUR/bbl: index 100 (1 Jul) → 173 (cap date) → 177 (31 Oct).
 - ARDL net price ~ Brent EUR (no tax dummy: the target is net of excise
-  and VAT by construction): petrol ARDL(4,5) by AIC, (5,0) by BIC,
-  long-run elasticity 0.44, half-life ~25 d; diesel ARDL(1,1) by both,
-  0.63, half-life ~9 d. Placebo backtest (14–27 Sep): RMSE 1.80 / 5.03
+  and VAT by construction); lag order selected by BIC only: petrol
+  ARDL(5,0), long-run elasticity 0.46, half-life ~13 d; diesel ARDL(1,1),
+  0.63, half-life ~9 d. Placebo backtest (14–27 Sep): RMSE 1.33 / 5.03
   c/l vs random-walk 3.69 / 5.07 (diesel excl. excise-transition days
   18–20/26–27 Sep: 4.05).
-- No-cap counterfactual pump prices average 16.5 (petrol) / 27.5
+- No-cap counterfactual pump prices average 16.3 (petrol) / 27.5
   (diesel) c/l above realised over 28 Sep–31 Oct; gap at window end
-  20.7 / 31.8 c/l.
+  20.2 / 31.8 c/l.
 - ISTAT reference days (avg of 1/11/21): MoM Sep→Oct realised −2.34%
-  (petrol) / +1.58% (diesel) vs counterfactual +4.92% / +13.37%;
-  cap effect −7.26 / −11.79 pp; headline CPI contribution ≈ −0.43 pp
+  (petrol) / +1.58% (diesel) vs counterfactual +4.95% / +13.37%;
+  cap effect −7.28 / −11.79 pp; headline CPI contribution ≈ −0.43 pp
   (weight of ECOICOP 07.2.2 = 4.5219%, split evenly across fuels).
-- Specification robustness (R/spec_robustness.R; max lag 10 in all
-  grids): oil-lag floors of 2/5/7 move the diesel gap into −24.3..−24.8
-  c/l and improve its backtest (5.03 → 4.01); petrol is stable to a
-  floor of 5 (floor 7 makes AIC pick an explosive (8,8) — flagged; BIC
-  picks (4,7), elasticity 0.43); DL-only leaves petrol at −15.1 c/l
-  (best backtest) but degrades diesel; a no-oil AR (economically
+- Specification robustness (R/spec_robustness.R; BIC selection, max
+  lag 10 in all grids): oil-lag floors of 2/5/7 move petrol's order
+  (5,0)→(4,7) with elasticities 0.43–0.46 and gaps −16.2..−16.5 c/l;
+  diesel's backtest improves with deeper oil lags (5.03 → 4.01) and
+  its gap settles at −24.3..−27.5 c/l; DL-only (0,4)/(0,9) leaves
+  petrol close but degrades diesel badly; a no-oil AR (economically
   untenable) understates the effect. Oil block significant everywhere
-  (HAC Wald p < 1e-6). Combined CPI effect across sensible specs:
-  −0.38 to −0.44 pp.
+  (HAC Wald p ≤ 2e-5). Combined CPI effect across sensible specs:
+  −0.40 to −0.43 pp. (AIC instead of BIC would pick (4,5) for petrol
+  and an explosive (8,8) under a 7-lag floor.)
 - Snapshot bias on 1 Oct (stradale sample): recorded extract average
   overstates effective average by 4.2 / 4.9 c/l (3.47 / 4.06 c/l on the
   all-station sample).

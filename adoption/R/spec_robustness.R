@@ -1,9 +1,9 @@
 # Specification robustness for the ARDL counterfactual.
 #
-# Variants (per fuel), each selecting (p, q) by AIC and BIC on its grid,
-# refitting the placebo backtest, and re-running the full no-cap projection.
-# Max lag 10 in ALL specifications; q counts oil lags beyond the
-# contemporaneous term:
+# Variants (per fuel), each selecting (p, q) by BIC on its grid (BIC is
+# the paper's sole selection criterion), refitting the placebo backtest,
+# and re-running the full no-cap projection. Max lag 10 in ALL
+# specifications; q counts oil lags beyond the contemporaneous term:
 #   V1_baseline : p in [0,10], q in [0,10]            (= analysis_ardl.R)
 #   V2_minq2    : p in [0,10], q in [2,10]            (>= 2 oil lags)
 #   V3_minq5    : p in [0,10], q in [5,10]            (>= 5 oil lags)
@@ -89,15 +89,15 @@ run_ar_only <- function(d, fuel_name) {
     o <- fit_ar_only(fit, p)
     data.table(p = p, AIC = AIC(o$fit), BIC = BIC(o$fit), n = nrow(o$lag))
   }))
-  p_a <- grid[which.min(AIC)]$p; p_b <- grid[which.min(BIC)]$p
-  obj <- fit_ar_only(fit, p_a)
+  p_b <- grid[which.min(BIC)]$p
+  obj <- fit_ar_only(fit, p_b)
 
   fit_bt <- d[date <= BT_FIT_TO]
   grid_bt <- rbindlist(lapply(1:10, function(pp) {
     o <- fit_ar_only(fit_bt, pp)
-    data.table(p = pp, AIC = AIC(o$fit))
+    data.table(p = pp, BIC = BIC(o$fit))
   }))
-  obj_bt <- fit_ar_only(fit_bt, grid_bt[which.min(AIC)]$p)
+  obj_bt <- fit_ar_only(fit_bt, grid_bt[which.min(BIC)]$p)
   bt_win <- d[date >= BT_FROM & date <= FIT_TO]
   pr <- exp(project_ar_only(obj_bt, fit_bt$y, nrow(bt_win)))
   rw_path <- rep(fit_bt$y[length(fit_bt$y)], nrow(bt_win))
@@ -120,8 +120,8 @@ run_ar_only <- function(d, fuel_name) {
   mom_c <- (oct_c / sep_a - 1) * 100
   w_f <- W_CARBURANTI / 2
 
-  cat(sprintf("%-10s %-9s AIC (%d,.) BIC (%d,.) | NO OIL TERM | N %d | R2 %.4f\n",
-              "V6_ar_only", fuel_name, p_a, p_b,
+  cat(sprintf("%-10s %-9s BIC (%d,.) | NO OIL TERM | N %d | R2 %.4f\n",
+              "V6_ar_only", fuel_name, p_b,
               nrow(obj$lag), summary(obj$fit)$r.squared))
   cat(sprintf("           backtest RMSE %.2f (RW %.2f, bias %+.2f) | mean gap %.1f c/l, end gap %.1f c/l | MoM cf %+.2f%% | CPI effect %+.3f pp\n",
               rmse(err), rmse(err_rw), mean(err), mean(gap), gap[length(gap)],
@@ -130,8 +130,8 @@ run_ar_only <- function(d, fuel_name) {
   data.table(
     fuel = fuel_name, variant = "V6_ar_only",
     label = "Autoregression only (no oil)",
-    p = p_a, q = NA_integer_, order_bic = sprintf("(%d,.)", p_b),
-    lr_elasticity = NA_real_, lr_elasticity_bic = NA_real_,
+    p = p_b, q = NA_integer_,
+    lr_elasticity = NA_real_,
     backtest_rmse_cpl = rmse(err), backtest_rmse_rw_cpl = rmse(err_rw),
     backtest_bias_cpl = mean(err),
     mean_gap_cpl = mean(gap), end_gap_cpl = gap[length(gap)],
@@ -146,13 +146,12 @@ run_ar_only <- function(d, fuel_name) {
 run_variant <- function(d, fuel_name, var) {
   fit <- d[date <= FIT_TO]
   sel <- select_grid(fit, var$ps, var$qs)
-  obj <- fit_ardl(fit, sel$best_aic$p, sel$best_aic$q)
-  obj_bic <- fit_ardl(fit, sel$best_bic$p, sel$best_bic$q)
+  obj <- fit_ardl(fit, sel$best_bic$p, sel$best_bic$q)
 
-  # placebo backtest with the same grid
+  # placebo backtest with the same grid (BIC selection here too)
   fit_bt <- d[date <= BT_FIT_TO]
   sel_bt <- select_grid(fit_bt, var$ps, var$qs)
-  obj_bt <- fit_ardl(fit_bt, sel_bt$best_aic$p, sel_bt$best_aic$q)
+  obj_bt <- fit_ardl(fit_bt, sel_bt$best_bic$p, sel_bt$best_bic$q)
   bt_win <- d[date >= BT_FROM & date <= FIT_TO]
   proj_bt <- project_ardl(obj_bt, fit_bt$y, d$x, nrow(bt_win), n_sim = N_SIM_ROB)
   rw_path <- rep(fit_bt$y[length(fit_bt$y)], nrow(bt_win))
@@ -176,10 +175,10 @@ run_variant <- function(d, fuel_name, var) {
   mom_c <- (oct_c / sep_a - 1) * 100
   w_f <- W_CARBURANTI / 2
 
-  cat(sprintf("%-10s %-9s AIC (%d,%d) BIC (%d,%d) | lr_elas %.3f/%.3f | N %d | R2 %.4f\n",
+  cat(sprintf("%-10s %-9s BIC (%d,%d) | lr_elas %.3f | N %d | R2 %.4f\n",
               var$key, fuel_name,
-              sel$best_aic$p, sel$best_aic$q, sel$best_bic$p, sel$best_bic$q,
-              long_run(obj), long_run(obj_bic),
+              sel$best_bic$p, sel$best_bic$q,
+              long_run(obj),
               nrow(obj$lag), summary(obj$fit)$r.squared))
   cat(sprintf("           backtest RMSE %.2f (RW %.2f, bias %+.2f) | mean gap %.1f c/l, end gap %.1f c/l | MoM cf %+.2f%% (actual %+.2f%%) | CPI effect %+.3f pp\n",
               rmse(err), rmse(err_rw), mean(err), mean(gap), gap[length(gap)],
@@ -187,10 +186,8 @@ run_variant <- function(d, fuel_name, var) {
 
   data.table(
     fuel = fuel_name, variant = var$key, label = var$label,
-    p = sel$best_aic$p, q = sel$best_aic$q,
-    order_bic = sprintf("(%d,%d)", sel$best_bic$p, sel$best_bic$q),
+    p = sel$best_bic$p, q = sel$best_bic$q,
     lr_elasticity = long_run(obj),
-    lr_elasticity_bic = long_run(obj_bic),
     backtest_rmse_cpl = rmse(err), backtest_rmse_rw_cpl = rmse(err_rw),
     backtest_bias_cpl = mean(err),
     mean_gap_cpl = mean(gap), end_gap_cpl = gap[length(gap)],
@@ -206,7 +203,7 @@ block_tests <- function(d, fuel_name) {
   # the same estimation sample.
   fit <- d[date <= FIT_TO]
   sel <- select_grid(fit, 0:10, 0:10)
-  p <- sel$best_aic$p; q <- sel$best_aic$q
+  p <- sel$best_bic$p; q <- sel$best_bic$q
   lagdf <- fit_ardl(fit, p, q)$lag
   yl <- paste0("yl", seq_len(p))
   xl <- paste0("xl", 0:q)
@@ -223,7 +220,7 @@ block_tests <- function(d, fuel_name) {
   } else {
     ta <- list(F = c(NA, NA), `Pr(>F)` = c(NA, NA))
   }
-  cat(sprintf("\n%s baseline (%d,%d) HAC block Wald tests:\n", fuel_name, p, q))
+  cat(sprintf("\n%s baseline BIC (%d,%d) HAC block Wald tests:\n", fuel_name, p, q))
   cat(sprintf("  oil block excluded:      F = %.2f, p = %.3g\n", tx$F[2], tx$`Pr(>F)`[2]))
   cat(sprintf("  autoregressive block:    F = %.2f, p = %.3g\n", ta$F[2], ta$`Pr(>F)`[2]))
   data.table(fuel = fuel_name,

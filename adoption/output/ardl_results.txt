@@ -1,34 +1,30 @@
 
 ===== Benzina =====
 fit window: 2026-07-01 - 2026-09-27 ( 84 obs after lags )
-order by AIC: ( 4 , 5 )  by BIC: ( 5 , 0 )
+order selected by BIC: ( 5 , 0 )
 
 Call:
 lm(formula = f, data = lag)
 
 Residuals:
        Min         1Q     Median         3Q        Max 
--0.0046734 -0.0013721 -0.0001356  0.0011688  0.0057136 
+-0.0049202 -0.0016107 -0.0002349  0.0014175  0.0063621 
 
 Coefficients:
              Estimate Std. Error t value Pr(>|t|)    
-(Intercept) -0.052606   0.035721  -1.473 0.145131    
-yl1          1.478309   0.106828  13.838  < 2e-16 ***
-yl2         -0.756561   0.140501  -5.385 8.44e-07 ***
-yl3          0.391509   0.106167   3.688 0.000432 ***
-yl4         -0.140836   0.064349  -2.189 0.031824 *  
-xl0          0.013637   0.007695   1.772 0.080517 .  
-xl1          0.024374   0.010222   2.384 0.019711 *  
-xl2         -0.009662   0.010535  -0.917 0.362075    
-xl3         -0.012128   0.010415  -1.165 0.247994    
-xl4          0.010065   0.010640   0.946 0.347255    
-xl5         -0.014239   0.008216  -1.733 0.087320 .  
+(Intercept) -0.103460   0.025607  -4.040 0.000125 ***
+yl1          1.487035   0.105781  14.058  < 2e-16 ***
+yl2         -0.776491   0.144773  -5.363 8.29e-07 ***
+yl3          0.368659   0.114348   3.224 0.001855 ** 
+yl4         -0.128361   0.109400  -1.173 0.244283    
+yl5         -0.002222   0.063818  -0.035 0.972319    
+xl0          0.023448   0.005761   4.070 0.000113 ***
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-Residual standard error: 0.002391 on 73 degrees of freedom
-Multiple R-squared:  0.9989,	Adjusted R-squared:  0.9988 
-F-statistic:  6831 on 10 and 73 DF,  p-value: < 2.2e-16
+Residual standard error: 0.002518 on 77 degrees of freedom
+Multiple R-squared:  0.9988,	Adjusted R-squared:  0.9987 
+F-statistic: 1.026e+04 on 6 and 77 DF,  p-value: < 2.2e-16
 
 
 Newey-West (lag 7, prewhite=FALSE) robust coefficients:
@@ -36,17 +32,13 @@ Newey-West (lag 7, prewhite=FALSE) robust coefficients:
 t test of coefficients:
 
               Estimate Std. Error t value  Pr(>|t|)    
-(Intercept) -0.0526061  0.0287605 -1.8291  0.071467 .  
-yl1          1.4783090  0.0986109 14.9913 < 2.2e-16 ***
-yl2         -0.7565609  0.1080320 -7.0031 1.028e-09 ***
-yl3          0.3915089  0.0558765  7.0067 1.012e-09 ***
-yl4         -0.1408357  0.0431500 -3.2639  0.001674 ** 
-xl0          0.0136371  0.0056460  2.4153  0.018225 *  
-xl1          0.0243736  0.0057857  4.2128 7.116e-05 ***
-xl2         -0.0096621  0.0145417 -0.6644  0.508500    
-xl3         -0.0121284  0.0103868 -1.1677  0.246735    
-xl4          0.0100653  0.0086298  1.1663  0.247270    
-xl5         -0.0142391  0.0060112 -2.3688  0.020496 *  
+(Intercept) -0.1034602  0.0225741 -4.5831 1.739e-05 ***
+yl1          1.4870348  0.0782846 18.9952 < 2.2e-16 ***
+yl2         -0.7764911  0.0906588 -8.5650 8.278e-13 ***
+yl3          0.3686591  0.0571197  6.4542 8.804e-09 ***
+yl4         -0.1283611  0.1000112 -1.2835    0.2032    
+yl5         -0.0022217  0.0688487 -0.0323    0.9743    
+xl0          0.0234478  0.0050733  4.6218 1.503e-05 ***
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
@@ -56,13 +48,13 @@ Breusch-Godfrey (order 7 and 14):
 	Breusch-Godfrey test for serial correlation of order up to 7
 
 data:  obj$fit
-LM test = 13.884, df = 7, p-value = 0.05329
+LM test = 17.695, df = 7, p-value = 0.01342
 
 
 	Breusch-Godfrey test for serial correlation of order up to 14
 
 data:  obj$fit
-LM test = 18.07, df = 14, p-value = 0.2036
+LM test = 22.692, df = 14, p-value = 0.06546
 
 
 RESET (powers 2:3):
@@ -70,23 +62,22 @@ RESET (powers 2:3):
 	RESET test
 
 data:  obj$fit
-RESET = 0.75353, df1 = 2, df2 = 71, p-value = 0.4744
+RESET = 1.8432, df1 = 2, df2 = 75, p-value = 0.1654
 
 
-long-run pass-through elasticity (AIC spec): 0.4368 
-long-run pass-through elasticity (BIC spec): 0.4564 
-half-life of shock (days, AIC spec): 24.8 
+long-run pass-through elasticity: 0.4564 
+half-life of shock (days): 13.1 
 auto_ardl cross-check, best order:
 y x 
-4 5 
+4 0 
 
-backtest 2026-09-14 - 2026-09-27 : RMSE ARDL 1.804 c/l | RW 3.687 c/l | mean bias 1.754 c/l
+backtest 2026-09-14 - 2026-09-27 : RMSE ARDL 1.328 c/l | RW 3.687 c/l | mean bias 1.290 c/l
 
-projection 2026-09-28 - 2026-10-31 : mean gap actual - counterfactual -16.49 c/l  (net path 1.096 -> 1.144 EUR/l)
+projection 2026-09-28 - 2026-10-31 : mean gap actual - counterfactual -16.29 c/l  (net path 1.096 -> 1.139 EUR/l)
 
 ===== Gasolio =====
 fit window: 2026-07-01 - 2026-09-27 ( 88 obs after lags )
-order by AIC: ( 1 , 1 )  by BIC: ( 1 , 1 )
+order selected by BIC: ( 1 , 1 )
 
 Call:
 lm(formula = f, data = lag)
@@ -144,9 +135,8 @@ data:  obj$fit
 RESET = 5.162, df1 = 2, df2 = 82, p-value = 0.007735
 
 
-long-run pass-through elasticity (AIC spec): 0.6296 
-long-run pass-through elasticity (BIC spec): 0.6296 
-half-life of shock (days, AIC spec): 9.1 
+long-run pass-through elasticity: 0.6296 
+half-life of shock (days): 9.1 
 auto_ardl cross-check, best order:
 y x 
 1 1 
@@ -165,28 +155,28 @@ Index: <fuel>
  4: 2026-09-11 Gasolio     2.201240 2.201240   0.000000
  5: 2026-09-21 Benzina     2.154139 2.154139   0.000000
  6: 2026-09-21 Gasolio     2.337892 2.337892   0.000000
- 7: 2026-10-01 Benzina     2.068271 2.161637  -9.336579
+ 7: 2026-10-01 Benzina     2.068271 2.160447  -9.217576
  8: 2026-10-01 Gasolio     2.265985 2.401124 -13.513934
- 9: 2026-10-11 Benzina     2.034625 2.211393 -17.676788
+ 9: 2026-10-11 Benzina     2.034625 2.211557 -17.693167
 10: 2026-10-11 Gasolio     2.250071 2.566145 -31.607404
-11: 2026-10-21 Benzina     2.022990 2.208179 -18.518809
+11: 2026-10-21 Benzina     2.022990 2.210650 -18.765912
 12: 2026-10-21 Gasolio     2.258087 2.593139 -33.505135
 
 Sep avg vs Oct avg, actual vs counterfactual (weight carburanti = 0.045219, split 50/50):
              fuel sep_avg_actual sep_avg_cf oct_avg_actual oct_avg_cf
            <char>          <num>      <num>          <num>      <num>
-1:        Benzina       2.090809   2.090809       2.041962   2.193736
+1:        Benzina       2.090809   2.090809       2.041962   2.194218
 2:        Gasolio       2.222928   2.222928       2.258048   2.520136
-3: TOT carburanti       2.156868   2.156868       2.150005   2.356936
+3: TOT carburanti       2.156868   2.156868       2.150005   2.357177
    mom_actual_pct mom_cf_pct cap_effect_pp cpi_actual_pp cpi_cf_pp
             <num>      <num>         <num>         <num>     <num>
-1:     -2.3362624   4.922838     -7.259100   -0.05282172 0.1113029
+1:     -2.3362624   4.945872     -7.282134   -0.05282172 0.1118237
 2:      1.5799003  13.370129    -11.790229    0.03572076 0.3022919
-3:     -0.3781811   9.146483     -9.524664   -0.01710097 0.4135948
+3:     -0.3781811   9.158000     -9.536181   -0.01710097 0.4141156
    cpi_effect_pp
            <num>
-1:    -0.1641246
+1:    -0.1646454
 2:    -0.2665712
-3:    -0.4306958
+3:    -0.4312166
 
 Done.

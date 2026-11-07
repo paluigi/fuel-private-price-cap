@@ -29,10 +29,8 @@ head = (
 rows = []
 for r in ardl.iter_rows(named=True):
     f = FUEL_EN[r["fuel"]]
-    order_aic = f"({r['p']},{r['q']})"
-    order = order_aic if r["order_bic"] == order_aic else f"{order_aic} / {r['order_bic']}"
     rows.append(
-        f"{f} & {order} & {r['lr_elasticity']:.3f} & "
+        f"{f} & ({r['p']},{r['q']}) & {r['lr_elasticity']:.3f} & "
         f"{r['backtest_rmse_cpl']:.2f} & {r['backtest_rmse_rw_cpl']:.2f} & "
         f"{r['n_fit']} \\\\"
     )
@@ -43,7 +41,7 @@ ardl_table = f"""{head}\\begin{{table}}[htbp]
 \\begin{{tabular}}{{lccccc}}
 \\toprule
  & Order ($p,q$) & Long-run elasticity & {{RMSE ARDL}} & {{RMSE random walk}} & $N$ \\\\
- & (AIC / BIC) & (net price vs Brent \\euro/bbl) & (c/l) & (c/l) & \\\\
+ & (BIC) & (net price vs Brent \\euro/bbl) & (c/l) & (c/l) & \\\\
 \\midrule
 {chr(10).join(rows)}
 \\bottomrule
@@ -54,8 +52,7 @@ ardl_table = f"""{head}\\begin{{table}}[htbp]
 (self-service, stradale), daily, 1 Jul--27 Sep 2026; regressor: log Brent
 in \\euro/bbl (ECB reference rate), lags as shown. The target is net of
 excise and VAT by construction, so no tax dummy enters the regression.
-Lag orders selected by AIC and by BIC over $(p,q)\\in[0,10]^2$ (the AIC
-selection is used throughout; where the two differ both are shown).
+Lag orders selected by BIC over $(p,q)\\in[0,10]^2$.
 Backtest: refit to 13 Sep, projected 14--27 Sep (pre-cap) recursively;
 RMSE on the net price in c/l against a no-change random walk. See
 \\cref{{sec:counterfactual}}.
@@ -125,6 +122,7 @@ VARIANT_LABEL = {
 VARIANT_ORDER = list(VARIANT_LABEL)
 
 rows = []
+any_dagger: list[str] = []
 for f in ("Benzina", "Gasolio"):
     for key in VARIANT_ORDER:
         r = rob.filter(
@@ -134,8 +132,10 @@ for f in ("Benzina", "Gasolio"):
         if r["lr_elasticity"] is None:
             elas = "--"
         elif abs(r["lr_elasticity"]) > 2:
-            # flag implausible multipliers (near-unit-root corner)
+            # flag implausible multipliers (explosive corner; safety net -
+            # BIC selection has not triggered this to date)
             elas = f"{r['lr_elasticity']:.3f}$^{{\\dagger}}$"
+            any_dagger.append(f)
         else:
             elas = f"{r['lr_elasticity']:.3f}"
         rows.append(
@@ -149,13 +149,20 @@ blk_txt = " ; ".join(
     for r in blk.iter_rows(named=True)
 )
 
+dagger_note = (
+    "$^{\\dagger}$The selected specification's autoregressive polynomial "
+    "is explosive ($\\sum\\hat\\phi > 1$); the implied long-run "
+    "multiplier is meaningless --- see the text above."
+    if any_dagger else ""
+)
+
 robust_table = f"""{head}\\begin{{table}}[H]
 \\centering\\footnotesize\\setlength{{\\tabcolsep}}{{3pt}}
 \\caption{{ARDL specification robustness: forced oil-lag floors and distributed-lag / autoregression-only extremes (max 10 lags)}}
 \\label{{tab:ardl-robust}}
 \\begin{{tabular}}{{llcccccc}}
 \\toprule
- & Specification & Order (AIC) & Long-run & {{RMSE}} & {{RMSE RW}} & Mean gap & {{MoM no cap}} \\\\
+ & Specification & Order (BIC) & Long-run & {{RMSE}} & {{RMSE RW}} & Mean gap & {{MoM no cap}} \\\\
  & & & elasticity & (c/l) & (c/l) & (c/l) & (\\%) \\\\
 \\midrule
 {chr(10).join(rows)}
@@ -163,7 +170,7 @@ robust_table = f"""{head}\\begin{{table}}[H]
 \\end{{tabular}}
 
 \\medskip
-\\footnotesize Each row re-selects $(p,q)$ by AIC on the stated grid
+\\footnotesize Each row re-selects $(p,q)$ by BIC on the stated grid
 (max lag 10 in all grids), refits the placebo backtest (14--27 Sep) and
 the no-cap projection.
 ``Order'' counts oil lags beyond the contemporaneous term. ``DL only''
@@ -171,9 +178,7 @@ the no-cap projection.
 term at all and is an economically misspecified reference, not a
 counterfactual. HAC block-exclusion of the Brent terms
 in the baseline models: {blk_txt}. RW: no-change random walk.
-$^{{\\dagger}}$AIC selection under the seven-lag floor overfits an
-explosive autoregressive polynomial ($\\sum\\hat\\phi > 1$); the implied
-long-run multiplier is meaningless --- see the text above.
+{dagger_note}
 \\end{{table}}
 
 """
