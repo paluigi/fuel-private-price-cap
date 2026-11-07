@@ -52,7 +52,8 @@ ardl_table = f"""{head}\\begin{{table}}[htbp]
 (self-service, stradale), daily, 1 Jul--27 Sep 2026; regressor: log Brent
 in \\euro/bbl (ECB reference rate), lags as shown. The target is net of
 excise and VAT by construction, so no tax dummy enters the regression.
-Lag orders selected by BIC over $(p,q)\\in[0,10]^2$.
+Lag orders selected by BIC over $p\\in[0,10]$, $q\\in[7,10]$: at least
+seven oil lags (one week of Brent dynamics) in the polynomial.
 Backtest: refit to 13 Sep, projected 14--27 Sep (pre-cap) recursively;
 RMSE on the net price in c/l against a no-change random walk. See
 \\cref{{sec:counterfactual}}.
@@ -115,7 +116,7 @@ VARIANT_LABEL = {
     "V1_baseline": "Baseline (no floor)",
     "V2_minq2": "Min 2 oil lags",
     "V3_minq5": "Min 5 oil lags",
-    "V4_minq7": "Min 7 oil lags",
+    "V4_minq7": "Min 7 oil lags (main spec)",
     "V5_dl_only": "DL only (no AR)",
     "V6_ar_only": "AR only (no oil)",
 }

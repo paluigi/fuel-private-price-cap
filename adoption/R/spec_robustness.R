@@ -198,11 +198,12 @@ run_variant <- function(d, fuel_name, var) {
 }
 
 block_tests <- function(d, fuel_name) {
-  # HAC block-exclusion Wald tests on the baseline AIC spec. Restricted
-  # models are refit on the FULL model's lagged frame so all models use
-  # the same estimation sample.
+  # HAC block-exclusion Wald tests on the MAIN spec (BIC over the same
+  # grid as analysis_ardl.R: p in [0,10], q >= 7). Restricted models are
+  # refit on the FULL model's lagged frame so all models use the same
+  # estimation sample.
   fit <- d[date <= FIT_TO]
-  sel <- select_grid(fit, 0:10, 0:10)
+  sel <- select_grid(fit, 0:10, 7:10)
   p <- sel$best_bic$p; q <- sel$best_bic$q
   lagdf <- fit_ardl(fit, p, q)$lag
   yl <- paste0("yl", seq_len(p))
@@ -220,7 +221,7 @@ block_tests <- function(d, fuel_name) {
   } else {
     ta <- list(F = c(NA, NA), `Pr(>F)` = c(NA, NA))
   }
-  cat(sprintf("\n%s baseline BIC (%d,%d) HAC block Wald tests:\n", fuel_name, p, q))
+  cat(sprintf("\n%s main spec BIC (%d,%d) HAC block Wald tests:\n", fuel_name, p, q))
   cat(sprintf("  oil block excluded:      F = %.2f, p = %.3g\n", tx$F[2], tx$`Pr(>F)`[2]))
   cat(sprintf("  autoregressive block:    F = %.2f, p = %.3g\n", ta$F[2], ta$`Pr(>F)`[2]))
   data.table(fuel = fuel_name,

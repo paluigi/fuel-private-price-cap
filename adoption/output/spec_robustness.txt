@@ -23,12 +23,12 @@ V6_ar_only Benzina   BIC (5,.) | NO OIL TERM | N 84 | R2 0.9985
 V6_ar_only Gasolio   BIC (1,.) | NO OIL TERM | N 88 | R2 0.9941
            backtest RMSE 3.20 (RW 5.07, bias +2.92) | mean gap -19.4 c/l, end gap -21.8 c/l | MoM cf +10.13% | CPI effect -0.193 pp
 
-Benzina baseline BIC (5,0) HAC block Wald tests:
-  oil block excluded:      F = 21.36, p = 1.5e-05
-  autoregressive block:    F = 1934.67, p = 2.1e-79
+Benzina main spec BIC (4,7) HAC block Wald tests:
+  oil block excluded:      F = 9.30, p = 1.35e-08
+  autoregressive block:    F = 1028.70, p = 1.09e-60
 
-Gasolio baseline BIC (1,1) HAC block Wald tests:
-  oil block excluded:      F = 17.04, p = 6.15e-07
-  autoregressive block:    F = 5898.43, p = 1.36e-79
+Gasolio main spec BIC (1,7) HAC block Wald tests:
+  oil block excluded:      F = 21.62, p = 2.39e-16
+  autoregressive block:    F = 1716.96, p = 5.63e-52
 
 Done.

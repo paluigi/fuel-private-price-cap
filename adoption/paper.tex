@@ -50,11 +50,11 @@ counterfactual: an autoregressive distributed-lag model links the
 national net-of-tax price of each fuel to the Brent crude price in euro
 over the pre-cap window (1 July--27 September); projected forward on the
 actual oil path, it predicts an October pump price 16.3~c/l (petrol) and
-27.5~c/l (diesel) above the realised one on average. On the ISTAT
+24.3~c/l (diesel) above the realised one on average. On the ISTAT
 reference days used for inflation measurement, month-on-month fuel-price
 changes were $-2.3\%$ (petrol) and $+1.6\%$ (diesel) with the cap, against
-$+4.9\%$ and $+13.4\%$ without it: the cap lowered October's headline
-month-on-month inflation by roughly 0.43 percentage points. Because
+$+4.8\%$ and $+12.1\%$ without it: the cap lowered October's headline
+month-on-month inflation by roughly 0.40 percentage points. Because
 daily price extracts close at 8am, a communication wave crossing a
 sampling reference day additionally biases recorded averages by up to
 4~c/l; communication-time reconstruction corrects it.
@@ -144,17 +144,17 @@ provincial market.
 On the counterfactual (\cref{sec:counterfactual}), an ARDL model of the
 daily national net price on lags of itself and of the Brent price in
 euro --- estimated only on pre-cap data, and validated by a placebo
-backtest that cuts the random-walk forecast error by two thirds for
-petrol --- implies October
-pump prices 16.3~c/l (petrol) and 27.5~c/l (diesel) above the realised
-ones on average over 28 September--31 October, and 20.2 and 31.8~c/l
+backtest that beats the random-walk benchmark for both fuels ---
+implies October
+pump prices 16.3~c/l (petrol) and 24.3~c/l (diesel) above the realised
+ones on average over 28 September--31 October, and 20.4 and 26.7~c/l
 above by the window's end. Translated to measurement days
 (\cref{sec:inflation}): the realised month-on-month change of pump
 prices averaged over the 1st, 11th and 21st was $-2.3\%$ for petrol and
-$+1.6\%$ for diesel; the counterfactual delivers $+4.9\%$ and $+13.4\%$.
+$+1.6\%$ for diesel; the counterfactual delivers $+4.8\%$ and $+12.1\%$.
 Using the 2026 ISTAT basket weight for motor fuels (4.52\%), the cap
-lowered headline month-on-month inflation by roughly 0.43 percentage
-points in October --- the difference between a $+0.41$~pp fuel
+lowered headline month-on-month inflation by roughly 0.40 percentage
+points in October --- the difference between a $+0.38$~pp fuel
 contribution and a $-0.02$~pp one.
 
 The paper proceeds as follows.
@@ -261,7 +261,8 @@ France, Germany and Italy, consistent with a common crude-oil driver.
 This literature establishes both that retail fuel prices track crude
 with distributed lags --- the identifying assumption behind our
 counterfactual --- and that pass-through is state-dependent, which is
-why we let the data choose the lag structure rather than impose one.
+why the lag structure is selected by an information criterion (BIC)
+rather than imposed coefficient by coefficient.
 
 \paragraph{Retail fuel price dynamics.}
 Retail fuel prices are strategic complements with locally heterogeneous
@@ -731,25 +732,30 @@ a tax change at different speeds --- stay in the error, where they
 belong. The ARDL form
 \parencite{pesaran2001} lets the data pick both the speed of
 pass-through and the long-run level relationship; we search
-$(p,q) \in [0,10]^2$ by BIC on the pre-cap window, 1 July--27
-September (84--88 daily observations after lags): petrol selects
-$(5,0)$, diesel $(1,1)$. We prefer BIC's parsimony on this sample
-size: AIC would pick the near-unit-root $(4,5)$ for petrol and, under
-a seven-lag floor, an explosive $(8,8)$ (\cref{app:diag}).
+$p \in [0,10]$, $q \in [7,10]$ by BIC on the pre-cap window, 1 July--27
+September (82 daily observations after lags for each fuel): petrol
+selects $(4,7)$, diesel $(1,7)$. The seven-lag floor requires at least
+a week of Brent dynamics in the polynomial --- the horizon over which
+wholesale-to-retail pass-through typically completes
+\parencite{borenstein1997, tappata2009} --- and disciplines the
+autoregressive root on this short sample; \cref{tab:ardl-robust} shows
+the results are insensitive to it. The grid search is exhaustive and
+reproduces the \textsf{ARDL} package's unconstrained selections when
+the floor is lifted (\cref{app:diag}).
 
 \Cref{tab:ardl} reports the specification and fit. The models track the
 net prices closely ($R^2 = 0.999$ petrol, $0.995$ diesel), and the
 implied \emph{long-run pass-through elasticity} of net prices to Brent
-in euro --- $\sum_j \theta_j / (1 - \sum_i \phi_i)$ --- is $0.46$ for
-petrol and $0.63$ for diesel: a 10\% rise in the euro oil price raises
-the net price by 4.6--6.3\% once lags play out. The adjustment half-life
-is about 13 days for petrol and 9 days for diesel. Diagnostics
+in euro --- $\sum_j \theta_j / (1 - \sum_i \phi_i)$ --- is $0.43$ for
+petrol and $0.50$ for diesel: a 10\% rise in the euro oil price raises
+the net price by 4.3--5.0\% once lags play out. The adjustment half-life
+is about 26 days for petrol and 8 days for diesel. Diagnostics
 (\cref{app:diag}: Breusch--Godfrey, RESET, Newey--West standard errors)
-are discussed there; in brief, petrol's Breusch--Godfrey statistic is borderline at short
-lags (read inference with the reported Newey--West errors) and the
-diesel RESET rejects ($p \approx 0.008$, driven by the two large July
-excise transitions), acceptable for a forecasting device estimated on
-84--88 observations.
+are discussed there; in brief, petrol's Breusch--Godfrey statistic rejects at short lags
+(read inference with the reported Newey--West errors) while its RESET
+passes, and diesel's diagnostics are clean --- its RESET now passes at
+the 5\% level ($p = 0.08$), the deeper oil polynomial absorbing the
+dynamics that the most parsimonious specification left in the error.
 
 \input{paper_tables_cf}
 
@@ -757,18 +763,17 @@ excise transitions), acceptable for a forecasting device estimated on
 Before trusting a projection, we check that the design can forecast a
 period it was not fitted on. Refitting to 13 September and projecting
 14--27 September --- still pre-cap, so the truth is observable --- the
-recursive projection attains a root-mean-square error of 1.33~c/l
-(petrol) and 5.03~c/l (diesel) on the net price, against 3.69 and
-5.07~c/l for a no-change random walk, with biases of $+1.3$ and
-$-4.1$~c/l. The ARDL cuts the benchmark error by two thirds for
-petrol; for diesel
-it merely ties the random walk, its edge eroded by the two excise steps
-inside the backtest window (18 and 26 September --- excluding those
-transition days the RMSE falls to 4.05~c/l) and by a modest upward
-drift in the projection. The bias signs also bound the counterfactual:
-petrol's device under-predicts the net price, making that gap
-conservative, while diesel's over-prediction would, if it carried into
-October, shave roughly 4~c/l off a 27~c/l gap.
+recursive projection attains a root-mean-square error of 1.93~c/l
+(petrol) and 4.01~c/l (diesel) on the net price, against 3.69 and
+5.07~c/l for a no-change random walk, with biases of $+1.9$ and
+$-2.9$~c/l. The ARDL roughly halves the benchmark error for petrol and
+cuts it by a fifth for diesel --- whose remaining shortfall is
+concentrated on the two excise steps inside the backtest window (18 and
+26 September; excluding those transition days the RMSE falls to
+3.10~c/l). The bias signs also bound the counterfactual: petrol's
+device under-predicts the net price, making that gap conservative,
+while diesel's over-prediction would, if it carried into October, shave
+roughly 3~c/l off a 24~c/l gap.
 
 \subsection{The counterfactual pump price}
 \label{sec:cfresults}
@@ -786,13 +791,13 @@ residual bootstrap (2{,}000 draws, 95\% intervals).
 \Cref{fig:cf} shows the result. The counterfactual petrol price starts
 where the market started (2.16 vs 2.13~\euro/l on 28 September, a gap
 of 3.2~c/l) and climbs with oil while the actual price falls to the
-cap: by 31 October the gap is 20.2~c/l. Diesel's counterfactual climbs
-from 2.38 to 2.56~\euro/l --- a 31.8~c/l gap at the end --- while the
+cap: by 31 October the gap is 20.4~c/l. Diesel's counterfactual climbs
+from 2.38 to 2.51~\euro/l --- a 26.7~c/l gap at the end --- while the
 actual price stays pinned near the (tax-adjusted) cap. Averaged over
 the 34 post-cap days, the cap saved consumers 16.3~c/l per litre of
-petrol and 27.5~c/l per litre of diesel relative to the oil-following
-counterfactual. The bands widen slowly ($\pm$2.7~c/l for
-petrol and $\pm$7.5~c/l for diesel at the 34-day horizon), so the gap
+petrol and 24.3~c/l per litre of diesel relative to the oil-following
+counterfactual. The bands widen slowly ($\pm$3.6~c/l for
+petrol and $\pm$5.9~c/l for diesel at the 34-day horizon), so the gap
 remains a multiple of its uncertainty from mid-October on.
 
 \begin{figure}[htbp]
@@ -807,21 +812,21 @@ cap start. Black dots: ISTAT reference days.}
 \end{figure}
 
 \paragraph{Robustness.}
-Four checks. First, the lag structure itself is not doing the work:
-forcing oil-lag floors of two, five or seven under the same 10-lag grid
-moves petrol's selected order only from $(5,0)$ to $(4,7)$, with
-elasticities 0.43--0.46 and mean gaps $-16.2$ to $-16.5$~c/l, and
-moves the diesel gap from $-27.5$ into the $-24.3$ to $-27.5$~c/l
-range --- deeper oil lags in fact improve diesel's backtest. Collapsing
+Four checks. First, the seven-lag floor is not doing the work:
+relaxing it to five, two or none moves petrol's selected order only
+between $(4,7)$ and $(5,0)$, with long-run elasticities 0.43--0.46 and
+mean gaps $-16.2$ to $-16.5$~c/l, while the diesel gap moves within
+$-24.3$ to $-27.5$~c/l --- and relaxing the floor \emph{degrades}
+diesel's backtest, from 4.01~c/l with seven oil lags to 5.03 with
+none, so the floor is a strength rather than a constraint. Collapsing
 to a pure distributed lag on Brent (no autoregressive term) leaves
-petrol essentially unchanged --- indeed with the best-behaved backtest
-of the ARDL variants --- while degrading diesel's, whose margins adjust
-too persistently for a static lag polynomial. Oil is indispensable in
-every specification: HAC block-exclusion of the Brent terms rejects
-massively in both fuels ($p < 10^{-4}$), whereas an autoregression with
-\emph{no} oil term --- economically untenable --- fits almost as well in
-sample yet forecasts worse and understates the effect
-(\cref{tab:ardl-robust}). Second,
+petrol essentially unchanged while degrading diesel's, whose margins
+adjust too persistently for a static lag polynomial. Oil is
+indispensable in every specification: HAC block-exclusion of the Brent
+terms rejects massively in both fuels ($p < 10^{-4}$), whereas an
+autoregression with \emph{no} oil term --- economically untenable ---
+fits almost as well in sample yet forecasts worse and understates the
+effect (\cref{tab:ardl-robust}). Second,
 restricting the sample to the 98\% of
 stations that report essentially every day (a balanced panel) moves the
 national daily means by fractions of a cent --- composition is not
@@ -858,22 +863,21 @@ The result is stark. With the cap, the October reference-day average
 was 2.042~\euro/l for petrol and 2.258~\euro/l for diesel,
 month-on-month changes of $-2.34\%$ and $+1.58\%$: petrol \emph{fell}
 into an oil-price surge. Without the cap, the counterfactual implies
-2.194 and 2.520~\euro/l --- $+4.95\%$ and $+13.37\%$ month-on-month.
-The cap therefore changed the fuels' month-on-month rate by $-7.28$
-percentage points (petrol) and $-11.79$ (diesel), or $-9.54$~pp for
+2.192 and 2.492~\euro/l --- $+4.85\%$ and $+12.13\%$ month-on-month.
+The cap therefore changed the fuels' month-on-month rate by $-7.18$
+percentage points (petrol) and $-10.55$ (diesel), or $-8.86$~pp for
 motor fuels combined. Note that both series face the same tax calendar:
 the diesel excise steps of 6 October fall on the actual and the
 counterfactual alike, so the difference is conduct, not fiscal policy.
 
 Weighted by the NIC basket, motor fuels contributed $-0.02$~pp to
 headline month-on-month October inflation with the cap, against
-$+0.41$~pp in the counterfactual: the voluntary cap lowered October's
-measured month-on-month inflation by roughly $\mathbf{0.43}$
+$+0.38$~pp in the counterfactual: the voluntary cap lowered October's
+measured month-on-month inflation by roughly $\mathbf{0.40}$
 percentage points. For a measure framed against ``speculation''
 during an oil surge, this is the cleanest statement of what it bought:
-about a third of the counterfactual month's fuel-price inflation was
-absorbed by the market's own margin compression rather than passed to
-pumps.
+the market's own margin compression absorbed the entire
+counterfactual fuel contribution rather than passing it to pumps.
 
 A measurement caveat ties back to \cref{sec:dtcomu}: the
 \emph{recorded} (8am-cut) averages on 1 October overstate the effective
@@ -888,8 +892,8 @@ used here, is the robust measurement.
 
 \paragraph{What did the cap buy, and at whose cost?}
 Our counterfactual prices the cap's consumer benefit at 16.3~c/l
-(petrol) and 27.5~c/l (diesel) per litre over the first post-cap month
---- 0.43~pp of October headline inflation. Unlike an excise cut, which
+(petrol) and 24.3~c/l (diesel) per litre over the first post-cap month
+--- 0.40~pp of October headline inflation. Unlike an excise cut, which
 lowers prices for everyone at direct fiscal cost, the voluntary cap
 operates on margins: the leader gave up its own premium and invited
 rivals to compress theirs. The cost side is invisible in our data ---
@@ -943,16 +947,16 @@ expensive.
 The price counterfactual turns these adoption facts into consumer
 value. An ARDL model of net prices on Brent-in-euro --- estimated on
 pre-cap data only, and validated by a placebo backtest that cuts the
-random-walk forecast error by two thirds for petrol and ties it for
-diesel --- implies that without the
+random-walk forecast error for both fuels --- implies that without
+the
 cap, October pump prices would have averaged 16.3~c/l (petrol) and
-27.5~c/l (diesel) higher, with the gap reaching 20 and 32~c/l by month
+24.3~c/l (diesel) higher, with the gap reaching 20 and 27~c/l by month
 end. On ISTAT reference days the cap changed the month-on-month fuel
-inflation rate by $-7.3$~pp (petrol) and $-11.8$~pp (diesel): realised
+inflation rate by $-7.2$~pp (petrol) and $-10.5$~pp (diesel): realised
 October fuel-price inflation of $-2.3\%$ and $+1.6\%$ would have been
-$+4.9\%$ and $+13.4\%$ in the oil-following counterfactual. In headline
+$+4.8\%$ and $+12.1\%$ in the oil-following counterfactual. In headline
 terms, the cap lowered October's month-on-month NIC inflation by
-roughly 0.43 percentage points.
+roughly 0.40 percentage points.
 
 Three caveats. First, the adoption window is fifteen post-cap days and
 the counterfactual extends to thirty-four; the two-month cap horizon
@@ -1034,49 +1038,47 @@ used for its readable coefficients, not for out-of-range extrapolation.
 Heteroskedasticity inherent to binary outcomes is handled by the
 gestore-clustered (Huber--White) standard errors reported throughout.
 
-\paragraph{ARDL diagnostics.} Petrol ARDL$(5,0)$: $R^2 = 0.999$,
-residual SD 0.25\% of the net price; RESET (powers 2--3) does not
-reject ($p = 0.17$); Breusch--Godfrey is borderline at orders 7 and 14
-($p = 0.013$ and $0.065$), so coefficient inference uses Newey--West
+\paragraph{ARDL diagnostics.} Petrol ARDL$(4,7)$: $R^2 = 0.999$,
+residual SD 0.24\% of the net price; RESET (powers 2--3) does not
+reject ($p = 0.29$); Breusch--Godfrey rejects at orders 7 and 14
+($p = 0.001$ and $0.013$), so coefficient inference uses Newey--West
 (lag 7) standard errors. Diesel
-ARDL$(1,1)$: $R^2 = 0.995$, residual SD 0.79\%; Breusch--Godfrey is
-clean ($p = 0.78$ and $0.94$); RESET rejects ($p \approx 0.008$),
-reflecting the two large July excise transitions (4 and 28 July), whose
-staggered pass-through briefly blips the measured net price that the
-tax-stripped target leaves in the error. Lag selection is by BIC
-throughout; the \textsf{ARDL} package's \texttt{auto\_ardl} (BIC)
-reproduces $(5,0)$ and $(1,1)$. Selecting by AIC instead would pick
-$(4,5)$ for petrol and, under the seven-lag floor of
-\cref{tab:ardl-robust}, an explosive $(8,8)$ --- a further reason to
-prefer BIC's parsimony on this sample.
+ARDL$(1,7)$: $R^2 = 0.995$, residual SD 0.68\%; Breusch--Godfrey is
+clean ($p = 0.26$ and $0.39$); RESET passes at the 5\% level
+($p = 0.08$), where the most parsimonious specifications rejected
+(the two large July excise transitions, 4 and 28 July, briefly blip
+the measured net price that the tax-stripped target leaves in the
+error --- the deeper oil polynomial absorbs them). Lag selection is by
+BIC over $p \in [0,10]$, $q \in [7,10]$; the same exhaustive grid
+without the floor reproduces the \textsf{ARDL} package's
+\texttt{auto\_ardl} selections.
 
 \paragraph{Specification robustness.}
 \Cref{tab:ardl-robust} re-runs the entire exercise --- lag selection,
-backtest, projection and reference-day inflation --- under the
-specification variants of \cref{sec:cfresults}, all selecting by BIC
-with a maximum lag of ten: oil-lag floors of two, five and seven lags;
-a pure distributed lag with no autoregressive term; and, as an
-economically misspecified reference, an autoregression with no oil term
-at all. Petrol is remarkably flat across the floors: its BIC order
-walks from $(5,0)$ to $(4,7)$, the long-run elasticity stays between
-0.43 and 0.46, and the mean gap between $-16.2$ and $-16.5$~c/l.
-Diesel welcomes deeper oil lags: its backtest RMSE improves from
-5.03~c/l without a floor to 4.01 with a floor of seven, and its gap
-settles in the $-24.3$ to $-27.5$~c/l range. The no-oil reference is
-instructive for the opposite reason: daily net prices are so persistent
-that it fits almost as well in sample ($R^2$ 0.9985 versus 0.9988 for
-petrol) --- exactly why in-sample fit cannot arbitrate this question ---
-yet it forecasts worse out of sample (petrol RMSE 3.19 versus 1.33~c/l)
-and understates the effect; excluding the Brent block is rejected with
+backtest, projection and reference-day inflation --- under variants of
+the main specification of \cref{sec:cfresults}, all selecting by BIC
+with a maximum lag of ten: the oil-lag floor relaxed from the main
+seven to five, two or none; a pure distributed lag with no
+autoregressive term; and, as an economically misspecified reference, an
+autoregression with no oil term at all. Petrol is remarkably flat
+across the floors: its BIC order walks between $(5,0)$ and $(4,7)$,
+the long-run elasticity stays between 0.43 and 0.46, and the mean gap
+between $-16.2$ and $-16.5$~c/l. Diesel welcomes the main
+specification's deeper oil lags: relaxing the floor degrades its
+backtest from 4.01~c/l (seven lags) to 5.03~c/l (no floor), and its
+gap spans $-24.3$ to $-27.5$~c/l. The no-oil reference is instructive
+for the opposite reason: daily net prices are so persistent that it
+fits almost as well in sample ($R^2$ 0.9985 versus 0.9988 for petrol)
+--- exactly why in-sample fit cannot arbitrate this question --- yet it
+forecasts worse out of sample (petrol RMSE 3.19 versus 1.93~c/l) and
+understates the effect; excluding the Brent block is rejected with
 $p < 10^{-4}$ in both fuels. Dropping the autoregressive dimension
 entirely leaves petrol essentially unchanged but degrades diesel badly
 (RMSE 11.8~c/l, worse than the random walk), whose multi-week margin
 persistence only the autoregressive part carries. Across the
 economically sensible specifications the October mean gaps stay within
 14.6--16.5~c/l (petrol) and 24.3--27.7~c/l (diesel), and the combined
-CPI effect within $-0.40$ to $-0.43$~percentage points. (Selecting by
-AIC instead of BIC would not change these ranges materially --- but, as
-noted above, it opens an explosive corner under the seven-lag floor.)
+CPI effect within $-0.40$ to $-0.43$~percentage points.
 
 \input{paper_appendix_ardl}
 

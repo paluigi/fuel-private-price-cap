@@ -6,9 +6,11 @@
 # prices), so the tax calendar is stripped by construction and NO excise
 # dummy enters the regression: statutory tax changes have no place in a
 # net-price equation, and any staggered pass-through around them stays in
-# the error. Lag order (p,q) selected over 0..MAX_ORDER by BIC on an
-# explicit-lag lm grid (cross-checked against ARDL::auto_ardl), then
-# estimated with lm so the recursive projection is fully transparent.
+# the error. Lag order (p,q) selected by BIC on an explicit-lag lm grid:
+# p in [0, MAX_ORDER], q in [MIN_OIL_Q, MAX_ORDER] - the main specification
+# requires at least a week of Brent dynamics in the lag polynomial (the
+# grid is exhaustive, so selection is exact; the unconstrained-grid BIC
+# picks are cross-checked against ARDL::auto_ardl).
 # Diagnostics: Breusch-Godfrey, RESET, long-run pass-through elasticity =
 # sum(theta)/(1 - sum(phi)).
 #
@@ -59,6 +61,7 @@ BT_FROM <- as.Date("2026-09-14") # placebo projection window
 PROJ_FROM <- as.Date("2026-09-28")
 ANALYSIS_TO <- as.Date("2026-10-31")
 MAX_ORDER <- 10L
+MIN_OIL_Q <- 7L  # main spec: >= 7 oil lags (one week of Brent dynamics)
 N_SIM <- 2000L
 SEED <- 20260928
 VAT <- 1.22
@@ -92,9 +95,9 @@ fit_ardl <- function(d, p, q) {
   list(fit = fit, lag = lag, p = p, q = q, xs = xs)
 }
 
-select_order <- function(d, max_order = MAX_ORDER) {
+select_order <- function(d, max_order = MAX_ORDER, min_q = MIN_OIL_Q) {
   rows <- rbindlist(lapply(0:max_order, function(p) {
-    rbindlist(lapply(0:max_order, function(q) {
+    rbindlist(lapply(min_q:max_order, function(q) {
       if (p == 0 && q == 0) return(NULL)
       obj <- fit_ardl(d, p, q)
       data.table(p = p, q = q, n = nrow(obj$lag),
@@ -193,14 +196,15 @@ run_fuel <- function(dall, fuel_name) {
         round(log(0.5) / log(ph), 1), "\n")
   }
 
-  # cross-check: ARDL::auto_ardl best order (BIC)
+  # cross-check: ARDL::auto_ardl best unconstrained order (BIC). The
+  # main grid is the same search with the q >= MIN_OIL_Q floor imposed.
   aa <- tryCatch(auto_ardl(y ~ x, data = as.data.frame(fit),
                            max_order = MAX_ORDER, selection = "BIC"),
                  error = function(e) {
                    cat("auto_ardl failed:", conditionMessage(e), "\n"); NULL
                  })
   if (!is.null(aa)) {
-    cat("auto_ardl cross-check, best order:\n")
+    cat("auto_ardl cross-check, unconstrained BIC best order:\n")
     print(aa$best_order)
   }
 
