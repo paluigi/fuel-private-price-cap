@@ -16,10 +16,19 @@ ROW_LABEL = {
     "(Intercept)": "Intercept",
     "nn_dist_km": "Nearest station (km)",
     "cap_dist_km_d0": "Nearest day-0 adopter (km)",
-    "pop_density_cell": "Population per 1-km cell",
-    "pre_gap_vs_cap": "Pre-cap gap (\\euro/l)",
-    "n_stations_gestore": "Chain size (Gestore, stations)",
+    "pop_density_cell": "Population (1{,}000 per km\\textsuperscript{2} cell)",
+    "pre_gap_vs_cap": "Pre-cap gap (10 c/l)",
+    "n_stations_gestore": "Chain size (10 stations)",
     "fuelGasolio": "Diesel",
+}
+
+# Rescale coefficients to readable economic units (revision v2: report per
+# 10 cents/litre, per 10 stations and per 1,000 residents instead of raw
+# EUR/l, per-station and per-person units).
+RESCALE = {
+    "pre_gap_vs_cap": 0.1,   # EUR/l -> 10 c/l
+    "n_stations_gestore": 10.0,  # per station -> per 10 stations
+    "pop_density_cell": 1000.0,  # per resident -> per 1,000 residents
 }
 
 ROW_RE = re.compile(
@@ -97,16 +106,22 @@ for s in SAMPLES:
 head = (
     "% Auto-generated: do not edit by hand.\n"
     "% Source: R/revision_samples.R -> output/revision_{cox,lpm}.txt\n"
-    "% Panel window: 2026-09-28 .. 2026-10-31, diesel cap tax-adjusted "
-    "(+6.1 c/l from 2026-10-06).\n\n"
+    "% Panel window: 2026-09-28 .. 2026-10-31; strict compliance rule\n"
+    "% (price < ceiling); diesel ceiling 2.200 -> 2.261 (6 Oct) -> 2.212\n"
+    "% (28 Oct). Units rescaled: pre-cap gap per 10 c/l, chain per 10 stations.\n\n"
 )
 
 
 def cox_row(name):
     cells = []
+    scale = RESCALE.get(name, 1.0)
     for s in SAMPLES:
         r = cox[s]["rows"].get(name)
-        cells.append(fmt(r["coef"], r["stars"]) if r else "--")
+        if r is None:
+            cells.append("--")
+        else:
+            digits = 3 if scale != 1.0 else 4
+            cells.append(fmt(r["coef"] * scale, r["stars"], digits))
     return f"{ROW_LABEL[name]} & " + " & ".join(cells) + r" \\"
 
 
@@ -142,10 +157,15 @@ open("paper_tables.tex", "w").write(cox_table)
 # ---- paper_tables_s6.tex (LPM core) ---------------------------------------
 def lpm_row(name, digits=4):
     cells = []
+    scale = RESCALE.get(name, 1.0)
     for s in SAMPLES:
         r = lpm[s]["rows"].get(name)
+        if r is None:
+            cells.append("--")
+            continue
         d = 0 if name == "pop_density_cell" else digits
-        cells.append(fmt(r["coef"], r["stars"], d) if r else "--")
+        digits_eff = 3 if scale != 1.0 else d
+        cells.append(fmt(r["coef"] * scale, r["stars"], digits_eff))
     return f"{ROW_LABEL.get(name, name)} & " + " & ".join(cells) + r" \\"
 
 

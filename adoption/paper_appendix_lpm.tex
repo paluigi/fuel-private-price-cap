@@ -1,6 +1,8 @@
 % Auto-generated: do not edit by hand.
 % Source: R/revision_samples.R -> output/revision_{cox,lpm}.txt
-% Panel window: 2026-09-28 .. 2026-10-31, diesel cap tax-adjusted (+6.1 c/l from 2026-10-06).
+% Panel window: 2026-09-28 .. 2026-10-31; strict compliance rule
+% (price < ceiling); diesel ceiling 2.200 -> 2.261 (6 Oct) -> 2.212
+% (28 Oct). Units rescaled: pre-cap gap per 10 c/l, chain per 10 stations.
 
 \begin{table}[htbp]
 \centering
@@ -10,29 +12,29 @@
 \toprule
  & Coefficient & & Coefficient \\
 \midrule
-Brand: Ala & -0.3740$^{***}$ & Brand: Sia fuel & -0.0247 \\
-Brand: Api-Ip & -0.1040$^{***}$ & Brand: Sommese Petroli & -0.3230$^{***}$ \\
-Brand: Aquila & 0.0014 & Brand: Tamoil & -0.0932$^{***}$ \\
-Brand: Beyfin & -0.1051 & Brand: Toil & -0.2439$^{**}$ \\
-Brand: COIL & -0.1073$^{*}$ & Brand: Vega & -0.0129 \\
-Brand: CONAD & -0.0500$^{*}$ & Region: (no region) & -0.1290 \\
-Brand: Costantin & -0.0399 & Region: Basilicata & -0.0484 \\
-Brand: Ego & -0.1878$^{***}$ & Region: Calabria & -0.0290 \\
-Brand: Energas & -0.0246 & Region: Campania & -0.0443$^{*}$ \\
-Brand: Enerpetroli & -0.1025$^{***}$ & Region: Emilia-Romagna & 0.0132 \\
-Brand: Esso & -0.1357$^{***}$ & Region: Friuli-Venezia Giulia & -0.0679$^{**}$ \\
-Brand: Europam & -0.0824 & Region: Lazio & 0.0161 \\
-Brand: Giap & -0.2014$^{***}$ & Region: Liguria & 0.0230 \\
-Brand: Itala Petroli & -0.1678$^{***}$ & Region: Lombardia & 0.0362$^{*}$ \\
-Brand: KEROPETROL & -0.4223$^{***}$ & Region: Marche & 0.0036 \\
-Brand: Loro & -0.5426$^{***}$ & Region: Molise & -0.0841$^{*}$ \\
-Brand: OTHER & -0.2459$^{***}$ & Region: Piemonte & 0.0436$^{*}$ \\
-Brand: Petrol Gamma & -0.3952$^{***}$ & Region: Puglia & -0.0126 \\
-Brand: Independents & -0.3802$^{***}$ & Region: Sardegna & 0.0563$^{**}$ \\
-Brand: Q8 & -0.0219 & Region: Sicilia & -0.0049 \\
-Brand: Retitalia & -0.2522$^{***}$ & Region: Toscana & -0.0108 \\
-Brand: San Marco Petroli & -0.5556$^{***}$ & Region: Umbria & 0.0255 \\
-Brand: Shell & -0.0962$^{***}$ & Region: Veneto & 0.0164 \\
+Brand: Ala & -0.4095$^{***}$ & Brand: Sia fuel & -0.0490$^{*}$ \\
+Brand: Api-Ip & -0.1094$^{***}$ & Brand: Sommese Petroli & -0.3684$^{***}$ \\
+Brand: Aquila & 0.0010 & Brand: Tamoil & -0.1355$^{***}$ \\
+Brand: Beyfin & -0.1223$^{*}$ & Brand: Toil & -0.2667$^{**}$ \\
+Brand: COIL & -0.1058$^{*}$ & Brand: Vega & -0.0155$^{*}$ \\
+Brand: CONAD & -0.0508$^{**}$ & Region: (no region) & -0.1212 \\
+Brand: Costantin & -0.0416 & Region: Basilicata & -0.0545 \\
+Brand: Ego & -0.1811$^{**}$ & Region: Calabria & -0.0261 \\
+Brand: Energas & -0.0286 & Region: Campania & -0.0425$^{*}$ \\
+Brand: Enerpetroli & -0.1004$^{***}$ & Region: Emilia-Romagna & 0.0055 \\
+Brand: Esso & -0.1490$^{***}$ & Region: Friuli-Venezia Giulia & -0.0655$^{*}$ \\
+Brand: Europam & -0.0924 & Region: Lazio & 0.0138 \\
+Brand: Giap & -0.2239$^{***}$ & Region: Liguria & 0.0252 \\
+Brand: Itala Petroli & -0.2085$^{***}$ & Region: Lombardia & 0.0389$^{*}$ \\
+Brand: KEROPETROL & -0.4234$^{***}$ & Region: Marche & 0.0066 \\
+Brand: Loro & -0.5435$^{***}$ & Region: Molise & -0.0846$^{**}$ \\
+Brand: OTHER & -0.2524$^{***}$ & Region: Piemonte & 0.0485$^{*}$ \\
+Brand: Petrol Gamma & -0.3936$^{***}$ & Region: Puglia & -0.0124 \\
+Brand: Independents & -0.3874$^{***}$ & Region: Sardegna & 0.0546$^{**}$ \\
+Brand: Q8 & -0.0179 & Region: Sicilia & -0.0024 \\
+Brand: Retitalia & -0.2677$^{***}$ & Region: Toscana & -0.0103 \\
+Brand: San Marco Petroli & -0.6682$^{***}$ & Region: Umbria & 0.0259 \\
+Brand: Shell & -0.1229$^{***}$ & Region: Veneto & 0.0178 \\
 \bottomrule
 \end{tabular}
 
@@ -44,7 +46,9 @@ than 100 observations are grouped into OTHER.
 
 % Auto-generated: do not edit by hand.
 % Source: R/revision_samples.R -> output/revision_{cox,lpm}.txt
-% Panel window: 2026-09-28 .. 2026-10-31, diesel cap tax-adjusted (+6.1 c/l from 2026-10-06).
+% Panel window: 2026-09-28 .. 2026-10-31; strict compliance rule
+% (price < ceiling); diesel ceiling 2.200 -> 2.261 (6 Oct) -> 2.212
+% (28 Oct). Units rescaled: pre-cap gap per 10 c/l, chain per 10 stations.
 
 \begin{table}[htbp]
 \centering
@@ -54,28 +58,28 @@ than 100 observations are grouped into OTHER.
 \toprule
  & Coefficient & & Coefficient \\
 \midrule
-Brand: Api-Ip & 0.2575$^{***}$ & Brand: Sommese Petroli & 0.0352 \\
-Brand: Aquila & 0.3857$^{***}$ & Brand: Tamoil & 0.2524$^{***}$ \\
-Brand: Beyfin & 0.2748$^{***}$ & Brand: Toil & 0.1372 \\
-Brand: COIL & 0.2471$^{***}$ & Brand: Vega & 0.3369$^{***}$ \\
-Brand: CONAD & 0.3139$^{***}$ & Region: (no region) & -0.1211 \\
-Brand: Costantin & 0.3402$^{***}$ & Region: Basilicata & -0.0666 \\
-Brand: Ego & 0.1778$^{**}$ & Region: Calabria & -0.0466 \\
-Brand: Energas & 0.3403$^{***}$ & Region: Campania & -0.0489$^{*}$ \\
-Brand: Enerpetroli & 0.2655$^{***}$ & Region: Emilia-Romagna & 0.0233 \\
-Brand: Esso & 0.2366$^{***}$ & Region: Friuli-Venezia Giulia & -0.1582$^{***}$ \\
-Brand: Europam & 0.2748$^{***}$ & Region: Lazio & 0.0166 \\
-Brand: Giap & 0.1818$^{***}$ & Region: Liguria & 0.0368 \\
-Brand: Itala Petroli & 0.2065$^{***}$ & Region: Lombardia & 0.0529$^{*}$ \\
-Brand: KEROPETROL & -0.0563 & Region: Marche & 0.0033 \\
-Brand: Loro & -0.1677$^{***}$ & Region: Molise & -0.1231$^{**}$ \\
-Brand: OTHER & 0.1312$^{***}$ & Region: Piemonte & 0.0622$^{*}$ \\
-Brand: Petrol Gamma & -0.0138 & Region: Puglia & -0.0213 \\
-Brand: Independents & -0.0039 & Region: Sardegna & 0.0774$^{**}$ \\
-Brand: Retitalia & 0.1197$^{**}$ & Region: Sicilia & -0.0204 \\
-Brand: San Marco Petroli & -0.1581$^{***}$ & Region: Toscana & -0.0187 \\
-Brand: Shell & 0.2589$^{***}$ & Region: Umbria & 0.0411 \\
-Brand: Sia fuel & 0.3528$^{***}$ & Region: Veneto & 0.0146 \\
+Brand: Api-Ip & 0.2885$^{***}$ & Brand: Sommese Petroli & 0.0206 \\
+Brand: Aquila & 0.4172$^{***}$ & Brand: Tamoil & 0.2496$^{***}$ \\
+Brand: Beyfin & 0.2902$^{***}$ & Brand: Toil & 0.1472 \\
+Brand: COIL & 0.2826$^{***}$ & Brand: Vega & 0.3729$^{***}$ \\
+Brand: CONAD & 0.3442$^{***}$ & Region: (no region) & -0.1113 \\
+Brand: Costantin & 0.3701$^{***}$ & Region: Basilicata & -0.0763 \\
+Brand: Ego & 0.2201$^{***}$ & Region: Calabria & -0.0418 \\
+Brand: Energas & 0.3717$^{***}$ & Region: Campania & -0.0469 \\
+Brand: Enerpetroli & 0.3028$^{***}$ & Region: Emilia-Romagna & 0.0115 \\
+Brand: Esso & 0.2563$^{***}$ & Region: Friuli-Venezia Giulia & -0.1547$^{***}$ \\
+Brand: Europam & 0.2985$^{***}$ & Region: Lazio & 0.0128 \\
+Brand: Giap & 0.1977$^{***}$ & Region: Liguria & 0.0391 \\
+Brand: Itala Petroli & 0.1979$^{***}$ & Region: Lombardia & 0.0568$^{*}$ \\
+Brand: KEROPETROL & -0.0243 & Region: Marche & 0.0065 \\
+Brand: Loro & -0.1362$^{**}$ & Region: Molise & -0.1240$^{**}$ \\
+Brand: OTHER & 0.1564$^{***}$ & Region: Piemonte & 0.0689$^{*}$ \\
+Brand: Petrol Gamma & 0.0212 & Region: Puglia & -0.0207 \\
+Brand: Independents & 0.0203 & Region: Sardegna & 0.0758$^{*}$ \\
+Brand: Retitalia & 0.1362$^{**}$ & Region: Sicilia & -0.0161 \\
+Brand: San Marco Petroli & -0.2370$^{***}$ & Region: Toscana & -0.0183 \\
+Brand: Shell & 0.2681$^{***}$ & Region: Umbria & 0.0408 \\
+Brand: Sia fuel & 0.3622$^{***}$ & Region: Veneto & 0.0164 \\
 \bottomrule
 \end{tabular}
 

@@ -1,6 +1,8 @@
 % Auto-generated: do not edit by hand.
 % Source: R/revision_samples.R -> output/revision_{cox,lpm}.txt
-% Panel window: 2026-09-28 .. 2026-10-31, diesel cap tax-adjusted (+6.1 c/l from 2026-10-06).
+% Panel window: 2026-09-28 .. 2026-10-31; strict compliance rule
+% (price < ceiling); diesel ceiling 2.200 -> 2.261 (6 Oct) -> 2.212
+% (28 Oct). Units rescaled: pre-cap gap per 10 c/l, chain per 10 stations.
 
 \begin{table}[htbp]
 \centering
@@ -10,17 +12,17 @@
 \toprule
  & (1) Universe & (2) Excl.\ Agip Eni + Q8 & (3) Independents \\
 \midrule
-Intercept & 1.2000$^{***}$ & 0.8851$^{***}$ & 0.8687$^{***}$ \\
-Nearest station (km) & -0.0224$^{***}$ & -0.0242$^{***}$ & -0.0289$^{***}$ \\
-Nearest day-0 adopter (km) & -0.0113$^{***}$ & -0.0161$^{***}$ & -0.0169$^{***}$ \\
-Population per 1-km cell & -0.0000 & -0.0000 & 0.0000 \\
-Pre-cap gap (\euro/l) & -1.0686$^{***}$ & -1.3380$^{***}$ & -1.0253$^{***}$ \\
-Chain size (Gestore, stations) & 0.0000 & 0.0001$^{***}$ & 0.0003 \\
-Diesel & -0.0070 & -0.0150$^{*}$ & -0.0350$^{*}$ \\
+Intercept & 1.2124$^{***}$ & 0.8733$^{***}$ & 0.8622$^{***}$ \\
+Nearest station (km) & -0.0227$^{***}$ & -0.0246$^{***}$ & -0.0283$^{***}$ \\
+Nearest day-0 adopter (km) & -0.0117$^{***}$ & -0.0164$^{***}$ & -0.0171$^{***}$ \\
+Population (1{,}000 per km\textsuperscript{2} cell) & -0.001 & -0.001 & 0.002 \\
+Pre-cap gap (10 c/l) & -0.109$^{***}$ & -0.138$^{***}$ & -0.105$^{***}$ \\
+Chain size (10 stations) & 0.000 & 0.001$^{*}$ & 0.003 \\
+Diesel & -0.0241$^{***}$ & -0.0402$^{***}$ & -0.0464$^{**}$ \\
 Brand \& region FE & Yes & Yes & Region only \\
 \midrule
 N & 39272 & 26622 & 5164 \\
-Adj.~$R^2$ & 0.2440 & 0.2197 & 0.1915 \\
+Adj.~$R^2$ & 0.2446 & 0.2143 & 0.1913 \\
 \bottomrule
 \end{tabular}
 

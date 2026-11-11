@@ -1,0 +1,80 @@
+% Auto-generated: do not edit by hand.
+% Sources: output/tables/{ardl,inflation}*_summary/sensitivity.csv,
+% counterfactual_daily.csv, backtest_origins.csv, spec_robustness.csv,
+% spec_range.csv, cf_bands_bootstrap.csv, event_study_coefs.csv,
+% revision/{threshold_boundary_counts,price_endings_*,dispersion_summary}.csv
+
+% ---------- main tables (v2) ----------
+\begin{table}[htbp]
+\centering\small
+\caption{Data and sample definitions}
+\label{tab:data}
+\begin{tabular}{lll}
+\toprule
+Item & Value & Notes \\
+\midrule
+Price communications (rows) & 12.4\,million & 1 Jan--5 Nov 2026 \\
+Stations reporting prices & 21\,766 & unique MIMIT plant IDs \\
+Extract days & 307 & none 16--17 Oct \\
+Station--fuel units (micro panel) & 39\,423 & 28 Sep--31 Oct \\
+Estimation observations & 261 per fuel & 2 Jan--27 Sep, after lags \\
+Reference days & 3 per month & 1st, 11th, 21st \\
+Ceilings (petrol) & 2.000 & strict, from 28 Sep \\
+Ceilings (diesel) & 2.200 / 2.261 / 2.212 & from 28 Sep / 6 Oct / 28 Oct \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering\small
+\caption{Oil pass-through models: selection, out-of-sample fit and October price gaps}
+\label{tab:ardl}
+\begin{tabular}{lccccccc}
+\toprule
+ & Order & $N$ & \multicolumn{3}{c}{Placebo backtest 14--27 Sep (c/l)} &
+ \multicolumn{2}{c}{Gap, 28 Sep--31 Oct (c/l)} \\
+\cmidrule(lr){4-6}\cmidrule(lr){7-8}
+ & (BIC) & & RMSE & RMSE RW & Bias & Mean & 31 Oct \\
+\midrule
+Petrol & (2,8) & 261 & 0.45 & 3.69 & +0.01 & $-17.4$ & $-22.2$ \\
+Diesel & (1,8) & 261 & 0.85 & 5.07 & -0.16 & $-21.1$ & $-20.4$ \\
+\bottomrule
+\end{tabular}
+
+\medskip
+\footnotesize Dependent variable: log national mean net-of-tax price
+(self-service, roadside); regressors: own lags and contemporaneous plus
+lagged log Brent in \euro. Estimation 2 Jan--27 Sep 2026 (261 observations
+after lags); BIC over $p\in[0,21]$, $q\in[7,21]$. Backtest: refit to
+13 Sep, recursive projection over 14--27 Sep, compared with a no-change
+random walk. Gap: actual minus counterfactual gross price, days available
+(32 of 34; no extracts 16--17 Oct).
+\end{table}
+
+\begin{table}[htbp]
+\centering\small
+\caption{Reference-day inflation: actual versus no-cap, and the estimated contribution to headline NIC inflation}
+\label{tab:inflation}
+\begin{tabular}{lcccc}
+\toprule
+ & \multicolumn{3}{c}{Sep--Oct change (\%)} & Contribution \\
+\cmidrule(lr){2-4}
+ & Actual & No cap & Difference & (pp of NIC) \\
+\midrule
+Petrol & $-2.34$ & $+5.34$ & $-7.7$ & $-0.17$ \\
+Diesel & $+1.58$ & $+10.86$ & $-9.3$ & $-0.21$ \\
+Motor fuels (combined) & $-0.38$ & $+8.10$ & $-8.5$ & $-0.38$ \\
+\midrule
+\multicolumn{4}{l}{\emph{Weight split 45/55 (petrol/diesel)}} & $-0.39$ \\
+\multicolumn{4}{l}{\emph{Weight split 55/45 (petrol/diesel)}} & $-0.38$ \\
+\multicolumn{4}{l}{\emph{Regularity-filtered stations (50/50)}} & $-0.42$ \\
+\bottomrule
+\end{tabular}
+
+\medskip
+\footnotesize Month-on-month changes over the 1st/11th/21st reference days,
+national mean gross prices, equal station weights. Contributions use the
+NIC 2026 weight of ECOICOP 07.2.2 (4.5219\%, verified from ISTAT's
+published weighting structure) split evenly between petrol and diesel.
+September no-cap prices equal observed prices by construction.
+\end{table}

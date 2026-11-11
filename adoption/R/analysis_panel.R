@@ -20,7 +20,10 @@ d <- d[days_since_cap >= -7 & days_since_cap <= 7]  # event-study window
 #  -1 is the reference period)
 d[, id_fuel := paste(id_impianto, fuel, sep = "_")]
 d[, ev := as.integer(pmin(days_since_cap, 7))]
-d[, ev := factor(ev, levels = -1:7)]
+# levels must span the FULL event window: with levels = -1:7 the pre-period
+# values -7..-2 become NA and the leads silently vanish from the estimation
+# (revision audit A-04)
+d[, ev := factor(ev, levels = -7:7)]
 setorder(d, id_fuel, date)
 
 cat("post rows:", nrow(d), " units:", uniqueN(d$id_fuel), "\n")
