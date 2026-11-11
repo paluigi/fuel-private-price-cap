@@ -1,0 +1,14 @@
+application_date,benzina_tax_eur_per_1000l,gasolio_tax_eur_per_1000l,change_benzina_cpl,change_gasolio_cpl,role_in_paper
+2026-01-01,672.90,672.90,,,extended-window baseline
+2026-03-19,472.90,472.90,-20.0,-20.0,spring excise cut (estimation window)
+2026-05-02,622.90,472.90,15.0,0.0,phased reinstatement (estimation window)
+2026-05-23,622.90,572.90,0.0,10.0,phased reinstatement (estimation window)
+2026-06-07,622.90,622.90,0.0,5.0,phased reinstatement (estimation window)
+2026-07-04,672.90,672.90,5.0,5.0,both fuels back to full rate
+2026-07-28,672.90,532.90,0.0,-14.0,diesel discount (estimation window)
+2026-09-18,672.90,572.90,0.0,4.0,pre-cap diesel step (estimation window)
+2026-09-26,672.90,622.90,0.0,5.0,pre-cap diesel step (estimation window)
+2026-10-06,672.90,672.90,0.0,5.0,POST-EVENT diesel step 1 (ceiling 2.261)
+2026-10-28,672.90,632.90,0.0,-4.0,POST-EVENT diesel step 2 (ceiling 2.212)
+2026-11-08,672.90,672.90,0.0,4.0,after analysis window (unused)
+2026-11-10,672.90,632.90,0.0,-4.0,after analysis window (unused)

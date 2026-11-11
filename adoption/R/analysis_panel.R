@@ -57,9 +57,12 @@ iplot(m2, main = "Adoption by distance to nearest adopter (day-0)", xlab = "days
 dev.off()
 
 # 3. Price convergence: gap-to-threshold dynamics for adopters vs not
-# tax-adjusted cap: gasolio +0.061 EUR/l from day 8 (2026-10-06)
+# tax-adjusted cap: gasolio +0.061 EUR/l from day 8 (2026-10-06),
+# -0.0488 EUR/l from day 30 (2026-10-28) -> 2.212 (revision D3/D4);
+# strict compliance: prezzo < cap_thr
 d[, cap_thr := fifelse(fuel == "Benzina", 2.0,
-                       fifelse(days_since_cap >= 8, 2.261, 2.2))]
+                       fifelse(days_since_cap >= 30, 2.212,
+                       fifelse(days_since_cap >= 8, 2.261, 2.2)))]
 d[, gap := prezzo - cap_thr]
 m3 <- feols(
   gap ~ i(ev, ref = -1) * adopted | id_fuel,

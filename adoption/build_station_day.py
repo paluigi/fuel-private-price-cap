@@ -110,7 +110,9 @@ def build_station_day() -> pl.DataFrame:
     )
     panel = panel.with_columns(
         compliance_at_cap=pl.when(pl.col("date") >= config.CAP_DATE)
-        .then(pl.col("prezzo") <= pl.col("cap_threshold"))
+        # STRICT rule (author decision D3): compliant = prezzo < threshold;
+        # with 3-decimal prices this excludes exact 2.000/2.200/2.261/2.212.
+        .then(pl.col("prezzo") < pl.col("cap_threshold"))
         .otherwise(None)
     )
     return panel

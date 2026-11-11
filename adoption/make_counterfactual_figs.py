@@ -30,6 +30,7 @@ pio.templates.default = "plotly_white"
 
 CAP_DATE = dt.date(2026, 9, 28)
 EXCISE_STEP = dt.date(2026, 10, 6)
+EXCISE_CUT = dt.date(2026, 10, 28)
 SEP_REF_DAYS = (dt.date(2026, 9, 1), dt.date(2026, 9, 11), dt.date(2026, 9, 21))
 OCT_REF_DAYS = (dt.date(2026, 10, 1), dt.date(2026, 10, 11), dt.date(2026, 10, 21))
 
@@ -155,14 +156,18 @@ def fig_counterfactual(cf: pl.DataFrame, daily: pl.DataFrame) -> Path:
             marker=dict(color=FIREBRICK, size=11, symbol="circle-open",
                         line=dict(width=2.5)),
             showlegend=False, hoverinfo="skip"), row=1, col=col)
-        # cap line (diesel is tax-adjusted from 6 Oct)
-        cap_pre, cap_post = (2.20, 2.261) if fuel == "Gasolio" else (2.00, 2.00)
-        fig.add_hline(y=cap_pre, line=dict(color=FIREBRICK, width=1.5, dash="dot"),
-                      row=1, col=col)
-        if cap_post != cap_pre:
-            fig.add_shape(type="line", x0=EXCISE_STEP.isoformat(),
-                          x1=d["date"].max().isoformat(),
-                          y0=cap_post, y1=cap_post,
+        # cap line: diesel is tax-adjusted (+6.1 c/l from 6 Oct, -4.88 c/l
+        # from 28 Oct -> 2.212; revision D4)
+        if fuel == "Gasolio":
+            cap_steps = [(d["date"].min(), 2.20), (EXCISE_STEP, 2.261),
+                         (EXCISE_CUT, 2.212)]
+        else:
+            cap_steps = [(d["date"].min(), 2.00)]
+        for k, (x0, level) in enumerate(cap_steps):
+            x1 = (cap_steps[k + 1][0] if k + 1 < len(cap_steps)
+                  else d["date"].max())
+            fig.add_shape(type="line", x0=x0.isoformat(), x1=x1.isoformat(),
+                          y0=level, y1=level,
                           line=dict(color=FIREBRICK, width=1.5, dash="dot"),
                           row=1, col=col)
         fig.add_vline(x=CAP_DATE.isoformat(),

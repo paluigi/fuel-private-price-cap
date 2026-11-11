@@ -1,1 +1,18 @@
 claim_id,paper_location,original_value,revised_value,supporting_output,reproduction_command,status,explanation
+A-01,abstract+sec5,84.5% ever at/below cap (39423 units),petrol 84.4% / diesel 82.8% (strict + 2.212 ceiling),revision/definitions_daily_series.csv + adoption_panel,cd adoption && uv run python build_panel.py,superseded,strict rule D3 + corrected 28 Oct ceiling D4
+A-02,abstract+sec5,final-day 81.8% petrol / 73.0% diesel,81.8% petrol / 50.2% diesel (31 Oct; denominators stated),adoption_panel 2026-10-31 filter,see A-01 command,superseded,diesel ceiling 2.261->2.212 on 28 Oct reclassifies final 3 days
+A-03,sec11,dispersion doubled,quantified replacement pending Phase 3,province_dispersion.csv,cd adoption && uv run python build_panel.py,confirmed-error,contradicts sec8 SDs (diesel SD fell 10.1->8.2)
+A-04,appendix-table5,pre-cap coefficients small+insignificant (not shown),table to include leads -7..-2,event_study_coefs.csv,Rscript R/analysis_panel.R,confirmed-error,leads estimated but never displayed
+A-05,appendix-C,no-oil forecasts worse OOS (petrol RMSE 3.19 vs 1.93),report AR-only diesel RMSE 3.19 < oil 4.01 fairly as benchmark,spec_robustness.csv,Rscript R/spec_robustness.R,confirmed-error,Table 8 contradicts prose for diesel
+A-06,abstract,cap for two months,initial 30 days; hard level through 31 Oct (author),revision/chronology.md,web Eni press 2026-09-25,resolved-by-decision,D5
+A-07,sec9.3,averaged over the 34 post-cap days,32 available days (16-17 Oct extracts missing),counterfactual_daily.csv row counts,Rscript R/analysis_ardl.R,confirmed-error,gap documented in data_lineage.md
+A-08,abstract,snapshot bias up to 4 c/l,up to ~5 c/l (4.2 petrol / 4.9 diesel stradale),fuel_daily_prices.csv 2026-10-01,cd adoption && uv run python build_fuel_daily.py,confirmed-error,abstract understates own sec4.2 estimate
+A-09,sec10,NIC weight 4.5219% hardcoded,verified from xlsx (07.2.2 = 45219 per mille),data/external/istat_ponderazioni_2026.xlsx,uv run --with fastexcel python -I (read_excel),confirmed-correct,lubricants remainder to document
+A-10,sec6-7,Cox/LPM raw units,per-10-c/l and per-km in rewrite,cox_model2_coefficients.csv,Rscript R/revision_samples.R,superseded,presentation change
+A-11,na,16-17 Oct silent,documented never interpolated,revision/data_lineage.md,na,resolved,lineage doc
+A-12,code,build_distances nominal thresholds,date-aware thresholds + strict rule,station_day_distances.parquet,cd adoption && uv run python build_distances.py,fixed,consistency with panel definition
+A-13,paper_draft.md,stale contradictory draft,deprecation header,revision/numerical_audit.md A-13,na,resolved,kept for audit trail
+A-14,abstract,inviting competitors to follow,rival matching is observed behaviour not invitation,Eni press release 2026-09-25,web,resolved,release contains no invitation
+A-15,sec2,2.261 mechanical translation (6 Oct),same rule extended to 28 Oct (2.212),revision/policy_thresholds.csv,tests/test_price_arithmetic.py,confirmed-correct,press release ties cap to excise relief
+A-16,sec9.2,backtest excl transition days RMSE 3.10,rebuilt in Phase 2 with expanding origins,backtest_daily.csv,na,superseded,Step 08
+A-17,tab5 note,day -1 = 27 Sep omitted,unchanged,event_study_coefs.csv,na,confirmed-correct,reference category

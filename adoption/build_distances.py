@@ -29,16 +29,28 @@ MAX_SEARCH_KM = 50.0
 
 
 def compute_distances() -> pl.DataFrame:
-    panel = pl.read_parquet(config.STATION_DAY)
+    panel = pl.read_parquet(config.STATION_DAY).filter(
+        # micro layer span only (D6b): distances feed the panel/survival
+        # covariates, anchored to 1 Jul like v1
+        pl.col("date") >= config.MICRO_FROM
+    )
     cov = pl.read_parquet(config.STATION_STATIC).select(
         "id_impianto", "cell_x", "cell_y"
     )
     panel = panel.join(cov, on="id_impianto", how="inner")
 
-    thresholds = pl.col("fuel").replace_strict(
-        config.THRESHOLDS, return_dtype=pl.Float64
+    # Date-aware cap thresholds (nominal 2.00/2.20 -> 2.261 from 6 Oct ->
+    # 2.212 from 28 Oct for gasolio) with the STRICT compliance rule (D3/D4);
+    # previously this used the nominal, undated THRESHOLDS, inconsistent with
+    # the panel's definition for gasolio after the 6 Oct excise step.
+    thresholds = pl.struct("fuel", "date").map_elements(
+        lambda s: config.cap_threshold(s["fuel"], s["date"]),
+        return_dtype=pl.Float64,
     )
-    panel = panel.with_columns(at_cap=(pl.col("prezzo") <= thresholds))
+    panel = panel.with_columns(
+        at_cap=(pl.col("prezzo") < thresholds),
+        cap_threshold=thresholds,
+    )
 
     out_parts = []
     for fuel in config.FUELS:

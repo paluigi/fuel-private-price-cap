@@ -185,7 +185,7 @@ class CapCompliance:
         )
         flagged = base.with_columns(
             threshold=config.threshold_expr()
-        ).with_columns(is_below=pl.col("prezzo") <= pl.col("threshold"))
+        ).with_columns(is_below=pl.col("prezzo") < pl.col("threshold"))
         if top1_gestori is not None:
             flagged = self._flag_gestore_top1(flagged, top1_gestori)
         self._df = flagged

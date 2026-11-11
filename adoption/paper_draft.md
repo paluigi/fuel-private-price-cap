@@ -1,5 +1,12 @@
 # Who Adopts a Price Cap? The Diffusion of Agip Eni's Self-Imposed Cap across Italian Fuel Retailers
 
+> **DEPRECATED (revision v2, 2026-11-11).** This 13-Oct skeleton predates the
+> full-window data, the strict compliance rule and the corrected 28-Oct
+> ceiling; several of its numbers (IQR dispersion claims, PH-test verdict,
+> adoption shares) contradict the final analysis and the rewritten paper.
+> Retained for the audit trail only — do not cite. See
+> `revision/numerical_audit.md` item A-13 and `revision/claim_ledger.csv`.
+
 *Working paper — draft skeleton with computed results, [date: 2026-10-13; data through 2026-10-12, gasolio cap tax-adjusted from 10-06]*
 
 ## 1. Introduction
