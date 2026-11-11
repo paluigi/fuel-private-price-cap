@@ -165,3 +165,6 @@ data/*.parquet
 /.kilo
 /.zcode
 Rplots.pdf
+
+# MIMIT H1-2026 archives (user-provided tars + extracted daily CSVs, ~450 MB)
+data/mimit_archives/
