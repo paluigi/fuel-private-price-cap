@@ -1,41 +1,54 @@
 # ARDL counterfactual for net fuel prices on Brent (EUR).
 #
 # Per fuel: log-log ARDL ln(net price) ~ lags(ln net) + lags(ln Brent EUR/bbl),
-# estimated on the pre-cap window 2026-07-01..2026-09-27. The target is the
-# net-of-tax price (prezzo/1.22 - excise, reconstructed from published pump
-# prices), so the tax calendar is stripped by construction and NO excise
-# dummy enters the regression: statutory tax changes have no place in a
-# net-price equation, and any staggered pass-through around them stays in
-# the error. Lag order (p,q) selected by BIC on an explicit-lag lm grid:
-# p in [0, MAX_ORDER], q in [MIN_OIL_Q, MAX_ORDER] - the main specification
-# requires at least a week of Brent dynamics in the lag polynomial (the
-# grid is exhaustive, so selection is exact; the unconstrained-grid BIC
-# picks are cross-checked against ARDL::auto_ardl).
+# estimated on the extended pre-cap window 2026-01-01..2026-09-27 (revision
+# D6: H1 MIMIT archives joined to the H2 cache; estimation effectively starts
+# 02-01 because 01-01 has no Brent quote). The target is the net-of-tax price
+# (prezzo/1.22 - excise, reconstructed from published pump prices), so the
+# full 2026 tax calendar - the -20 c/l spring cut (03-19), the phased
+# reinstatements (05-02..07-04), the diesel discount and steps (07-28, 09-18,
+# 09-26) - is stripped by construction and NO excise dummy enters the
+# regression: statutory tax changes have no place in a net-price equation, and
+# any staggered pass-through around them stays in the error.
+# Lag order (p,q) selected by BIC on an explicit-lag lm grid:
+# p in [0, MAX_ORDER], q in [MIN_OIL_Q, MAX_ORDER] with MAX_ORDER = 21
+# (revision D6: three weeks of daily dynamics admitted on the longer window) -
+# the main specification requires at least a week of Brent dynamics in the
+# lag polynomial (the grid is exhaustive, so selection is exact; the
+# unconstrained-grid BIC picks are cross-checked against ARDL::auto_ardl).
 # Diagnostics: Breusch-Godfrey, RESET, long-run pass-through elasticity =
 # sum(theta)/(1 - sum(phi)).
 #
 # Counterfactual: recursive no-cap projection 2026-09-28..2026-10-31 given the
 # actual Brent path and the model's own projected lags (actual post-cap net
-# prices are never fed back). ~95% bands from an iid-residual bootstrap.
+# prices are never fed back). ~95% bands from an iid-residual bootstrap
+# (re-estimation and moving-block variants: R/uncertainty_ardl.R).
 # Counterfactual pump price = (net_cf + excise(day)) * 1.22 with the actual
 # excise calendar, backed out per day as excise = gross_eff/1.22 - net_eff, so
-# tax steps (07-04, 07-28, 09-18, 09-26, 10-06, 10-28) hit both series equally.
+# tax steps (03-19, 05-02, 05-23, 06-07, 07-04, 07-28, 09-18, 09-26, 10-06,
+# 10-28) hit both series equally.
 #
-# Placebo backtest: fit 07-01..09-13, project 09-14..27 (still pre-cap),
-# compare with actuals and a random-walk benchmark.
+# Placebo backtest: fit from FIT_FROM to 09-13, project 09-14..27 (still
+# pre-cap), compare with actuals and a random-walk benchmark. Additional
+# expanding-origin backtests: R/uncertainty_ardl.R.
 #
 # ISTAT reference days (1st/11th/21st): actual vs counterfactual Sep->Oct MoM
 # changes and the implied contribution to headline CPI using the NIC 2026
 # definitive weight of ECOICOP 07.2.2 'Carburanti e lubrificanti' (45,219 per
-# 10,000 = 4.5219%; data/external/istat_ponderazioni_2026.xlsx).
+# 10,000 = 4.5219%; data/external/istat_ponderazioni_2026.xlsx, verified
+# programmatically in the revision). Fuel-split sensitivities (45/55, 55/55)
+# and the regularity-filtered sample variant are written to
+# output/tables/inflation_sensitivity.csv.
 #
 # Inputs:  output/tables/fuel_daily_prices.csv (build_fuel_daily.py)
 #          output/tables/oil_fx_daily_ffill.csv (build_oil_series.py)
 # Outputs: output/ardl_results.txt
 #          output/tables/counterfactual_daily.csv
 #          output/tables/backtest_daily.csv
+#          output/tables/ardl_summary.csv
 #          output/tables/inflation_days.csv
 #          output/tables/inflation_summary.csv
+#          output/tables/inflation_sensitivity.csv
 
 .libPaths(c("~/Rlibs", .libPaths()))
 suppressPackageStartupMessages({
@@ -53,14 +66,15 @@ BACKTEST_CSV <- "output/tables/backtest_daily.csv"
 ARDL_SUMMARY_CSV <- "output/tables/ardl_summary.csv"
 INFL_DAYS_CSV <- "output/tables/inflation_days.csv"
 INFL_SUMMARY_CSV <- "output/tables/inflation_summary.csv"
+INFL_SENS_CSV <- "output/tables/inflation_sensitivity.csv"
 
-FIT_FROM <- as.Date("2026-07-01")
+FIT_FROM <- as.Date("2026-01-01") # extended window (D6); Brent starts 01-02
 FIT_TO <- as.Date("2026-09-27") # day before the cap (included)
 BT_FIT_TO <- as.Date("2026-09-13") # placebo fit end
 BT_FROM <- as.Date("2026-09-14") # placebo projection window
 PROJ_FROM <- as.Date("2026-09-28")
 ANALYSIS_TO <- as.Date("2026-10-31")
-MAX_ORDER <- 10L
+MAX_ORDER <- 21L # extended to three weeks of daily lags on the longer window (D6)
 MIN_OIL_Q <- 7L  # main spec: >= 7 oil lags (one week of Brent dynamics)
 N_SIM <- 2000L
 SEED <- 20260928
@@ -332,12 +346,52 @@ inflation_tables <- function(cf_all, dall) {
 }
 
 # ---------------------------------------------------------------- #
+# Inflation sensitivities (Step 09): fuel split and regularity sample
+# ---------------------------------------------------------------- #
+
+inflation_sensitivity <- function(cf_all, dall) {
+  # Scenarios: petrol/diesel NIC-weight split (baseline 50/50 is in
+  # inflation_summary.csv) x observed-series sample (universe eff_* vs the
+  # ISTAT-like regularity-filtered reg_* aggregates). The no-cap path is the
+  # baseline model's counterfactual in every scenario (its Sep base equals
+  # the observed Sep base by construction); the regularity refit of the
+  # counterfactual itself is a specification variant in uncertainty_ardl.R.
+  fuel_row <- function(f, a_col, w, label) {
+    a <- dall[date %in% REF_DAYS & fuel == f]
+    sep_a <- mean(a[substr(date, 1, 7) == "2026-09"][[a_col]])
+    oct_a <- mean(a[substr(date, 1, 7) == "2026-10"][[a_col]])
+    oct_c <- mean(cf_all[date %in% REF_DAYS & fuel == f
+                         & substr(date, 1, 7) == "2026-10"]$cf_gross)
+    mom_a <- (oct_a / sep_a - 1) * 100
+    mom_c <- (oct_c / sep_a - 1) * 100
+    data.table(scenario = label, fuel = f,
+               mom_actual_pct = mom_a, mom_cf_pct = mom_c,
+               cpi_effect_pp = w * (mom_a - mom_c))
+  }
+  scen <- function(label, a_col, share_benzina) {
+    rbindlist(list(
+      fuel_row("Benzina", a_col, W_CARBURANTI * share_benzina, label),
+      fuel_row("Gasolio", a_col, W_CARBURANTI * (1 - share_benzina), label)
+    ))
+  }
+  out <- rbindlist(list(
+    scen("split 45/55, universe", "eff_mean_gross", 0.45),
+    scen("split 55/45, universe", "eff_mean_gross", 0.55),
+    scen("split 50/50, regularity sample", "reg_mean_gross", 0.50)
+  ))
+  fwrite(out, INFL_SENS_CSV)
+  cat("\n===== inflation sensitivities (split and sample) =====\n")
+  print(out[])
+}
+
+# ---------------------------------------------------------------- #
 # Main
 # ---------------------------------------------------------------- #
 
 main <- function() {
   sink(RESULTS, split = TRUE)
-  prices <- fread(FUEL_DAILY, select = c("date", "fuel", "eff_mean_gross", "eff_mean_net"))
+  prices <- fread(FUEL_DAILY, select = c("date", "fuel", "eff_mean_gross",
+                                         "eff_mean_net", "reg_mean_gross"))
   prices[, date := as.Date(date)]
   oil <- fread(OIL_FFILL, select = c("date", "brent_eur"))
   oil[, date := as.Date(date)]
@@ -353,6 +407,7 @@ main <- function() {
   fwrite(cf_all, CF_CSV)
   fwrite(meta_all, ARDL_SUMMARY_CSV)
   inflation_tables(cf_all, dall)
+  inflation_sensitivity(cf_all, dall)
   cat("\nDone.\n")
   sink()
 }

@@ -31,6 +31,15 @@ from build_station_day import build_station_day  # noqa: E402
 
 VAT = 1.22  # mirror src config.VAT_RATE
 BALANCED_SHARE = 0.95  # station present on >= 95% of window days
+# ISTAT-like "regularity-filtered" sample (Step 09): station-fuel units with
+# at least this many distinct price communications in the pre-cap window
+# (config.PRE_REG_WINDOW: Jul 1 - Sep 27, 89 days) enter the reg_* aggregates.
+# Threshold 40 = the station re-communicates at least about every other day;
+# keeps ~57% of units (median = 43). Premise-based operationalization of the
+# author's institutional knowledge that the statistical office selects
+# stations partly by historical communication regularity - documented as an
+# assumption, not a claim about the proprietary sample.
+REG_MIN_COMMS = 40
 
 
 def excise_long() -> pl.DataFrame:
@@ -127,10 +136,30 @@ def main() -> None:
         how="semi",
     )
 
+    # 4. regularity-filtered (ISTAT-like) variant: pre-cap communication
+    #    frequency >= REG_MIN_COMMS distinct communications
+    pre = panel.filter(
+        (pl.col("date") >= config.PRE_REG_WINDOW[0])
+        & (pl.col("date") <= config.PRE_REG_WINDOW[1])
+    )
+    n_comms = pre.group_by("id_impianto", "fuel").agg(
+        pl.col("comu_at").n_unique().alias("n_comu")
+    )
+    regular = n_comms.filter(pl.col("n_comu") >= REG_MIN_COMMS).select(
+        "id_impianto", "fuel"
+    )
+    reg_panel = panel.join(regular, on=["id_impianto", "fuel"], how="semi")
+    print(
+        f"regularity filter (>= {REG_MIN_COMMS} pre-cap communications): "
+        f"{regular.height:,} of {n_comms.height:,} units "
+        f"({100 * regular.height / n_comms.height:.1f}%)"
+    )
+
     daily = (
         agg(panel, "eff")
         .join(agg(raw, "naive"), on=["date", "fuel"], how="outer")
         .join(agg(balanced, "bal"), on=["date", "fuel"], how="left")
+        .join(agg(reg_panel, "reg"), on=["date", "fuel"], how="left")
         .sort("date", "fuel")
     )
     daily.write_csv(config.FUEL_DAILY_CSV)

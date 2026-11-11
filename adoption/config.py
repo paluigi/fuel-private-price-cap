@@ -33,6 +33,9 @@ PRE_WINDOW_DISP = (dt.date(2026, 9, 1), dt.date(2026, 9, 27))
 # mean nearest-neighbour distance are not silently redefined when the macro
 # estimation window extends back to January (D6b).
 MICRO_FROM = dt.date(2026, 7, 1)
+# Window over which the ISTAT-like communication-regularity filter (Step 09)
+# is measured: the 89 pre-cap days July-September before the cap.
+PRE_REG_WINDOW = (dt.date(2026, 7, 1), dt.date(2026, 9, 27))
 # Nominal cap thresholds announced by Eni on 2026-09-25 (EUR/l, Stradale
 # self-service): 1.99 petrol / 2.19 diesel. Operational study cutoffs are the
 # rounded-up 2.00 / 2.20 gross levels; compliance uses a STRICT inequality,
