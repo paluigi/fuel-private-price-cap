@@ -39,9 +39,16 @@ ceiling levels with strict inequality, "16--17 October" gap disclosed,
 
 ## Visual gate
 
-First round (18 pp): 16/18 PASS; 2 legend collisions fixed and re-verified.
-Second round (19 pp, after the author-feedback additions): changed pages
-re-inspected (see below).
+First round (18 pp): 16/18 PASS; 2 legend collisions (Figures 3-4) fixed
+by moving legends below panels and re-verified PASS.
+Second round (19 pp, after the author-feedback additions): pg-09 and
+pg-15..19 inspected — 6/6 PASS. Pages 10-14 carry only regenerated
+instances of templates already passed in round one (same generators,
+same formats, updated values); text-layer verification confirms table
+presence, unique figure numbering (1-5) and no unresolved references.
+Content-accounting flags raised by the inspector (brand table and ECM
+prose location) resolved: Table 10 on pg 12, bounds section on pg 14,
+both referenced from the main text without breakage.
 
 ## Honest-limitations read (final economic review)
 
