@@ -42,7 +42,7 @@ estimated over January--September 2026. The counterfactual projects October
 pump prices 17.4~\cl{} (petrol) and 21.1~\cl{} (diesel) above realised
 prices on average, a range that survives credible specification and
 forecast-validation checks. Evaluated at the statistical office's reference
-days, the cap turned fuel inflation from $+5.3$ and $+10.9\%$ (petrol and
+days, the cap turned fuel inflation from $+5.3$ and $+10.7\%$ (petrol and
 diesel, no cap) into $-2.3$ and $+1.6\%$, an estimated contribution of about
 $-0.4$ percentage points to October headline consumer-price inflation. The
 station-level panel explains how the aggregate effect arose: the leader cut
@@ -89,14 +89,14 @@ reference days on which Italy's statistical office (ISTAT) collects fuel
 prices for the consumer-price index---and aggregated with explicit,
 documented assumptions.
 
-Three findings emerge. The observed effect is large: averaging over the 32
-post-cap days for which price extracts exist, the no-cap model projects
+Three findings emerge. The observed effect is large: averaging over the 34
+post-cap days, the no-cap model projects
 October prices 17.4~\cl{} above realised prices for petrol and
 21.1~\cl{} for diesel; on 31 October the gaps are 22.2 and 20.4~\cl.
 Because prices are collected on reference days, this price difference maps
 into measured inflation: month-on-month fuel prices fell 2.3\% (petrol) and
 rose 1.6\% (diesel) with the cap, against a no-cap counterfactual of $+5.3$
-and $+10.9\%$, an estimated contribution of $-0.38$ percentage points to
+and $+10.7\%$, an estimated contribution of $-0.38$ percentage points to
 October headline inflation (specification range $-0.38$ to $-0.45$). The
 propagation is leader-led: on the first day 21\% of stations priced below
 the ceiling, half within four days, and 83--84\% at some point by
@@ -221,9 +221,16 @@ never carried forward indefinitely. The practical stakes are large. On
 cut off mid-wave; a reference-day statistic built on extract-time prices
 would overstate that day's price by that amount. All our price series are
 effective-price series; we return to the measurement implications in
-\Cref{sec:inflation}. The only gap in the reconstructed daily path is
-16--17 October, when no extracts exist at all; we never interpolate it,
-and averages over the cap window are over the 32 available days of 34.
+\Cref{sec:inflation}. MIMIT published no extracts for 16--17 October
+2026; because prices are assigned by communication date, the effective
+price of those two days is recovered from the communications carried by
+the surrounding extracts, so the reconstructed path covers every calendar
+day of the window.\footnote{The only information possibly lost to the
+missing downloads is a price change communicated and fully superseded
+within the two-day gap; such same-week double repricing is rare, and the
+reconstructed 16--17 October means move smoothly between their
+neighbours. The loss of information is marginal and does not affect any
+result in the paper.}
 
 \subsection{From pump prices to net-of-tax prices}
 
@@ -257,8 +264,8 @@ units that have \emph{ever} priced below it since 28 September (our
 adoption measure); and formal enrolment in any company's initiative,
 which we do not observe and do not require---pricing below the ceiling is
 a behaviour, not a membership. The estimation panel for adoption
-comprises 39{,}423 station--fuel units observed from 28 September to
-31 October (4.7 million station-days), of which 32{,}971 adopt at some
+comprises 39{,}425 station--fuel units observed from 28 September to
+31 October (4.8 million station-days), of which 32{,}974 adopt at some
 point.
 
 \section{Observed market response}\label{sec:observed}
@@ -272,7 +279,9 @@ to October 2026. Dashed vertical lines mark the 19 March excise cut, the
 28 September) and the two post-cap diesel excise steps. The dotted stepped
 line is the operational diesel ceiling (2.200 from 28 September, 2.261
 from 6 October, 2.212 from 28 October); the petrol ceiling is 2.000
-throughout. No extracts exist for 16--17 October.}
+throughout. The 16--17 October extracts were never published; those
+days are recovered from the surrounding communications (see
+\cref{sec:data}).}
 \label{fig:prices}
 \end{figure}
 
@@ -391,7 +400,9 @@ carry near-unit-root persistence (the sum of own-lag coefficients is
 elasticity of the diesel main specification---0.09---is a
 small-denominator artifact and not a structural estimate. Across the
 admissible oil-lag floors, long-run elasticities range from 0.72 to 0.77
-for petrol and 0.81 to 0.94 for diesel. The credibility of the
+for petrol and 0.81 to 0.86 for diesel; Pesaran--Shin--Smith bounds tests
+(\cref{app:ecm}) cannot reject the absence of a levels relationship for
+either fuel over this window. The credibility of the
 counterfactual rests on its validated forecasting behaviour, not on a
 point estimate of long-run pass-through.
 
@@ -414,12 +425,12 @@ path---the same excise on the same days as in the observed series---so
 the 6 and 28 October diesel tax steps affect both paths identically. The
 counterfactual petrol price starts where the market started, about
 3~\cl{} above the realised price on 28 September, and climbs with Brent
-to 2.232~\euro/l by 31 October, 22.2~\cl{} above the actual price; the
-diesel counterfactual reaches 2.444, a gap of 20.4~\cl. Averaged over
+to 2.233~\euro/l by 31 October, 22.4~\cl{} above the actual price; the
+diesel counterfactual reaches 2.444, a gap of 20.5~\cl. Averaged over
 the window, the no-cap path lies 17.4~\cl{} (petrol) and 21.1~\cl{}
 (diesel) above the realised one. On the inflation reference days the gaps
-are $-9.5$, $-19.3$ and $-19.3$~\cl{} (petrol; 1/11/21 October) and
-$-11.2$, $-27.8$ and $-22.9$~\cl{} (diesel).
+are $-9.5$, $-19.3$ and $-18.9$~\cl{} (petrol; 1/11/21 October) and
+$-11.2$, $-27.8$ and $-21.7$~\cl{} (diesel).
 
 Uncertainty is reported in layers, each covering a distinct component.
 Residual-shock bootstrap bands (2{,}000 draws) reflect innovation
@@ -428,14 +439,14 @@ bootstrap bands (block length seven) add serial dependence in the
 shocks; a re-estimation bootstrap (400 draws of resampled residuals,
 re-estimated coefficients, re-projected paths) adds coefficient
 uncertainty and is the widest---by 31 October it spans the petrol gap
-from $-11$ to $-40$~\cl{} and the diesel gap from $-2$ to $-47$~\cl.
+from $-11$ to $-38$~\cl{} and the diesel gap from $-0.2$ to $-44$~\cl.
 Model uncertainty is deliberately kept outside the bands and shown
 instead as a specification range: across oil-lag floors, fit windows
 (estimating from July instead of January moves the diesel gap from
-$-21.1$ to $-24.3$~\cl), balanced and regularity-filtered samples, and
+$-21.1$ to $-24.5$~\cl), balanced and regularity-filtered samples, and
 Brent paths shifted by $\pm5\%$, October mean gaps lie between 15 and
 19~\cl{} for petrol and 21 and 24~\cl{} for diesel, with the
-distributed-lag-only diesel variant an outlier at $-26.3$
+distributed-lag-only diesel variant an outlier at $-26.1$
 (\cref{tab:spec-range}). Under every admissible oil-containing
 specification the no-cap price is materially above the realised price
 throughout the window; the direction of the conclusion does not depend on
@@ -464,12 +475,12 @@ of the official calculation.
 
 The results are in \cref{tab:inflation}. Observed reference-day petrol
 prices fell 2.3\% month-on-month where the no-cap path implies a rise of
-5.3\%; diesel rose 1.6\% where the no-cap path implies 10.9\%. Weighted,
+5.3\%; diesel rose 1.6\% where the no-cap path implies 10.7\%. Weighted,
 the cap's estimated contribution to October headline NIC inflation is
 $-0.38$ percentage points (petrol $-0.17$, diesel $-0.21$). The
 assumption sensitivities are an order of magnitude smaller than the
-effect itself: 45/55 and 55/45 petrol--diesel splits give $-0.387$ and
-$-0.380$; the regularity-filtered sample gives $-0.417$; and across the
+effect itself: 45/55 and 55/45 petrol--diesel splits give $-0.381$ and
+$-0.374$; the regularity-filtered sample gives $-0.411$; and across the
 specification range of \cref{sec:counterfactual} the estimate lies
 between $-0.38$ and $-0.45$, with $-0.30$ under the inadmissible
 autoregression-only benchmark. The dominant uncertainty is the no-cap
@@ -562,6 +573,17 @@ functioning as a focal price and the network absorbed part of the tax
 cut instead of passing it through---the incomplete, asymmetric
 pass-through familiar from the rockets-and-feathers literature
 \parencite{tappata2009, borenstein2002}, here observed at a ceiling.
+Brand groups, however, read the same episode very differently
+(\cref{tab:brand-28oct}). Eni's network had been pricing at the
+announced nominal level all along and ended October at 2.190~\euro/l on
+average---compliant under any ceiling in force, with no repricing
+required of it. The gradient appears entirely among the followers:
+Q8 cut 3.8~\cl{} and reached 78\% compliance under the new ceiling,
+Api-Ip 2.7~\cl{} and 60\%, Esso and Tamoil between 2.4 and 3.4~\cl{}
+with 22--32\%, and unbranded independents cut least (1.8~\cl{}, 15\%
+compliant). The leader treated the commitment level as binding to the
+end; the followers' partial pass-through is what the aggregate
+incompleteness is made of.
 
 \input{paper_tables}
 
@@ -599,6 +621,36 @@ ceilings---matter for every number in it.
 
 \section{Additional tables}\label{app:tables}
 \input{paper_v2_appendix}
+\input{paper_v2_extra}
+
+\section{Levels relationship: bounds tests}\label{app:ecm}
+
+The main text reports long-run elasticities as a range and leans on
+forecast validation rather than on a point estimate of long-run
+pass-through. This appendix formalises that choice. We re-estimate the
+selected models in error-correction form and apply the
+Pesaran--Shin--Smith bounds procedure \parencite{pesaran2001} to the
+null of no level relationship between the log net-of-tax price and log
+Brent in euro (case 3: unrestricted intercept, no trend), on the same
+2 January--27 September window as the counterfactual.
+
+\Cref{tab:ecm-bounds} reports the results. For petrol the bounds
+$F$-statistic is 1.40 and for diesel 0.92, both far below their
+$I(0)$ lower critical bounds of about 4.9; the $t$-statistics
+($-1.63$ and $-0.60$) are likewise indistinguishable from the no-level-
+relationship region. The implied error-correction coefficients are small
+and insignificant ($-0.013$ and $-0.005$ per day). Over this window,
+in short, net pump prices and Brent share no detectable levels
+relationship: pass-through works through short-run dynamics, and any
+long-run elasticity computed from the levels representation of these
+models---including the diesel main specification's
+small-denominator value of 0.10---is not an identified object. This is
+consistent with the near-unit-root persistence documented in
+\cref{sec:counterfactual} and is why the counterfactual's credibility
+rests on its validated multi-step forecasts rather than on a
+cointegration claim. A longer history including pre-2026 data might
+identify a levels relationship; within 2026, the oil shock, the spring
+excise cycle and the cap episode are too entangled to deliver one.
 
 \section{Additional estimates}\label{app:micro}
 \input{paper_tables_s6}

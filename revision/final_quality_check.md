@@ -1,6 +1,7 @@
 # Final quality check — Step 16
 
-Date: 11 November 2026. Paper: `adoption/paper.pdf` (18 pp).
+Date: 12 November 2026 (post author-feedback round). Paper:
+`adoption/paper.pdf` (19 pp).
 
 ## Build
 
@@ -12,12 +13,23 @@ Date: 11 November 2026. Paper: `adoption/paper.pdf` (18 pp).
 
 ## Numeric consistency (revision/check_numbers.py)
 
-53 automated checks, all passing: gaps (17.4/21.1/22.2/20.4), backtests
-(0.45/0.85 vs RW 3.69/5.07), orders (2,8)/(1,8), 261 obs, MoM actual/no-cap,
-CPI -0.38 with all three sensitivities, all six reference-day gaps,
-adoption shares (day-0, final-day, ever), bunching 17.9%, dispersion
-(8.1->14.0 / 9.5->15.9, adopter gaps 11.5/11.7), 28-Oct episode numbers,
-policy dates and thresholds, NIC weight.
+55 automated checks, all passing: gaps (17.4/21.1/22.4/20.5 over the full
+34 post-cap days), backtests (0.45/0.85 vs RW 3.69/5.07), orders (2,8)/(1,8),
+261 obs, MoM actual/no-cap, CPI -0.38 with all three sensitivities, all six
+reference-day gaps, adoption shares (day-0, final-day, ever; 39,425 units,
+32,974 adopters), bunching 17.9%, dispersion (8.1->14.0 / 9.5->15.9,
+adopter gaps 11.5/11.7), 28-Oct episode numbers, bounds tests (F 1.40/0.92),
+brand-compliance content, policy dates and thresholds, NIC weight.
+
+## Author-feedback round (12 Nov) — all incorporated
+
+- D7: 16-17 Oct recovered via communication-date calendar (34-day path);
+      footnote in section 3.2; audit A-7 reframed.
+- D8: brand compliance at the 28 Oct ceiling (section 7 paragraph +
+      tab:brand-28oct): Eni at the nominal 2.19 (99%), followers 15-78%.
+- D9: ECM/bounds appendix (app:ecm, tab:ecm-bounds): no levels
+      relationship; long-run elasticities not identified over 2026.
+- D10: January baseline, title order, map pair confirmed.
 
 ## Dates and framing verified
 
@@ -27,10 +39,9 @@ ceiling levels with strict inequality, "16--17 October" gap disclosed,
 
 ## Visual gate
 
-18 pages rendered at 90 dpi and inspected. 16 PASS; 2 initial FAILs
-(legend/title collisions in Figures 3 and 4) fixed by moving the legends
-below the panels; re-inspection PASS. No unresolved references, no missing
-glyphs, tables and maps render cleanly.
+First round (18 pp): 16/18 PASS; 2 legend collisions fixed and re-verified.
+Second round (19 pp, after the author-feedback additions): changed pages
+re-inspected (see below).
 
 ## Honest-limitations read (final economic review)
 

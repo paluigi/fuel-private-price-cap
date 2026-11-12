@@ -61,34 +61,48 @@ def build_station_day() -> pl.DataFrame:
     """Station x fuel x day effective price, from SERIES_FROM to latest.
 
     Strategy: explode the communication history to a daily calendar via
-    join_asof per (station, fuel). Then restrict to the union calendar of
-    days on which the station was present in any extract (so stations
-    that close / stop reporting are not silently carried forward at
-    stale prices forever).
+    join_asof per (station, fuel). A pair is 'alive' from its first
+    in-window communication to the last extract date on which it appears
+    (so stations that close / stop reporting are not silently carried
+    forward at stale prices forever). The calendar spans ALL calendar
+    days in that interval, not just extract dates: because prices are
+    assigned by communication date, a missing download (e.g. 16-17
+    October 2026, never published by MIMIT) is fully recoverable from
+    later extracts — only a price change communicated AND superseded
+    entirely inside the gap would be lost (D7).
     """
     comms = load_communications()
 
-    # calendar of extract dates (defines the days a station was 'alive')
-    (
-        pl.read_parquet(config.PRICES_PARQUET, columns=["date"])
-        .filter(pl.col("date") >= config.SERIES_FROM)
-        .unique()
-        .sort("date")
-    )
-
-    # full day x alive-pair calendar, then ONE global asof join
-    alive_pairs = (
+    # pair liveness bounds on extract dates
+    pair_bounds = (
         pl.read_parquet(config.PRICES_PARQUET, columns=["date", "fuel", "id_impianto"])
         .filter(pl.col("date") >= config.SERIES_FROM)
         .unique()
+        .group_by("id_impianto", "fuel")
+        .agg(first_extract=pl.col("date").min(), last_extract=pl.col("date").max())
     )
     first_comm = comms.group_by("id_impianto", "fuel").agg(
         first_comu=pl.col("comu_at").min()
     )
+    pair_bounds = pair_bounds.join(first_comm, on=["id_impianto", "fuel"], how="inner")
+
+    # full calendar-day range, cross-joined with the alive bounds
+    last_day = (
+        pl.read_parquet(config.PRICES_PARQUET, columns=["date"])["date"].max()
+    )
+    calendar = pl.date_range(
+        config.SERIES_FROM, last_day, "1d", eager=True
+    ).alias("date").to_frame()
+
     cal = (
-        alive_pairs.join(first_comm, on=["id_impianto", "fuel"], how="inner")
-        # no price in force before the station's first in-window communication
-        .filter(pl.col("date") >= pl.col("first_comu").dt.date())
+        pair_bounds.join(calendar, how="cross")
+        # alive: between first and last extract appearance, and no price in
+        # force before the station's first in-window communication
+        .filter(
+            (pl.col("date") >= pl.col("first_extract"))
+            & (pl.col("date") <= pl.col("last_extract"))
+            & (pl.col("date") >= pl.col("first_comu").dt.date())
+        )
         .select("date", "fuel", "id_impianto")
         .sort("date")
     )

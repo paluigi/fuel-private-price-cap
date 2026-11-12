@@ -51,3 +51,35 @@ coverage from January.
 ## Environment / reproduction premises
 - R scripts use `~/Rlibs`; seed 20260928 (analysis_ardl.R:66).
 - v1 reproduction must complete from cache BEFORE the D3/D4 config switch.
+
+## D7 — Missing 16–17 October downloads (12 Nov 2026, author)
+The two missing MIMIT *extracts* do not create missing *days*: effective
+prices are assigned by communication date, so 16–17 October are recovered
+from the communications carried by surrounding extracts. The station-day
+calendar is therefore built over all calendar days between a pair's first
+and last extract appearance (previously: extract dates only). Only a price
+change communicated and fully superseded within the two-day gap would be
+lost — immaterial, disclosed in a §3.2 footnote. All averages now cover
+the full 34 post-cap days (headline numbers essentially unchanged:
+gaps 17.45/21.13 c/l, CPI −0.378 pp).
+
+## D8 — Brand compliance at the 28 October ceiling (12 Nov 2026, author)
+Author requested an Eni-vs-others compliance check after the excise cut.
+Added `brand_compliance_28oct` to `analysis_decomposition.py`, appendix
+Table `tab:brand-28oct`, and a §7 paragraph. Finding: Eni ends October at
+2.190 €/l (99% compliant, already at the nominal); followers' cuts range
+3.8 c/l (Q8, 78%) to 1.8 c/l (white pumps, 15%) — the aggregate
+incomplete pass-through is entirely a follower phenomenon.
+
+## D9 — ECM/bounds-test appendix (12 Nov 2026, author)
+Added `R/ecm_bounds.R` and appendix Section "Levels relationship: bounds
+tests" with Table `tab:ecm-bounds`. Pesaran–Shin–Smith bounds tests
+(case 3, same window): F = 1.40 (petrol) / 0.92 (diesel) vs I(0) bound
+≈4.92; t = −1.63 / −0.60; ECT insignificant. No levels relationship over
+2026 → long-run elasticities not identified; formalizes the paper's
+range-reporting + forecast-validation stance.
+
+## D10 — January window confirmed (12 Nov 2026, author)
+Author confirmed the January fit as the baseline (item 1 of the memo);
+July remains the shown sensitivity. Title reorder and map pair also
+confirmed.

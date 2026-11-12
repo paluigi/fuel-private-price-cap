@@ -188,12 +188,45 @@ def dispersion(p: pl.DataFrame) -> None:
     print(pl.DataFrame(rows))
 
 
+def brand_compliance_28oct(p: pl.DataFrame) -> None:
+    """D8: who kept treating the corrected 2.212 ceiling as binding after
+    the 28 Oct excise cut? By brand group: mean price on 27 Oct vs 31 Oct
+    and the share below the new ceiling on 28 and 31 Oct."""
+    grp = p.with_columns(
+        group=pl.col("bandiera").replace_strict(GROUPS, default="Other brands")
+    )
+    d27 = grp.filter(pl.col("date") == pl.date(2026, 10, 27)).group_by(
+        "fuel", "group").agg(p27=pl.col("prezzo").mean(), n=pl.len())
+    d31 = grp.filter(pl.col("date") == pl.date(2026, 10, 31)).group_by(
+        "fuel", "group").agg(p31=pl.col("prezzo").mean())
+    b28 = (grp.filter((pl.col("date") == pl.date(2026, 10, 28)))
+           .group_by("fuel", "group").agg(s28=pl.col("at_cap").mean()))
+    b31 = (grp.filter((pl.col("date") == pl.date(2026, 10, 31)))
+           .group_by("fuel", "group").agg(s31=pl.col("at_cap").mean()))
+    t = (d27.join(d31, on=["fuel", "group"]).join(b28, on=["fuel", "group"])
+         .join(b31, on=["fuel", "group"])
+         .with_columns(delta_cpl=(pl.col("p31") - pl.col("p27")) * 100)
+         .sort("fuel", "s31", descending=True))
+    t.select(
+        "fuel", "group", "n",
+        delta_cpl=pl.col("delta_cpl").round(2),
+        p31=pl.col("p31").round(3),
+        share_below_28=pl.col("s28").round(3),
+        share_below_31=pl.col("s31").round(3),
+    ).write_csv(OUT / "brand_compliance_28oct.csv")
+    print("== brand compliance around the 28 Oct ceiling step (diesel) ==")
+    pl.Config.set_tbl_rows(12)
+    print(t.filter(pl.col("fuel") == "Gasolio").select(
+        "group", "n", "delta_cpl", "p27", "p31", "s28", "s31"))
+
+
 def main() -> int:
     p = load_panel()
     jump_decomposition(p)
     endings(p)
     group_decomposition(p)
     dispersion(p)
+    brand_compliance_28oct(p)
     return 0
 
 

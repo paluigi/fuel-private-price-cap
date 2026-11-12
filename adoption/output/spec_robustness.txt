@@ -1,34 +1,34 @@
 V1_baseline Benzina   BIC (1,2) | lr_elas 0.770 | N 267 | R2 0.9957
-           backtest RMSE 1.60 (RW 3.69, bias +1.53) | mean gap -17.3 c/l, end gap -23.0 c/l | MoM cf +5.19% (actual -2.34%) | CPI effect -0.170 pp
+           backtest RMSE 1.60 (RW 3.68, bias +1.53) | mean gap -17.5 c/l, end gap -23.1 c/l | MoM cf +5.21% (actual -2.33%) | CPI effect -0.171 pp
 V2_minq2   Benzina   BIC (1,2) | lr_elas 0.770 | N 267 | R2 0.9957
-           backtest RMSE 1.60 (RW 3.69, bias +1.53) | mean gap -17.3 c/l, end gap -23.0 c/l | MoM cf +5.19% (actual -2.34%) | CPI effect -0.170 pp
+           backtest RMSE 1.60 (RW 3.68, bias +1.53) | mean gap -17.5 c/l, end gap -23.1 c/l | MoM cf +5.21% (actual -2.33%) | CPI effect -0.171 pp
 V3_minq5   Benzina   BIC (1,5) | lr_elas 0.758 | N 264 | R2 0.9957
-           backtest RMSE 1.54 (RW 3.69, bias +1.46) | mean gap -17.3 c/l, end gap -22.4 c/l | MoM cf +5.15% (actual -2.34%) | CPI effect -0.169 pp
-V4_minq7   Benzina   BIC (2,8) | lr_elas 0.724 | N 261 | R2 0.9960
-           backtest RMSE 0.45 (RW 3.69, bias +0.01) | mean gap -17.4 c/l, end gap -22.2 c/l | MoM cf +5.34% (actual -2.34%) | CPI effect -0.174 pp
-V5_dl_only Benzina   BIC (0,4) | lr_elas 0.628 | N 265 | R2 0.7526
-           backtest RMSE 4.88 (RW 3.69, bias +4.45) | mean gap -11.6 c/l, end gap -13.2 c/l | MoM cf +2.18% (actual -2.34%) | CPI effect -0.102 pp
+           backtest RMSE 1.53 (RW 3.68, bias +1.45) | mean gap -17.5 c/l, end gap -22.5 c/l | MoM cf +5.14% (actual -2.33%) | CPI effect -0.169 pp
+V4_minq7   Benzina   BIC (2,8) | lr_elas 0.723 | N 261 | R2 0.9960
+           backtest RMSE 0.45 (RW 3.68, bias +0.01) | mean gap -17.4 c/l, end gap -22.4 c/l | MoM cf +5.28% (actual -2.33%) | CPI effect -0.172 pp
+V5_dl_only Benzina   BIC (0,4) | lr_elas 0.628 | N 265 | R2 0.7525
+           backtest RMSE 4.88 (RW 3.68, bias +4.45) | mean gap -11.4 c/l, end gap -13.2 c/l | MoM cf +1.69% (actual -2.33%) | CPI effect -0.091 pp
 V1_baseline Gasolio   BIC (3,3) | lr_elas 0.861 | N 266 | R2 0.9974
-           backtest RMSE 2.30 (RW 5.07, bias +2.04) | mean gap -22.4 c/l, end gap -24.7 c/l | MoM cf +10.96% (actual +1.58%) | CPI effect -0.212 pp
+           backtest RMSE 2.30 (RW 5.07, bias +2.04) | mean gap -22.7 c/l, end gap -24.9 c/l | MoM cf +10.97% (actual +1.58%) | CPI effect -0.212 pp
 V2_minq2   Gasolio   BIC (3,3) | lr_elas 0.861 | N 266 | R2 0.9974
-           backtest RMSE 2.30 (RW 5.07, bias +2.04) | mean gap -22.4 c/l, end gap -24.7 c/l | MoM cf +10.96% (actual +1.58%) | CPI effect -0.212 pp
-V3_minq5   Gasolio   BIC (3,5) | lr_elas 0.814 | N 264 | R2 0.9974
-           backtest RMSE 2.40 (RW 5.07, bias +2.15) | mean gap -21.9 c/l, end gap -23.5 c/l | MoM cf +10.79% (actual +1.58%) | CPI effect -0.208 pp
-V4_minq7   Gasolio   BIC (1,8) | lr_elas 0.093 | N 261 | R2 0.9975
-           backtest RMSE 0.85 (RW 5.07, bias -0.16) | mean gap -21.1 c/l, end gap -20.4 c/l | MoM cf +10.86% (actual +1.58%) | CPI effect -0.210 pp
-V5_dl_only Gasolio   BIC (0,4) | lr_elas 0.941 | N 265 | R2 0.8313
-           backtest RMSE 3.06 (RW 5.07, bias -0.97) | mean gap -26.3 c/l, end gap -22.5 c/l | MoM cf +11.95% (actual +1.58%) | CPI effect -0.234 pp
+           backtest RMSE 2.30 (RW 5.07, bias +2.04) | mean gap -22.7 c/l, end gap -24.9 c/l | MoM cf +10.97% (actual +1.58%) | CPI effect -0.212 pp
+V3_minq5   Gasolio   BIC (3,5) | lr_elas 0.815 | N 264 | R2 0.9974
+           backtest RMSE 2.39 (RW 5.07, bias +2.14) | mean gap -22.2 c/l, end gap -23.7 c/l | MoM cf +10.76% (actual +1.58%) | CPI effect -0.207 pp
+V4_minq7   Gasolio   BIC (1,8) | lr_elas 0.096 | N 261 | R2 0.9975
+           backtest RMSE 0.85 (RW 5.07, bias -0.17) | mean gap -21.1 c/l, end gap -20.5 c/l | MoM cf +10.68% (actual +1.58%) | CPI effect -0.206 pp
+V5_dl_only Gasolio   BIC (0,4) | lr_elas 0.941 | N 265 | R2 0.8312
+           backtest RMSE 3.06 (RW 5.07, bias -0.95) | mean gap -26.1 c/l, end gap -22.5 c/l | MoM cf +11.28% (actual +1.58%) | CPI effect -0.219 pp
 V6_ar_only Benzina   BIC (1,.) | NO OIL TERM | N 268 | R2 0.9950
-           backtest RMSE 3.00 (RW 3.69, bias +2.90) | mean gap -14.1 c/l, end gap -18.9 c/l | MoM cf +4.03% | CPI effect -0.144 pp
+           backtest RMSE 3.00 (RW 3.68, bias +2.90) | mean gap -14.3 c/l, end gap -19.1 c/l | MoM cf +4.07% | CPI effect -0.145 pp
 V6_ar_only Gasolio   BIC (3,.) | NO OIL TERM | N 266 | R2 0.9971
-           backtest RMSE 4.31 (RW 5.07, bias +4.05) | mean gap -15.1 c/l, end gap -15.0 c/l | MoM cf +8.40% | CPI effect -0.154 pp
+           backtest RMSE 4.31 (RW 5.07, bias +4.04) | mean gap -15.3 c/l, end gap -15.1 c/l | MoM cf +8.42% | CPI effect -0.155 pp
 
 Benzina main spec BIC (2,8) HAC block Wald tests:
-  oil block excluded:      F = 8.33, p = 7.6e-11
-  autoregressive block:    F = 8684.00, p = 5.11e-231
+  oil block excluded:      F = 8.35, p = 7.19e-11
+  autoregressive block:    F = 8700.16, p = 4.07e-231
 
 Gasolio main spec BIC (1,8) HAC block Wald tests:
-  oil block excluded:      F = 9.67, p = 1.14e-12
-  autoregressive block:    F = 16362.82, p = 7.81e-230
+  oil block excluded:      F = 9.65, p = 1.21e-12
+  autoregressive block:    F = 16386.77, p = 6.53e-230
 
 Done.

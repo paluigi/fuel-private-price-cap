@@ -18,24 +18,34 @@ scenario range. The micro evidence is compressed into one mechanism
 section with readable units. All eight reviewer-flagged contradictions are
 resolved (claim ledger, 17+ items).
 
-## Decisions you may want to revisit
+## Author decisions incorporated (12 November 2026)
 
-1. **January vs July fit window as baseline.** January is the baseline
-   (your D6); July moves the diesel gap from -21.1 to -24.3 c/l and would
-   push the NIC estimate toward -0.40. Both are shown (Table 7); the
-   choice is documented but is the single largest sensitivity.
-2. **The 50.2% final-day diesel share.** Under the corrected 2.212
-   ceiling, half the diesel network ends October *above* the mechanical
-   ceiling. This is now a feature of the paper (incomplete pass-through at
-   a fading ceiling) but it is the number most likely to draw referee
-   questions; the alternative reading (firms no longer treating the
-   ceiling as binding once the commitment's end approaches) is in the
-   text.
-3. **Near-unit-root disclosure.** We state that the diesel main spec's
-   long-run elasticity is not interpretable and report the range across
-   floors. A referee may ask for an ECM/bounds-test treatment; that is a
-   feasible extension but was not required by the review.
-4. **Title.** Reordered to put the macro objects first; easy to revert.
+1. **January window confirmed** as baseline (July shown as sensitivity).
+2. **28 October brand analysis added** (§7 + tab:brand-28oct): Eni ends
+   October at 2.190 €/l, 99% compliant — it was already at the announced
+   nominal level, so the corrected 2.212 ceiling required nothing of it.
+   The incomplete pass-through is entirely a follower gradient: Q8 cut
+   3.8 c/l (78% compliant by 31 Oct), Api-Ip 2.7 (60%), Esso/Tamoil
+   2.4–3.4 (22–32%), white pumps 1.8 (15%). This sharpens the earlier
+   "firms no longer treating the ceiling as binding" reading: the
+   *leader* treated the commitment level as binding to the end; the
+   followers did not.
+3. **ECM/bounds appendix added** (app:ecm + tab:ecm-bounds): PSS bounds
+   tests decisively fail to reject no-level-relationship (F 1.40/0.92
+   against a 4.92 lower bound; ECT insignificant). Levels long-run
+   elasticities are not identified over 2026 — the formal backing for
+   range-reporting and forecast validation.
+4. Title reorder and single map pair confirmed as delivered.
+
+## Handling of the missing 16–17 October downloads (author correction)
+
+Effective prices are assigned by communication date, so the two missing
+downloads lose no days: the panel calendar now spans all calendar days
+and every average covers the full 34-day window. Disclosed as a §3.2
+footnote; only same-gap double repricing could be lost, which is
+immaterial. Headlines after the 34-day rerun: gaps 17.45/21.13 c/l,
+endpoint gaps 22.4/20.5, NIC −0.378 pp (sensitivities −0.374/−0.381/
+−0.411).
 
 ## Suggested referee-response-ready extras (not in the paper)
 

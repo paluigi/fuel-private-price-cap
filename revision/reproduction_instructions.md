@@ -43,9 +43,10 @@ Rscript R/revision_samples.R                         # Cox/LPM by sample
 Rscript R/analysis_ardl.R                            # ARDL + placebo + inflation
 Rscript R/spec_robustness.R                          # floors / DL / AR grid
 Rscript R/uncertainty_ardl.R                         # origins + bootstraps + scenarios
+Rscript R/ecm_bounds.R                               # PSS bounds tests (D9 appendix)
 
 # decomposition and exhibits
-uv run python -I analysis_decomposition.py           # 6-Oct, endings, groups, dispersion
+uv run python -I analysis_decomposition.py           # 6-Oct, endings, groups, dispersion, brand-28Oct
 uv run python make_fig1_v2.py make_figs_update.py make_maps.py   # legacy figs (appendix maps)
 uv run python make_paper_v2_figs.py                  # Figures 1-4
 uv run python make_tables.py                         # Cox/LPM tables (rescaled units)

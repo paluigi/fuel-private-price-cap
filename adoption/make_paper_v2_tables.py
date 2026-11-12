@@ -316,3 +316,77 @@ Window & Fuel & \\multicolumn{{3}}{{l}}{{Top endings (cent-decimal: share)}} \\\
 """
 Path("paper_v2_appendix.tex").write_text(app_tex)
 print("wrote paper_v2_appendix.tex")
+
+# ------------------------------------------------- D8: brand compliance 28 Oct
+brand = pl.read_csv(REV / "brand_compliance_28oct.csv")
+brand_rows = []
+for r in brand.filter(pl.col("fuel") == "Gasolio").sort(
+        "share_below_31", descending=True).iter_rows(named=True):
+    brand_rows.append(
+        f"{r['group']} & {r['n']:,} & {r['delta_cpl']:+.1f} & "
+        f"{r['p31']:.3f} & {100 * r['share_below_28']:.0f}\\% & "
+        f"{100 * r['share_below_31']:.0f}\\% \\\\".replace(",", "\\,")
+    )
+
+# ------------------------------------------------- D9: ECM / bounds tests
+ecm = pl.read_csv(TAB / "ecm_bounds.csv")
+ecm_rows = []
+for r in ecm.iter_rows(named=True):
+    hl = "--" if r["half_life_days"] is None else f"{r['half_life_days']:.0f} days"
+    ecm_rows.append(
+        f"{FUEL_EN[r['fuel']]} & ({r['p']},{r['q']}) & {r['F_stat']:.2f} & "
+        f"[{r['F_crit_I0']:.2f}, {r['F_crit_I1']:.2f}] & "
+        f"{r['t_stat']:.2f} & {r['ect_coef']:.4f} & {hl} \\\\"
+    )
+
+extra_tex = f"""{HEAD}% ---------- D8/D9 tables ----------
+\\begin{{table}}[htbp]
+\\centering\\small
+\\caption{{Brand groups at the 28 October ceiling step (diesel)}}
+\\label{{tab:brand-28oct}}
+\\begin{{tabular}}{{lrcccc}}
+\\toprule
+ & & \\multicolumn{{2}}{{c}}{{27 Sep $\\to$ 31 Oct}} & \\multicolumn{{2}}{{c}}{{Below 2.212 ceiling}} \\\\
+\\cmidrule(lr){{3-4}}\\cmidrule(lr){{5-6}}
+Group & Stations & $\\Delta$ price (c/l) & Level 31 Oct & 28 Oct & 31 Oct \\\\
+\\midrule
+{chr(10).join(brand_rows)}
+\\bottomrule
+\\end{{tabular}}
+
+\\medskip
+\\footnotesize Mean gross diesel price change from 27 October (last day of
+the 2.261 ceiling) to 31 October, and the share of observations strictly
+below the mechanically adjusted 2.212 ceiling on 28 and 31 October. Eni's
+network was already at the announced nominal level (2.19), hence compliant
+under any ceiling in force.
+\\end{{table}}
+
+\\begin{{table}}[htbp]
+\\centering\\small
+\\caption{{Pesaran--Shin--Smith bounds tests for a level relationship
+(net price, Brent), case 3, estimation window 2 Jan--27 Sep 2026}}
+\\label{{tab:ecm-bounds}}
+\\begin{{tabular}}{{lcccccc}}
+\\toprule
+ & Order & $F$ statistic & 5\\% bounds $[I(0),I(1)]$ & $t$ statistic &
+ ECT & Implied \\\\
+ & & & & & (per day) & half-life \\\\
+\\midrule
+{chr(10).join(ecm_rows)}
+\\bottomrule
+\\end{{tabular}}
+
+\\medskip
+\\footnotesize $F$ and $t$ test the null of no level relationship between
+the log net-of-tax price and log Brent in euro; critical bounds from
+\\textcite{{pesaran2001}}. ECT: coefficient on the lagged level in the
+unrestricted error-correction representation. Both statistics lie far
+below their $I(0)$ lower bounds: over this window the relationship is a
+short-run one, and levels long-run elasticities are not identified ---
+which is why the paper reports elasticity ranges and rests the
+counterfactual on forecast validation.
+\\end{{table}}
+"""
+Path("paper_v2_extra.tex").write_text(extra_tex)
+print("wrote paper_v2_extra.tex")

@@ -16,7 +16,7 @@ Item & Value & Notes \\
 Price communications (rows) & 12.4\,million & 1 Jan--5 Nov 2026 \\
 Stations reporting prices & 21\,766 & unique MIMIT plant IDs \\
 Extract days & 307 & none 16--17 Oct \\
-Station--fuel units (micro panel) & 39\,423 & 28 Sep--31 Oct \\
+Station--fuel units (micro panel) & 39\,425 & 28 Sep--31 Oct \\
 Estimation observations & 261 per fuel & 2 Jan--27 Sep, after lags \\
 Reference days & 3 per month & 1st, 11th, 21st \\
 Ceilings (petrol) & 2.000 & strict, from 28 Sep \\
@@ -36,8 +36,8 @@ Ceilings (diesel) & 2.200 / 2.261 / 2.212 & from 28 Sep / 6 Oct / 28 Oct \\
 \cmidrule(lr){4-6}\cmidrule(lr){7-8}
  & (BIC) & & RMSE & RMSE RW & Bias & Mean & 31 Oct \\
 \midrule
-Petrol & (2,8) & 261 & 0.45 & 3.69 & +0.01 & $-17.4$ & $-22.2$ \\
-Diesel & (1,8) & 261 & 0.85 & 5.07 & -0.16 & $-21.1$ & $-20.4$ \\
+Petrol & (2,8) & 261 & 0.45 & 3.68 & +0.01 & $-17.4$ & $-22.4$ \\
+Diesel & (1,8) & 261 & 0.85 & 5.07 & -0.17 & $-21.1$ & $-20.5$ \\
 \bottomrule
 \end{tabular}
 
@@ -61,13 +61,13 @@ random walk. Gap: actual minus counterfactual gross price, days available
 \cmidrule(lr){2-4}
  & Actual & No cap & Difference & (pp of NIC) \\
 \midrule
-Petrol & $-2.34$ & $+5.34$ & $-7.7$ & $-0.17$ \\
-Diesel & $+1.58$ & $+10.86$ & $-9.3$ & $-0.21$ \\
-Motor fuels (combined) & $-0.38$ & $+8.10$ & $-8.5$ & $-0.38$ \\
+Petrol & $-2.33$ & $+5.28$ & $-7.6$ & $-0.17$ \\
+Diesel & $+1.58$ & $+10.68$ & $-9.1$ & $-0.21$ \\
+Motor fuels (combined) & $-0.38$ & $+7.98$ & $-8.4$ & $-0.38$ \\
 \midrule
-\multicolumn{4}{l}{\emph{Weight split 45/55 (petrol/diesel)}} & $-0.39$ \\
-\multicolumn{4}{l}{\emph{Weight split 55/45 (petrol/diesel)}} & $-0.38$ \\
-\multicolumn{4}{l}{\emph{Regularity-filtered stations (50/50)}} & $-0.42$ \\
+\multicolumn{4}{l}{\emph{Weight split 45/55 (petrol/diesel)}} & $-0.38$ \\
+\multicolumn{4}{l}{\emph{Weight split 55/45 (petrol/diesel)}} & $-0.37$ \\
+\multicolumn{4}{l}{\emph{Regularity-filtered stations (50/50)}} & $-0.41$ \\
 \bottomrule
 \end{tabular}
 

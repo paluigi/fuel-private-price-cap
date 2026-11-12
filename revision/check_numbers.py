@@ -50,8 +50,8 @@ end_b = cf.filter(pl.col("fuel") == "Benzina")["gap_cpl"][-1]
 end_g = cf.filter(pl.col("fuel") == "Gasolio")["gap_cpl"][-1]
 check("mean gap petrol", gap_b, ["17.4"])
 check("mean gap diesel", gap_g, ["21.1"])
-check("end gap petrol", end_b, ["22.2"])
-check("end gap diesel", end_g, ["20.4"])
+check("end gap petrol", end_b, ["22.4"])
+check("end gap diesel", end_g, ["20.5"])
 rb = ardl.filter(pl.col("fuel") == "Benzina").row(0, named=True)
 rg = ardl.filter(pl.col("fuel") == "Gasolio").row(0, named=True)
 check("petrol backtest RMSE", rb["backtest_rmse_cpl"], ["0.45"])
@@ -71,14 +71,14 @@ check("cpi effect total", tot["cpi_effect_pp"], ["$-0.38$"], 2)
 check("petrol mom actual", pb["mom_actual_pct"], ["-2.3\\%", "fell 2.3\\%"], 1)
 check("petrol mom cf", pb["mom_cf_pct"], ["5.3\\%", "+5.3\\%"], 1)
 check("diesel mom actual", pg["mom_actual_pct"], ["1.6\\%", "+1.6\\%"], 1)
-check("diesel mom cf", pg["mom_cf_pct"], ["10.9\\%", "+10.9\\%"], 1)
+check("diesel mom cf", pg["mom_cf_pct"], ["10.7\\%", "+10.7\\%"], 1)
 sens = pl.read_csv(TAB / "inflation_sensitivity.csv")
 s4555 = sens.filter(pl.col("scenario") == "split 45/55, universe")["cpi_effect_pp"].sum()
 s5545 = sens.filter(pl.col("scenario") == "split 55/45, universe")["cpi_effect_pp"].sum()
 sreg = sens.filter(pl.col("scenario") == "split 50/50, regularity sample")["cpi_effect_pp"].sum()
-check("sens 45/55", s4555, ["-0.387"], 3)
-check("sens 55/45", s5545, ["-0.380"], 3)
-check("sens regularity", sreg, ["-0.417"], 3)
+check("sens 45/55", s4555, ["-0.381"], 3)
+check("sens 55/45", s5545, ["-0.374"], 3)
+check("sens regularity", sreg, ["-0.411"], 3)
 
 # --- reference day gaps ------------------------------------------------------
 rd = pl.read_csv(TAB / "inflation_days.csv")
@@ -86,10 +86,10 @@ rd = rd.with_columns(date=pl.col("period").cast(pl.String).str.to_date())
 vals = {
     ("Benzina", dt.date(2026, 10, 1)): "-9.5",
     ("Benzina", dt.date(2026, 10, 11)): "-19.3",
-    ("Benzina", dt.date(2026, 10, 21)): "-19.3",
+    ("Benzina", dt.date(2026, 10, 21)): "-18.9",
     ("Gasolio", dt.date(2026, 10, 1)): "-11.2",
     ("Gasolio", dt.date(2026, 10, 11)): "-27.8",
-    ("Gasolio", dt.date(2026, 10, 21)): "-22.9",
+    ("Gasolio", dt.date(2026, 10, 21)): "-21.7",
 }
 for (fuel, day), frag in vals.items():
     v = rd.filter((pl.col("fuel") == fuel) & (pl.col("date") == day))["gap_cpl"][0]
@@ -110,8 +110,8 @@ check("day0 petrol", 100 * d0.filter(pl.col("fuel") == "Benzina")["at_cap"].mean
 check("day0 diesel", 100 * d0.filter(pl.col("fuel") == "Gasolio")["at_cap"].mean(),
       ["21.4\\%"])
 must_contain("ever shares", "84.4\\% of petrol units and 82.8\\% of diesel")
-must_contain("units", "39{,}423")
-must_contain("events", "32{,}971")
+must_contain("units", "39{,}425")
+must_contain("events", "32{,}974")
 
 # --- bunching / dispersion (revision outputs) ----------------------------------
 bnd = pl.read_csv(REV / "threshold_boundary_counts.csv")
@@ -147,8 +147,18 @@ check("31 Oct diesel mean", m31, ["2.239"], 3)
 check("pass-through c/l", (m27 - m31) * 100, ["1.96"], 2)
 
 # --- dates & framing ------------------------------------------------------------
+# ECM bounds and brand-compliance content (D8/D9)
+ecm = pl.read_csv(TAB / "ecm_bounds.csv")
+fb = ecm.filter(pl.col("fuel") == "Benzina")["F_stat"][0]
+fg = ecm.filter(pl.col("fuel") == "Gasolio")["F_stat"][0]
+check("bounds F petrol", fb, ["1.40"], 2)
+check("bounds F diesel", fg, ["0.92"], 2)
+must_contain("brand Eni level", "2.190")
+must_contain("brand Q8 compliance", "78\\%")
+must_contain("calendar-day recovery", "covers every calendar day")
+
 for frag in ["25 September", "28 September", "30 days" if "thirty days" not in TEX
-             else "thirty days", "2.261", "2.212", "4.5219", "16--17 October",
+             else "thirty days", "2.261", "2.212", "4.5219",
              "0.45~\\cl", "0.85~\\cl", "eleven of sixteen"]:
     must_contain(f"contains {frag[:24]}", frag)
 
