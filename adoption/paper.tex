@@ -8,18 +8,22 @@
 \usepackage{amsmath, amssymb}
 \usepackage{graphicx}
 \usepackage{booktabs}
+\usepackage{siunitx}
 \usepackage{caption}
 \usepackage{setspace}
 \usepackage{eurosym}
+\usepackage[font=small,labelfont=bf]{caption}
 \usepackage{float}
 \usepackage{hyperref}
 \hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
 \usepackage{cleveref}
-\usepackage[backend=biber, style=authoryear, sorting=nyt, maxcitenames=2]{biblatex}
+\usepackage[backend=biber, style=apa, sorting=nyt, maxcitenames=2]{biblatex}
 \addbibresource{literature/references.bib}
 
-\title{Who Adopts a Voluntary Price Cap? \\
-\large Diffusion of Agip Eni's Self-Imposed Cap across Italian Fuel Retailers}
+\newcommand{\cl}{\,\text{c}/\text{l}}
+
+\title{Counterfactual Prices, Inflation, and Adoption:\\
+A Voluntary Price Cap in the Italian Retail Fuel Market}
 \author{Working paper --- draft \today}
 \date{}
 
@@ -27,736 +31,675 @@
 \maketitle
 
 \begin{abstract}
-On 28 September 2026 Agip Eni, the Italian market leader, unilaterally
-capped its motor-fuel prices at 2.00~\euro/l (petrol) and 2.20~\euro/l
-(diesel) for two months, inviting competitors to follow. We reconstruct
-the daily effective price of every Italian motorway-free (\emph{stradale})
-fuel station from the official price-communication registry and study who
-adopted the cap, when, and why. Within fifteen days, 70.2\% of
-39{,}423 station--fuel units priced at or below the (fuel- and
-date-adjusted) cap on at least one day (any-day shares: 62.5\% petrol,
-78.0\% gasolio; final-day 52.9\% and 70.3\%; median adoption: day~3). Cox duration models show adoption is faster for stations with a
-smaller pre-cap gap to the threshold (hazard ratio $1.4\times 10^{-2}$ per
-\euro/l), higher local population density, larger chains, and smaller
-distances to the nearest competitor ($-9\%$ per km) and to the nearest
-adopter ($-2$ to $-5\%$ per km, stronger once the leader brands are
-excluded); brand identity dominates all spatial covariates.
-A station--fixed-effects event study confirms a diffusion gradient:
-by day~4 adoption reaches 59\% in the tercile closest to day-0 adopters
-versus 35\% in the farthest tercile, with no anticipation before the cap.
-The cap polarised the market: province-level within-day dispersion (SD)
-roughly doubled in 214 of 220 province--fuel cells, and
-non-adopters' price gap to the provincial mean deteriorated from
-$+1.1$ to $+6.6$~c/l (province medians). We also document a measurement hazard for official
-statistics: because daily price extracts close at 8am, a communication
-wave crossing a sampling reference day biases recorded averages by up to
-4~c/l, and communication-time reconstruction is needed to correct it.
+\noindent When international oil prices were rising steeply, Italy's largest
+fuel retailer voluntarily capped its pump prices from 28 September 2026 at a
+nominal 1.99~\euro/l for petrol and 2.19~\euro/l for diesel, and most of the
+market followed within weeks. We reconstruct the effective daily price of
+every roadside Italian fuel station from the official price-communication
+registry, strip the statutory tax calendar, and compare the observed price
+path with a no-cap counterfactual built from pre-cap oil pass-through
+estimated over January--September 2026. The counterfactual projects October
+pump prices 17.4~\cl{} (petrol) and 21.1~\cl{} (diesel) above realised
+prices on average, a range that survives credible specification and
+forecast-validation checks. Evaluated at the statistical office's reference
+days, the cap turned fuel inflation from $+5.3$ and $+10.7\%$ (petrol and
+diesel, no cap) into $-2.3$ and $+1.6\%$, an estimated contribution of about
+$-0.4$ percentage points to October headline consumer-price inflation. The
+station-level panel explains how the aggregate effect arose: the leader cut
+most, branded rivals matched within days, prices bunched one tenth of a cent
+below the ceiling, and the 28 October diesel excise cut was passed through
+only gradually at the ceiling. A time-of-day reconstruction correction of up
+to 5~\cl{} matters for reference-day price measurement.
 \end{abstract}
 
-\section{Introduction}
-\label{sec:intro}
+\section{Introduction}\label{sec:intro}
 
-Price caps are among the bluntest instruments of price regulation, and
-their effects are notoriously hard to measure: where a cap binds, prices
-cluster at the ceiling and observed dispersion collapses, confounding
-changes in conduct with censoring. On 28 September 2026, Italy offered an
-unusual natural experiment. Agip Eni, the market leader, announced a
-\emph{voluntary} two-month cap on its retail motor-fuel prices
-(2.00~\euro/l for petrol, 2.20~\euro/l for diesel, self-service), framed
-as a measure against speculation. No law mandated it; competitors were
-simply invited to match. Within days, the largest synchronised price-
-communication wave in the market's recorded history followed: on
-1 October alone, 9{,}192 stations communicated new petrol prices, led by
-rival chains cutting 10--17~c/l overnight.
+Between January and October 2026 the price of Brent crude in euro doubled,
+from roughly 53 to 108~\euro{} per barrel. In the middle of this surge, on
+25 September 2026, Eni---the company operating Italy's largest fuel-retail
+network---announced that from the following Monday, 28 September, it would
+cap the self-service prices at its stations at 1.99~\euro{} per litre of
+petrol and 2.19~\euro{} per litre of diesel, roughly 17 cents below the
+prevailing market level, initially for thirty days with a possible extension
+to the end of the year. Rival networks matched within days and the
+commitment on the cap level was maintained, by the company's
+communications, through the end of October, the window we study. A
+voluntary, firm-initiated price ceiling during an inflationary oil shock is
+an unusual event, and it poses a well-defined question: how much lower were
+Italian pump prices than they would otherwise have been, and what did that
+difference contribute to measured consumer-price inflation?
 
-This paper asks three questions. First, \emph{who} adopted the cap: which
-station and firm characteristics predict pricing at or below the
-threshold? Second, \emph{how did adoption diffuse} across the network of
-stations: does adoption of neighbouring stations raise a station's own
-adoption hazard, as strategic-complementarity models would predict?
-Third, \emph{what happened to prices}: did the cap compress or polarise
-the price distribution, and how did the competitive position of
-non-adopters evolve?
+Answering that question requires measuring three things. First, the
+\emph{observed} national price path, which we construct from the complete
+registry of Italian station price communications---12.4 million
+station--fuel--day observations covering 21{,}766 stations over
+2026---reconstructing for every station and day the price actually in force
+rather than the price recorded by the daily extract. Second, a
+\emph{conditional no-cap path}: an econometric model of how national
+net-of-tax pump prices passed through the Brent price before the cap,
+projected over the cap window on the actual oil path with the actual
+statutory taxes reapplied. The counterfactual is conditional on the
+maintained assumption that pre-cap pass-through would have continued absent
+the cap; it is not an experimentally identified quantity, and we
+discipline it with forecast validation and specification bounds rather
+than claim identification. Third, an \emph{inflation-accounting
+implication}: the difference between the observed and no-cap paths,
+evaluated on the 1st, 11th and 21st of September and October---the
+reference days on which Italy's statistical office (ISTAT) collects fuel
+prices for the consumer-price index---and aggregated with explicit,
+documented assumptions.
 
-We answer these questions with a station-level panel reconstructed from
-the MIMIT price-communication registry. The registry records every price
-communication (\texttt{dtComu}) with date and time, which lets us build
-the \emph{effective} daily price path of each station --- the last
-communicated price as of each day --- rather than the daily snapshot
-published each morning. This distinction is not academic: the daily
-extracts stop at 8am, so a station communicating a lower price at 7am is
-only recorded the following day. On ISTAT price-reference days (the 1st,
-11th, and 21st of each month) this biases the recorded national average:
-for 1 October 2026 we measure an overstatement of 3.5--4.1~c/l
-(\cref{sec:data}).
+Three findings emerge. The observed effect is large: averaging over the 34
+post-cap days, the no-cap model projects
+October prices 17.4~\cl{} above realised prices for petrol and
+21.1~\cl{} for diesel; on 31 October the gaps are 22.2 and 20.4~\cl.
+Because prices are collected on reference days, this price difference maps
+into measured inflation: month-on-month fuel prices fell 2.3\% (petrol) and
+rose 1.6\% (diesel) with the cap, against a no-cap counterfactual of $+5.3$
+and $+10.7\%$, an estimated contribution of $-0.38$ percentage points to
+October headline inflation (specification range $-0.38$ to $-0.45$). The
+propagation is leader-led: on the first day 21\% of stations priced below
+the ceiling, half within four days, and 83--84\% at some point by
+31 October; the initiator's network accounted for a disproportionate share
+of the total price decline, unbranded independents the smallest. And the
+ceiling reshaped the price distribution: a large mass of stations priced
+one tenth of a cent below it, the ninetieth--tenth percentile spread of
+within-province prices rose by about seventy per cent, and when a diesel
+excise cut shifted the ceiling down on 28 October the network passed the
+tax change through only gradually---a small natural experiment in
+ceiling-constrained tax incidence.
 
-Our setting has two attractive features. Because the cap was
-\emph{voluntary}, adoption is a firm decision, and we can measure the
-diffusion of a coordinated price cut --- not just the mechanical effect of
-a legal ceiling. And because we observe the communication time, adoption
-dates are exact to the day rather than contaminated by reporting lag.
+Our contribution is primarily one of measurement and interpretation of an
+aggregate policy episode, and the paper speaks to four literatures. To the
+large body of work on oil-to-retail pass-through and asymmetric pricing
+\parencite{tappata2009, atil2013, borenstein2002, bettendorf2003}, we add a
+case in which pass-through was suspended not by regulation of margins but
+by a firm's own price commitment. To work on price ceilings in retail fuel
+markets---statutory ceilings, their focal-point effects and their
+interaction with market structure
+\parencite{carranza2015, sen2011, zhang2020, contin1999, gatsios2026,
+quiguanas2025}---we add a voluntary, leader-initiated ceiling with
+near-complete market matching, observed at daily frequency. To the
+literature on price leadership and price matching
+\parencite{atkinson2008, amir2007, kim2019, pellegrino2025}, we provide a
+clean episode in which the follower response can be observed station by
+station. Finally, to work on price-index measurement with administrative
+data \parencite{rossi2015, pennerstorfer2020}, we show that reconstructing
+prices by communication time rather than extract time corrects
+reference-day averages by up to 5~\cl{} on high-churn days, a distinction
+that matters for any statistics built on the Italian registry.
 
-We find that adoption was fast but far from universal: 70.2\% of
-station--fuel units priced at or below the cap at some point in the
-first fifteen days (final-day shares: 52.9\% petrol, 70.3\% gasolio;
-median: day 3), and adoption clustered along urban, organised-firm
-corridors. Hazard models (\cref{sec:survival}) show the pre-cap gap to
-the threshold dominates all other covariates; distance to the nearest
-adopter, population density and chain size all raise the adoption hazard
-significantly. The event study (\cref{sec:panel}) shows no anticipation
-and a clean diffusion gradient across day-0 adopter-distance terciles.
-Finally (\cref{sec:dispersion}), the cap \emph{polarised} the market:
-within-province dispersion widened in every one of 222 province--fuel
-cells, and non-adopters became systematically more expensive relative to
-their provincial market. The consumer gains from the cap are therefore
-large but geographically uneven.
-
-The paper proceeds as follows.
-\Cref{sec:related} positions the paper in the literature.
-\Cref{sec:data} describes the data and the communication-based price
-reconstruction. \Cref{sec:descriptive} presents descriptive evidence.
-\Cref{sec:survival,sec:panel} analyse adoption (survival and panel
-designs). \Cref{sec:dispersion} studies dispersion and competitiveness.
+The paper proceeds as follows. \Cref{sec:setting} describes the
+institutional setting, including the 2026 excise calendar that any analysis
+of Italian fuel prices must respect. \Cref{sec:data} documents the data and
+the effective-price reconstruction. \Cref{sec:observed} presents the
+observed market response. \Cref{sec:counterfactual} builds and validates
+the no-cap counterfactual; \Cref{sec:inflation} translates it into an
+estimated inflation contribution. \Cref{sec:mechanism} examines how the
+response propagated across stations, brands and geography.
 \Cref{sec:conclusion} concludes.
 
-\section{Related literature}
-\label{sec:related}
+\section{Institutional setting}\label{sec:setting}
 
-\paragraph{Price ceilings as focal points.}
-Theory predicts that a binding ceiling can coordinate oligopolists on the
-administered price when demand is inelastic. The best empirical evidence
-comes from China's administered gasoline ceilings, which act as focal
-points producing price uniformity \parencite{zhang2020}. Legislated
-gasoline price ceilings have been studied in Canada
-\parencite{sen2011}, Greece \parencite{gatsios2026} and Colombia
-\parencite{quiguanas2025}, generally finding modest price effects and
-concerns about capture; Spain's transition from ceiling to liberalised
-pricing is documented by \textcite{contin1999}. Our setting differs
-decisively: the cap is \emph{voluntary} and unenforced, so adoption is a
-firm choice. We observe the diffusion path itself, and we find uniformity
-is partial --- a persistent non-adopter tail coexists with a mass of
-followers, in line with the dispersion persistence found in regulated
-Colombian retailing \parencite{quiguanas2025}.
+Italian road fuel is sold through roughly 21{,}000 reporting roadside
+(\emph{stradale}) stations under a mix of brand banners---Eni's network,
+the other large brands (Q8, Api-Ip, Eni's former competitors Esso and
+Tamoil among them)---and unbranded ``white pump'' independents, alongside
+some 2{,}000 motorway stations whose prices are regulated at higher levels
+and which we exclude throughout. Since 2005 every price change must be
+communicated to the Ministry of Enterprises (MIMIT), which publishes the
+full registry daily as open data; the price in force at any moment is
+therefore a matter of public record. Italy's consumer-price statistics
+draw fuel prices from this same registry, observing them on three
+reference days per month---the 1st, the 11th and the 21st.
 
-\paragraph{Retail fuel price dynamics.}
-A large literature documents asymmetric pass-through --- ``rockets and
-feathers'' --- in retail gasoline \parencite{tappata2009}, driven by
-consumer search \parencite{lewis2011} and stronger where local market
-power is high \parencite{deltas2008, verlinda2008}; see also
-\textcite{bettendorf2003} for the Dutch market and
-\textcite{atil2013} for nonlinearities. This literature establishes that
-retail fuel prices are strategic complements with locally heterogeneous
-adjustment --- the mechanism our hazard estimates quantify. Sticky rather
-than cycling pricing is the norm in several markets
-\parencite{noel2007a,noel2007b,dehaas2024}, consistent with what we
-observe at the cap.
+Two features of the 2026 tax calendar are essential context. First, excise
+duty was itself on a roller-coaster: a 20~\cl{} cut for both fuels took
+effect on 19 March, and the discount was phased back in through a sequence
+of steps between 2 May and 4 July, with a further diesel-only discount
+from 28 July that was itself withdrawn in steps on 18 and 26 September,
+days before the cap. Second, the cap was explicitly framed by the
+announcing company as linked to the excise relief in force: when the last
+5~\cl{} of diesel discount was withdrawn on 6 October, the gross ceiling
+mechanically translated upward with it, and when a 4~\cl{} diesel excise
+cut took effect on 28 October the ceiling translated downward. Any
+compliance or price-gap measure must therefore use a date-specific
+ceiling, which we construct below. Petrol excise was unchanged after
+4 July; in particular there is no petrol tax change in the outcome window.
+Value-added tax is 22\% throughout, so a one-cent excise change moves the
+gross pump price by 1.22 cents.
 
-\paragraph{Consumer search and price dispersion.}
-Equilibrium dispersion arises even with identical agents
-\parencite{reinganum1979, stiglitz1982}; gasoline applications include
-\textcite{chandra2011} and \textcite{noel2018}. \textcite{
-pennerstorfer2020} show dispersion is non-monotone in information. Our
-bimodal post-cap distribution --- a mass at the cap plus a non-adopter
-tail --- is a stark departure from these smooth-dispersion benchmarks.
+The company's announcement (25 September, effective 28 September) stated
+nominal ceilings of 1.99 and 2.19~\euro/l and an initial duration of
+thirty days, with extension to year-end possible depending on market
+conditions. Prices in the registry are quoted to three decimals. Our
+operational compliance cutoffs are the rounded-up gross levels of
+2.000~\euro/l (petrol) and 2.200~\euro/l (diesel): a price of 1.999 or
+2.199 complies. We apply the cutoff strictly---a price exactly at
+2.000 or 2.200 does not comply---which is empirically nearly inconsequential:
+exact-boundary observations never exceed 0.06\% of station-days
+(\cref{tab:boundary}). The diesel ceiling steps to 2.261 on 6 October
+(2.200 plus the withdrawn 5~\cl{} excise grossed up by VAT) and to 2.212
+on 28 October (2.261 minus the 4~\cl{} cut grossed up). Throughout, the
+analysis window ends on 31 October, by which date the hard commitment on
+the cap level had run its course; communications about pricing beyond that
+date were less specific, and we do not analyse them.
 
-\paragraph{Strategic complementarities and leadership.}
-Sequential ``domino'' pricing is documented in gasoline markets by
-\textcite{atkinson2008}. Second-mover advantage is generic in Bertrand
-settings \parencite{amir2007}; direct estimates of price-setting
-complementarities are provided by \textcite{amiti2016} and, in housing,
-\textcite{guren2018} --- momentum arising from complementarities is
-precisely the adoption pattern we measure. Network oligopoly structure
-shapes markups \parencite{pellegrino2025} and vertical integration
-affects rivals' costs \parencite{hastings2005, borenstein2002}.
-
-\paragraph{The Italian fuel market.}
-Price-transparency shocks on Italian motorways cut nearby prices by about
-3\% \parencite{rossi2015}; spatial interaction and territorial factors
-shape Italian retail fuel pricing \parencite{bergantino2020,
-alderighi2015}; and non-adoption of price cuts has distributional stakes
-\parencite{mattioli2023}. Price-cap incentive theory originates in the
-utility-regulation literature \parencite{braeutigam1993, cabral1991}.
-
-\paragraph{Contribution.}
-We provide the first station-level, communication-based measurement of a
-\emph{voluntary} cap's diffusion, showing that a unilateral cap triggers
-competitor matching along a spatial gradient; we quantify the roles of
-pre-cap price position, brand, chain size and local spillovers in the
-adoption decision; and we document a reference-day sampling bias of
-3.5--4.1~c/l for official statistics when a communication wave crosses a
-measurement date.
-
-\section{Data}
-\label{sec:data}
+\section{Data and measurement}\label{sec:data}
 
 \subsection{Sources}
 
-We combine four datasets:
-\begin{itemize}
-\item \textbf{MIMIT price communications} (daily extracts in our MongoDB
-cache): every price communication by every Italian fuel station, with
-station identifier, fuel, price, and communication timestamp
-(\texttt{dtComu}).
-\item \textbf{MIMIT station registry} (\emph{anagrafica}): Gestore
-(operator), Bandiera (brand), type, municipality and coordinates.
-\item \textbf{ISTAT 2021 census population grid}: resident population in
-$1\,\mathrm{km}^2$ cells (EPSG:3035).
-\item \textbf{ISTAT administrative boundaries} (2026): province and
-region polygons.
-\end{itemize}
-Our window runs from 1 July to 12 October 2026 and covers
-\emph{stradale} stations only (motorway stations are a separate market).
-The analysis panel has 39{,}423 station--fuel units (19{,}746 petrol,
-19{,}677 diesel) and 4.0 million station-day observations.
+We use four sources. The MIMIT price registry, as daily extracts covering
+1 January to 5 November 2026: 307 extract days (16--17 October were never
+published, the only gap) and 12.4 million rows for self-service petrol and
+diesel. Weekly station snapshots provide each station's banner, operator,
+type and location. The statutory excise calendar, obtained from the
+historical tax registry back to 2005, gives every application date and
+rate. Brent in euro is the FRED Brent spot price converted at the
+USD/euro reference rate, forward-filled to calendar days.
+\Cref{tab:data} summarises the resulting samples.
 
 \subsection{From communications to effective prices}
-\label{sec:dtcomu}
 
-Daily extracts snapshot the market before each day's communication wave
-(extracts close at 8am; the bulk of communications arrives between 6:20
-and 8:00). A station's ``price on day $D$'' read off the extract may
-therefore reflect a communication made days earlier. We instead define
-the effective price on day $D$ as the last communication with
-$\texttt{dtComu} \le D$, propagated forward. A communication made on day
-$D$ prices day $D$.
+The registry extract published on a given day contains, for every station
+and fuel, the last communicated price---and each row carries the timestamp
+at which that price was communicated. The extract therefore mixes prices
+set at very different times, and on high-churn days it can misrepresent
+the price in force on any particular day. The problem is sharpest exactly
+where it matters for us: the cap was implemented through a wave of
+communications in the early morning of 28 September, so the extract
+published that day still shows, for most stations, the pre-cap price,
+while the extract of 1 October straddles the following repricing wave.
 
-Two consequences. First, adoption dates are exact: a station counts as
-adopted on the first post-cap day its effective price is at or below the
-cap. Second, we can measure the extract's \emph{snapshot bias}. On
-1 October 2026 --- an ISTAT reference day --- zero same-day
-communications appear in the day's extract: the recorded national average
-overstates the true day-1 average by 3.47~c/l for petrol and 4.06~c/l for
-diesel (9{,}192 and 9{,}221 stations communicated that day, nearly all
-after the cutoff). Official statistics reading prices off extracts on
-reference days are subject to this bias whenever a wave crosses a
-sampling date.
+We therefore reconstruct the \emph{effective} price of every station--fuel
+pair on every day: the price of the last communication dated on or before
+that day. A station enters the panel on its first in-window communication
+and leaves when it stops being observed in extracts, so stale prices are
+never carried forward indefinitely. The practical stakes are large. On
+1 October 2026 the mean extract price exceeded the mean effective price by
+4.2~\cl{} (petrol) and 4.9~\cl{} (diesel), because the morning extract
+cut off mid-wave; a reference-day statistic built on extract-time prices
+would overstate that day's price by that amount. All our price series are
+effective-price series; we return to the measurement implications in
+\Cref{sec:inflation}. MIMIT published no extracts for 16--17 October
+2026; because prices are assigned by communication date, the effective
+price of those two days is recovered from the communications carried by
+the surrounding extracts, so the reconstructed path covers every calendar
+day of the window.\footnote{The only information possibly lost to the
+missing downloads is a price change communicated and fully superseded
+within the two-day gap; such same-week double repricing is rare, and the
+reconstructed 16--17 October means move smoothly between their
+neighbours. The loss of information is marginal and does not affect any
+result in the paper.}
 
-\subsection{Variables}
-\label{sec:variables}
+\subsection{From pump prices to net-of-tax prices}
 
-\begin{itemize}
-\item \emph{Adoption}: effective price $\le$ cap (2.00/2.20~\euro/l) on
-day $t \ge$ 2026-09-28. Time to adoption $T_i$ measured in days from
-28 September; stations never adopting are censored at 12 October.
-\item \emph{Distance to nearest station} (\texttt{nn\_dist\_km}) and
-\emph{nearest at-cap station} (\texttt{cap\_dist\_km}): great-circle
-distances in EPSG:3035 computed daily over all priced stations of the
-same fuel (KD-tree).
-\item \emph{Local population}: 2021 census population of the station's
-containing 1-km cell (\texttt{pop\_density\_cell}).
-\item \emph{Chain size}: number of stations nationwide under the same
-Gestore (\texttt{n\_stations\_gestore}).
-\item \emph{Pre-cap gap}: mean effective price 21--27 September minus
-the fuel-specific cap (\texttt{pre\_gap\_vs\_cap}).
-\item \emph{Brand} (\texttt{bandiera}) and \emph{region} fixed effects.
-\end{itemize}
-Coordinates are harmonised to WGS84; 99.8\% of stations are assigned to
-a province (2 broken-coordinate stations dropped; 53 unassigned
-stations kept with missing province).
+For the counterfactual we work with the net-of-tax price, defined as
+\[
+p^{net}_{st} = \frac{p_{st}}{1+v} - \tau_t,
+\]
+where $p_{st}$ is the effective gross price at station $s$ on day $t$,
+$v = 0.22$ is the VAT rate and $\tau_t$ the statutory excise for that fuel
+on day $t$. Netting the tax removes every 2026 excise step---the spring
+cut, its phased reinstatement, the pre-cap diesel steps and the two
+post-cap diesel steps---from both sides of the pass-through relationship
+by construction, so no tax dummy belongs in the model. The net-of-tax
+price is a price received along the supply chain, not a retail margin:
+the wedge between it and the wholesale cost is shared between refining,
+distribution and retailing, and we make no claim about that split. The
+national series we analyse are equal-weighted means of effective prices
+across roadside self-service stations, about 19{,}700 per fuel per day,
+with a balanced-panel variant (stations present on at least 95\% of days)
+and an ISTAT-like regularity-filtered variant (stations that communicated
+at least forty distinct price changes over July--September, 57.5\% of
+units) used as composition checks.
 
-\section{Descriptive evidence}
-\label{sec:descriptive}
+\subsection{Compliance and adoption}
 
-Adoption was fast and front-loaded. \Cref{fig:rawshares} plots the exact
-daily share of station--fuel units priced at or below the cap, one
-panel per fuel. On the cap day itself 21\% priced at or below the
-threshold; the share then rose to 51\% by day 4. The petrol and diesel
-paths track each other almost one-for-one through 5 October (54.0\% and
-55.1\%). On 6 October the government removed the remaining 5~c/l
-excise discount on gasolio, and we raise the gasolio cap threshold
-accordingly (by $5 \times 1.22 = 6.1$~c/l including VAT; the dotted
-line in the lower panel). The gasolio share jumps 11 percentage points
-overnight, from 55.1\% to 66.3\%, while petrol is unchanged --- this
-discontinuity is the tax adjustment at work, not diffusion.
+A station--fuel pair is defined as pricing below the ceiling on day $t$ if
+its effective gross price is strictly below the date-specific ceiling of
+\Cref{sec:setting}. Three distinct objects should not be confused: the
+share of observations below the ceiling on a given day; the share of
+units that have \emph{ever} priced below it since 28 September (our
+adoption measure); and formal enrolment in any company's initiative,
+which we do not observe and do not require---pricing below the ceiling is
+a behaviour, not a membership. The estimation panel for adoption
+comprises 39{,}425 station--fuel units observed from 28 September to
+31 October (4.8 million station-days), of which 32{,}974 adopt at some
+point.
 
-The jump reflects genuine repricing rather than a communication or
-coding artefact. Between 5 and 6 October, 42\% of tracked gasolio
-stations raised their price by 4--8~c/l (mean change $+2.3$~c/l), and
-66\% of the stations priced at or below 2.20~\euro/l on 5 October
-reappeared in the (2.20, 2.261]~\euro/l band the next day. Of the
-gasolio units counted compliant on 6 October in that band, 90\% carry
-a price communication dated 6 October itself (only 10\% are carried
-forward from earlier dtComu), so operators actively re-communicated
-prices just under the new threshold rather than the threshold move
-mechanically reclassifying stale prices. By 12 October, 62.5\% of petrol
-and 78.0\% of gasolio units price at or below the (fuel- and
-date-adjusted) cap.
+\section{Observed market response}\label{sec:observed}
 
-\begin{figure}[htbp]
+\begin{figure}[t]
 \centering
-\includegraphics[width=0.92\textwidth]{output/figures/fig1_raw_adoption_share.png}
-\caption{Share of stations priced at or below the cap, by day and
-fuel. Exact daily shares from the dtComu-effective panel; no model, no
-uncertainty bands. The dotted line in the lower (gasolio) panel marks
-the excise increase of 6 October (cap threshold $+6.1$~c/l); petrol is
-unaffected, so its panel has no line.}
-\label{fig:rawshares}
-\end{figure}
-
-Brand gradients are stark. By 12 October, the share of station--fuel
-units at or below the (fuel- and date-adjusted) cap was: Agip Eni
-98.1\%, Q8 93.7\%, Tamoil 52.4\%, Api-Ip 31.6\%, Esso 35.2\%, Pompe
-Bianche (independents) 27.3\%. Mean prices order identically
-(\cref{fig:prices}): the market split into a cap-following tier and an
-above-cap tier, with Agip Eni locking at 1.99~\euro/l from the cap day
-while Q8 followed only with its 1 October wave.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.92\textwidth]{output/figures/fig_prices_daily.png}
-\caption{Daily mean pump price (petrol), 1 September -- 6 October 2026:
-all stations (black dotted) and the five largest brands. Dashed red
-line: voluntary cap starts (28 Sep); dotted line: gasolio excise
-increase (6 Oct).}
+\includegraphics[width=\linewidth]{output/figures/v2_fig1_prices.png}
+\caption{National mean gross pump prices (self-service, roadside), January
+to October 2026. Dashed vertical lines mark the 19 March excise cut, the
+4 July restoration, the cap (announcement 25, implementation
+28 September) and the two post-cap diesel excise steps. The dotted stepped
+line is the operational diesel ceiling (2.200 from 28 September, 2.261
+from 6 October, 2.212 from 28 October); the petrol ceiling is 2.000
+throughout. The 16--17 October extracts were never published; those
+days are recovered from the surrounding communications (see
+\cref{sec:data}).}
 \label{fig:prices}
 \end{figure}
 
-Geographically, adoption was highest around Rome and the
-central-northern coastal corridors and lowest in the Po-valley fringes
-and parts of the South (\cref{fig:mapall}).
+\Cref{fig:prices} shows the national price paths in their 2026 context.
+The spring excise cut pulled both fuels down by roughly 20~\cl{} in
+March; the phased reinstatement lifted them through the summer while oil
+was already rising; and at the moment of the cap in late September diesel
+stood at 2.374~\euro/l and petrol at 2.158~\euro/l, both close to their
+yearly highs. Over the cap window, petrol fell to 2.009 by 31 October
+($-14.9$~\cl) and diesel to 2.239 ($-13.5$~\cl). The diesel path is the
+harder to read, because two excise steps fall inside the window: the
+6 October increase (+6.1~\cl{} gross) and the 28 October cut
+($-4.9$~\cl{} gross). In net-of-tax terms---which strips both---petrol
+fell 12.2 and diesel 12.1~\cl{} over the window, against a Brent price
+that rose further.
 
-\begin{figure}[H]
+Adoption was fast and broad. On the first day, 20.9\% of petrol and
+21.4\% of diesel observations were already priced below the ceiling; by
+the fourth day (2 October) roughly half were; by 31 October 84.4\% of
+petrol units and 82.8\% of diesel units had ever priced below their
+date-specific ceiling, with a median first-compliance day of 4. Two
+compositional notes are essential. First, final-day and ever-shares have
+different denominators: on 31 October itself, 81.8\% of petrol and 50.2\%
+of diesel \emph{observations} were below the ceiling, the latter lower
+because the corrected 2.212 ceiling of the last three days is harder to
+meet, as \Cref{sec:mechanism} shows. Second, no measurable anticipation
+preceded implementation: in the event-study of \Cref{sec:mechanism} the
+pre-cap coefficients for 21--27 September are between $-0.2$ and
+$-0.4$ percentage points, an order of magnitude smaller than the
+19-point jump on day zero, and the announcement-to-implementation gap of
+25--27 September shows no break in the aggregate price path.
+
+Brand groups ordered the response exactly as a leadership account would
+predict. Eni's network was at the ceiling almost immediately and stayed
+there; Q8 and Api-Ip matched within a week; Esso and Tamoil followed
+slightly later; and unbranded independents converged only partially.
+A simple descriptive decomposition of the 27 September--31 October mean
+price decline (\cref{fig:mech}a) attributes 27\% of the diesel decline to
+Eni's network---which accounts for about 19\% of observations---and only
+4\% to white pumps, whose prices fell least. The 6 October diesel episode
+separates mechanics from behaviour cleanly: of the 48-point jump in the
+share of diesel observations inside the newly compliant band
+[2.200,~2.261), 43 points are stations that actively re-communicated a
+price that day; only 5 points are stations whose pre-existing price
+merely found itself inside the widened band. The compliance jump was
+overwhelmingly repricing, not reclassification.
+
+\section{A no-cap price counterfactual}\label{sec:counterfactual}
+
+\subsection{Strategy}
+
+The counterfactual question is what national prices would have been over
+28 September--31 October had the cap not happened, given the oil path that
+actually occurred. Our answer conditions on the pre-cap relationship
+between net-of-tax pump prices and the Brent price in euro, estimated on
+the extended window from 2 January to 27 September 2026---261 daily
+observations spanning the spring excise cut, its reinstatement and the
+pre-cap oil surge, all of which are absorbed by the net-of-tax
+construction. The maintained assumption is that this pass-through
+relationship would have continued; everything that follows is an attempt
+to make that assumption transparent, to test where it can be tested, and
+to bound the conclusions where it cannot.
+
+\subsection{Model and selection}
+
+For each fuel we estimate an autoregressive distributed-lag (ARDL) model
+in logs,
+\[
+\ln p^{net}_t = \alpha + \sum_{i=1}^{q}\phi_i \ln p^{net}_{t-i}
++ \sum_{j=0}^{q}\theta_j \ln b_{t-j} + \varepsilon_t,
+\]
+where $b_t$ is Brent in euro and lag orders are selected by the Bayesian
+information criterion over an exhaustive grid: own lags $p \in [0,21]$ and
+oil lags $q \in [7,21]$, with the floor of seven oil lags imposing at
+least one week of Brent dynamics in the polynomial. The floor reflects a
+substantive prior---retail prices adjust to oil over days, not
+overnight---and we verify below that the results are insensitive to it.
+On the extended window, BIC selects $(p,q) = (2,8)$ for petrol and
+$(1,8)$ for diesel (\cref{tab:ardl}).
+
+\begin{figure}[t]
 \centering
-\includegraphics[width=0.8\textwidth]{output/figures/map_adoption_share.png}
-\caption{Share of stations adopting the cap by province (all stations;
-a station counts as adopting if it priced at or below the tax-adjusted
-cap on at least one day, 28 Sep -- 12 Oct 2026; each station counted
-once regardless of fuel).}
-\label{fig:mapall}
+\includegraphics[width=\linewidth]{output/figures/v2_fig2_brent_net.png}
+\caption{Brent in euro (top) and national mean net-of-tax pump prices
+(bottom), January to October 2026. The estimation window for the
+pass-through model ends on 27 September (dashed line).}
+\label{fig:brentnet}
 \end{figure}
 
-\begin{figure}[H]
+\subsection{Validation}
+
+Three exercises discipline the model. First, a placebo backtest: refit on
+data through 13 September and project recursively over 14--27 September,
+still pre-cap. The model attains a root-mean-square error of 0.45~\cl{}
+(petrol) and 0.85~\cl{} (diesel) on the net price, against 3.69 and
+5.07~\cl{} for a no-change random walk, with biases near zero
+(\cref{tab:ardl}). Second, expanding-origin backtests: five origins from
+31 May to 13 September, projecting 14 and 28 days ahead, all evaluation
+windows strictly pre-cap. The oil model beats the random walk in eleven
+of sixteen origin--horizon cells; the losses concentrate at 14-day
+horizons from the mid-summer origins, when prices drifted with little oil
+news. We report these losses rather than select around them; the origins
+closest to the counterfactual period---late August and September---favour
+the oil model decisively. Third, block-exclusion tests with
+heteroskedasticity-and-autocorrelation-robust covariance reject the
+exclusion of the Brent block for both fuels ($p < 10^{-10}$). A pure
+autoregression without oil terms is reported as a mechanical persistence
+benchmark: on the extended window it forecasts \emph{worse} than the oil
+models for both fuels (backtest 3.00 and 4.31~\cl), which was not true on
+the shorter summer-only window and is one reason we prefer the extended
+estimation sample.
+
+One diagnostic deserves honest statement. Both selected specifications
+carry near-unit-root persistence (the sum of own-lag coefficients is
+0.987 for petrol and 0.995 for diesel), so the implied long-run
+elasticity of the diesel main specification---0.09---is a
+small-denominator artifact and not a structural estimate. Across the
+admissible oil-lag floors, long-run elasticities range from 0.72 to 0.77
+for petrol and 0.81 to 0.86 for diesel; Pesaran--Shin--Smith bounds tests
+(\cref{app:ecm}) cannot reject the absence of a levels relationship for
+either fuel over this window. The credibility of the
+counterfactual rests on its validated forecasting behaviour, not on a
+point estimate of long-run pass-through.
+
+\subsection{The no-cap path}
+
+\begin{figure}[t]
 \centering
-\includegraphics[width=0.8\textwidth]{output/figures/map_pb_adoption_share.png}
-\caption{Share of Pompe Bianche (independent) stations adopting the cap,
-by province.}
-\label{fig:mappb}
+\includegraphics[width=\linewidth]{output/figures/v2_fig3_counterfactual.png}
+\caption{Actual (solid) and conditional no-cap (dashed) gross pump prices,
+September--October 2026, with 95\% bands from a re-estimation bootstrap
+(400 draws: resampled residuals, re-estimated coefficients, re-projected
+paths). Diamonds mark the 1st/11th/21st reference days. The vertical line
+is the 28 September implementation.}
+\label{fig:cf}
 \end{figure}
 
-The overall map (\cref{fig:mapall}) shows a clear geography: adoption
-was highest around Rome, along the Tyrrhenian corridor and in parts of
-the North-West (up to 69\% of units), and lowest in Alpine provinces
-and parts of the South and the islands (down to 31\%). The range is
-wide --- a 38-percentage-point gap between the extremes --- and the
-north--south gradient is not monotone: some southern provinces
-(Abruzzo's corridor, coastal Puglia) match northern adoption levels.
-The independents' map is strikingly different (\cref{fig:mappb}):
-independent adoption rates are low almost everywhere (national mean
-23\%, and exactly zero in the darkest provinces) with a sharp pocket of
-convergence along the central Adriatic axis --- from Umbria through the
-Marche -- Abruzzo corridor --- where independents followed the leader's
-network, and near-zero adoption in the Alpine arc and the islands.
-Independents responded to local pressure, not to the national
-announcement.
+\Cref{fig:cf} presents the projection. To obtain a no-cap \emph{gross}
+price we re-apply the statutory tax calendar to the projected net
+path---the same excise on the same days as in the observed series---so
+the 6 and 28 October diesel tax steps affect both paths identically. The
+counterfactual petrol price starts where the market started, about
+3~\cl{} above the realised price on 28 September, and climbs with Brent
+to 2.233~\euro/l by 31 October, 22.4~\cl{} above the actual price; the
+diesel counterfactual reaches 2.444, a gap of 20.5~\cl. Averaged over
+the window, the no-cap path lies 17.4~\cl{} (petrol) and 21.1~\cl{}
+(diesel) above the realised one. On the inflation reference days the gaps
+are $-9.5$, $-19.3$ and $-18.9$~\cl{} (petrol; 1/11/21 October) and
+$-11.2$, $-27.8$ and $-21.7$~\cl{} (diesel).
 
-\section{Who adopts? Survival analysis}
-\label{sec:survival}
+Uncertainty is reported in layers, each covering a distinct component.
+Residual-shock bootstrap bands (2{,}000 draws) reflect innovation
+uncertainty conditional on the estimated coefficients; moving-block
+bootstrap bands (block length seven) add serial dependence in the
+shocks; a re-estimation bootstrap (400 draws of resampled residuals,
+re-estimated coefficients, re-projected paths) adds coefficient
+uncertainty and is the widest---by 31 October it spans the petrol gap
+from $-11$ to $-38$~\cl{} and the diesel gap from $-0.2$ to $-44$~\cl.
+Model uncertainty is deliberately kept outside the bands and shown
+instead as a specification range: across oil-lag floors, fit windows
+(estimating from July instead of January moves the diesel gap from
+$-21.1$ to $-24.5$~\cl), balanced and regularity-filtered samples, and
+Brent paths shifted by $\pm5\%$, October mean gaps lie between 15 and
+19~\cl{} for petrol and 21 and 24~\cl{} for diesel, with the
+distributed-lag-only diesel variant an outlier at $-26.1$
+(\cref{tab:spec-range}). Under every admissible oil-containing
+specification the no-cap price is materially above the realised price
+throughout the window; the direction of the conclusion does not depend on
+the specification, only its size does.
 
-We estimate Cox proportional-hazards models \parencite{cox1972regression}
-of time to adoption. Duration is days from 28 September to first at-cap
-day; never-adopters are right-censored at 12 October, and the gasolio
-threshold is tax-adjusted from 6 October. Because brand
-differences are so stark in the raw data --- and because the leader's own
-stations adopted almost mechanically by construction --- we estimate the
-model on three samples: the \emph{universe} of station--fuel units; the
-market \emph{excluding} Agip Eni and Q8 (the two brands that announced
-at-cap prices in the first wave); and \emph{Pompe Bianche only}
-(independent stations). Standard errors are clustered by Gestore
-(operator). Chain size counts stations nationwide under the same Gestore.
+\section{Inflation implications}\label{sec:inflation}
+
+ISTAT measures fuel prices for the consumer-price index (NIC) on the
+1st, 11th and 21st of each month, drawing on the same MIMIT registry. We
+compute month-on-month September-to-October changes of the mean reference
+day price for each fuel, once as observed and once along the no-cap path,
+and aggregate with explicit assumptions: the ECOICOP 07.2.2 class
+``carburanti e lubrificanti'' carries a 2026 basket weight of 4.5219\%
+(verified against the published weighting structure; the class includes
+lubricants, a small residual we do not separately model), and we split it
+evenly between petrol and diesel, reflecting their approximately equal
+contributions to the class. Station observations enter with equal
+weights; a regularity-filtered variant mimicking the office's preference
+for stations with a consistent communication history serves as the
+composition check. These are documented approximations to an aggregation
+procedure the statistical office does not publish in full; we claim an
+\emph{estimated contribution under stated assumptions}, not a replication
+of the official calculation.
+
+\input{paper_v2_tables}
+
+The results are in \cref{tab:inflation}. Observed reference-day petrol
+prices fell 2.3\% month-on-month where the no-cap path implies a rise of
+5.3\%; diesel rose 1.6\% where the no-cap path implies 10.7\%. Weighted,
+the cap's estimated contribution to October headline NIC inflation is
+$-0.38$ percentage points (petrol $-0.17$, diesel $-0.21$). The
+assumption sensitivities are an order of magnitude smaller than the
+effect itself: 45/55 and 55/45 petrol--diesel splits give $-0.381$ and
+$-0.374$; the regularity-filtered sample gives $-0.411$; and across the
+specification range of \cref{sec:counterfactual} the estimate lies
+between $-0.38$ and $-0.45$, with $-0.30$ under the inadmissible
+autoregression-only benchmark. The dominant uncertainty is the no-cap
+scenario, not the aggregation.
+
+Two measurement notes complete the calculation. First, the
+communication-time reconstruction of \cref{sec:data} matters directly for
+reference-day statistics: on 1 October the extract-time mean overstated
+the effective price in force by 4.2--4.9~\cl. This is a correction to
+snapshot-based measurement of our reconstructed estimator; we have no
+basis, and no need, to attribute error to the published index, whose
+acquisition procedures may differ. Second, fuel-price components are, in
+the authors' institutional experience, complete by the preliminary
+release, so we do not treat the final release as a condition for these
+estimates; this premise is stated as such.
+
+\section{How the response propagated}\label{sec:mechanism}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{output/figures/v2_fig4_mechanism.png}
+\caption{Propagation. Left: share of petrol observations below the
+ceiling by brand group, 28 September--31 October. Right: the 28 October
+diesel episode---mean diesel price day by day (markers shaded by the
+below-ceiling share), with the old ceiling (2.261, grey) and the
+mechanically adjusted ceiling (2.212, black).}
+\label{fig:mech}
+\end{figure}
+
+The aggregate price decline was produced by a rapid, ordered,
+geographically broad repricing, and the station panel shows its anatomy.
+\Cref{fig:mech}a traces the below-ceiling share of petrol observations
+by brand group: the initiator's network prices at the ceiling from the
+first days; Q8 and Api-Ip converge within a week; Esso and Tamoil
+slightly later; white-pump independents partially. Timing correlates
+with local market structure exactly as conditional-association analysis
+would have it: in duration models (\cref{tab:cox-samples}), a station ten cents
+closer to the ceiling in the pre-cap week adopts sooner (log-hazard
+$-0.44$ per 10~\cl{} in the universe, $-0.61$ to $-0.66$ once the leader
+brands are excluded or among independents), adoption is slower the
+farther the station is from its nearest competitor ($-0.10$ log-hazard
+per kilometre) and from the nearest day-zero adopter ($-0.03$ to
+$-0.06$ per kilometre), and larger chains adopt sooner (the global
+proportional-hazards restriction is rejected, so these are
+time-averaged associations rather than constant hazards; we read them as
+descriptive propagation gradients, not causal effects). A discrete-time
+logit hazard with day fixed effects, which requires no
+proportional-hazards assumption, reproduces every gradient
+(\cref{tab:hazard-dt}): per ten cents of pre-cap gap the daily odds of
+adopting fall by a factor of about 0.41 in the universe and 0.21 among
+white pumps, with the distance and chain gradients likewise intact, and
+its baseline hazard spikes exactly at the 1 October repricing wave and
+the 6 October excise step. The
+station-fixed-effects event study (\cref{tab:es-leads}) shows flat
+pre-cap coefficients ($-0.002$ to $-0.004$, an order of magnitude
+smaller than the day-zero jump of $+0.19$) and a plateau after four to
+five days.
+
+The ceiling became the market's focal price---not the announced nominal
+level, but the level one tenth of a cent below the operational cutoff.
+After the cap, 17.9\% of all petrol observations sit at exactly
+1.999~\euro/l; the share of diesel observations ending in .199 rises
+from 2.0\% before the cap to 11.2\% after it
+(\cref{tab:endings}). When the 6 October excise step moved the diesel
+ceiling to 2.261, the mass re-formed at 2.259---eight and a half per
+cent of observations---rather than at the announced-style 2.19. This is
+focal-point pricing of the kind documented for statutory ceilings
+\parencite{zhang2020, gatsios2026}, here generated by a voluntary
+commitment and matched by rivals.
+
+Dispersion effects are best stated with numbers, because different
+summaries point in different directions. The within-province
+tenth-to-ninetieth percentile spread rose from about 8.1 to 14.0~\cl{}
+(petrol) and 9.5 to 15.9~\cl{} (diesel) between the full pre-cap month
+and the cap window---an increase of roughly seventy per cent. Standard
+deviations rose for petrol (4.8 to 7.1~\cl{} within province--day) and
+for diesel relative to the tighter pre-cap week, but fell for diesel
+relative to the full September baseline, because the pre-cap diesel
+distribution was itself unusually dispersed after the two mid-September
+excise steps. The economically meaningful statistic is the gap between
+adopters and non-adopters: within province--day, stations below the
+ceiling priced on average 11.5 (petrol) and 11.7~\cl{} (diesel) below
+stations above it, and the non-adopter tail drifted upward with oil
+exactly as the counterfactual of \cref{sec:counterfactual} predicts.
+
+The window's final days deliver a small natural experiment in
+ceiling-constrained tax incidence. When the 28 October excise cut
+lowered the mechanical ceiling from 2.261 to 2.212, the mean diesel price
+did not move on the day (2.258 on both 27 and 28 October); by 31 October
+it had fallen only 1.96~\cl{} of the 4.88~\cl{} mechanical adjustment
+---a pass-through of about forty per cent in three days. The
+below-ceiling share collapsed from 65.8\% to 24.0\% on the day of the
+cut and recovered to 50.2\% by 31 October; not a single observation
+priced at 2.211, the new bunching point, in the final three days. With
+the commitment on the cap level running out, the ceiling stopped
+functioning as a focal price and the network absorbed part of the tax
+cut instead of passing it through---the incomplete, asymmetric
+pass-through familiar from the rockets-and-feathers literature
+\parencite{tappata2009, borenstein2002}, here observed at a ceiling.
+Brand groups, however, read the same episode very differently
+(\cref{tab:brand-28oct}). Eni's network had been pricing at the
+announced nominal level all along and ended October at 2.190~\euro/l on
+average---compliant under any ceiling in force, with no repricing
+required of it. The gradient appears entirely among the followers:
+Q8 cut 3.8~\cl{} and reached 78\% compliance under the new ceiling,
+Api-Ip 2.7~\cl{} and 60\%, Esso and Tamoil between 2.4 and 3.4~\cl{}
+with 22--32\%, and unbranded independents cut least (1.8~\cl{}, 15\%
+compliant). The leader treated the commitment level as binding to the
+end; the followers' partial pass-through is what the aggregate
+incompleteness is made of.
 
 \input{paper_tables}
 
-\Cref{tab:cox-samples} reports coefficients (hazard ratios are
-$e^{\hat\beta}$). Three results are robust across samples. First, the
-\textbf{pre-cap gap dominates}: its coefficient grows (in magnitude) from
-$-4.2$ in the universe to $-6.5$ excluding the leader brands and
-$-5.4$ for independents --- stations already pricing near the cap adopted
-almost mechanically, and this remains the single strongest predictor
-once leader stations are removed. Second, \textbf{spatial spillovers
-strengthen when the leader brands are removed}: the nearest-adopter
-distance coefficient roughly doubles from $-0.025$ (universe) to
-$-0.052$ (excl.\ Agip Eni/Q8) and $-0.062$ (Pompe Bianche). This is exactly the
-pattern strategic-complementarity models predict: leader-brand rows
-absorbed the spatial variation, and once they are excluded, the
-neighbourhood diffusion effect emerges clearly. Independents respond to
-what nearby stations do, not to the cap announcement itself. Third,
-\textbf{chain size matters most for independents} ($0.0016$ versus
-$0.0001$): small local chains (gestori) coordinated their response,
-while brand-level headquarters decided for the organised brands.
+\section{Conclusion}\label{sec:conclusion}
 
-Robustness. A Weibull AFT model gives the same signs and significance
-per sample; gestore-clustered standard errors leave all conclusions
-unchanged; the PH assumption is examined in \cref{app:diag} and the
-reported coefficients should be read as window-averaged effects.
+A voluntary price ceiling, announced by the market leader during an oil
+surge and matched by most of the network within two weeks, held Italian
+pump prices far below the level implied by the pre-cap relationship
+between oil and pump prices: on our baseline estimates, 17 to 21 cents
+per litre below over October, with an estimated contribution to October
+headline consumer-price inflation of about $-0.4$ percentage points
+under transparent aggregation assumptions. The station-level panel shows
+how the effect was produced: a leader-led, competition-gradient repricing
+that bunched prices one tenth of a cent below the ceiling and left a
+non-adopter tail drifting upward with oil, widening the price
+distribution while lowering its mean.
 
-\section{Market dynamics: panel event study and adoption probabilities}
-\label{sec:panel}
+The conclusions are conditional, and their limits are the paper's
+caveats. The counterfactual assumes pre-cap pass-through would have
+persisted; we validate it where possible---placebo and
+expanding-origin forecasts that beat random-walk benchmarks, oil blocks
+that cannot be excluded, specification ranges that bound the
+answer---but a model-based no-cap path is not an experiment. The window
+ends on 31 October with the commitment's hard horizon; the gradual
+pass-through of the final diesel excise cut suggests the ceiling's force
+was already fading. And the micro gradients we document are conditional
+associations. What the episode establishes is measurement: the size of a
+voluntary cap's price and inflation effects can be bounded credibly from
+a complete price-communication registry, and the details of that
+registry---communication times, three-decimal quoting, tax-translated
+ceilings---matter for every number in it.
 
-\subsection{Event study}
-
-We estimate station fixed-effects models of the daily at-cap indicator
-over the event window $[-7, +7]$ around the cap:
-\begin{equation}
-\text{at\_cap}_{it} = \sum_{k \ne -1} \beta_k \,
-\mathbf{1}[t - T_0 = k] + \alpha_i + \varepsilon_{it},
-\label{eq:es}
-\end{equation}
-with day $-1$ as reference and gestore-clustered errors. Because
-\cref{fig:rawshares} already shows the raw adoption path --- the data are
-exhaustive, so the shares themselves carry no sampling uncertainty ---
-the event study serves only as a robustness check that the pattern is
-not an artefact of composition. Its coefficients are reported in
-\cref{app:es} and mirror \cref{fig:rawshares}: no pre-cap movement, a
-jump at day 0, and a plateau from day 5.
-
-To trace diffusion, we split station--fuel units into terciles by their
-distance to the nearest station that adopted on day 0 (cut points:
-1.08 and 3.15~km) and plot the exact daily at-cap share of each tercile
-in \cref{fig:capdist}. The three curves never cross. At every point in
-time, stations near a day-0 adopter adopt earlier and more often: on
-5 October, 62.7\% of the near tercile is at the cap versus 44.3\% of
-the far tercile --- an 18-percentage-point gradient --- and the far
-tercile never catches up over our window. Note that the far tercile's
-curve is not flat either: it rises throughout, so diffusion eventually
-reached remote stations too, but with a lag of several days. This
-ordering is exactly what local strategic complementarities predict, and
-it is invisible in the aggregate series of \cref{fig:rawshares}.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.85\textwidth]{output/figures/event_study_by_capdist.png}
-\caption{Stations at or below the cap by distance to the nearest day-0
-adopter (terciles; exact daily shares). Cut points: 1.08 and 3.15~km.}
-\label{fig:capdist}
-\end{figure}
-
-\subsection{Who adopts? Adoption probabilities}
-\label{sec:lpm}
-
-The survival analysis of \cref{sec:survival} conditions on time;
-here we ask the complementary question: given the full covariate set of
-\cref{sec:variables}, \emph{which} stations ended up adopting at all?
-We estimate linear probability models (OLS with gestore-clustered
-standard errors)
-\begin{equation}
-\text{adopted}_i = \mathbf{x}_i'\gamma + \mu_{b(i)} + \delta_{r(i)}
-+ u_i,
-\label{eq:lpm}
-\end{equation}
-where $\mathbf{x}_i$ collects the continuous and fuel covariates,
-$\mu_b$ are brand fixed effects (within-sample \(\ge\)100-observation
-rule) and $\delta_r$ region fixed effects. \Cref{tab:lpm-core} reports
-the core coefficients for the same three samples as
-\cref{tab:cox-samples}; the full brand and region coefficients appear in
-\cref{app:lpm-s1,app:lpm-s2}.
-
-\input{paper_tables_s6}
-
-The LPM confirms and sharpens the survival results. The pre-cap gap is
-by far the strongest predictor in every sample: $-1.31$ probability
-points per cent/litre of pre-cap excess in the universe sample, $-1.56$
-excluding the leader brands, $-1.05$ for independents. Distance to the
-nearest day-0 adopter is negative and significant in all three samples
-($-0.010$ universe, $-0.014$ excluding the leader brands, $-0.010$ for
-Pompe Bianche), while the distance to the nearest station
-(competitor) is smaller and only marginally significant for
-independents ($-0.018$, $p = 0.009$): proximity to \emph{adopters}
-predicts adoption at least as strongly as proximity to competitors,
-and for independents the two effects are of similar magnitude once
-measurement noise is accounted for. Chain size is positive and
-significant in the universe and Pompe Bianche samples (insignificant
-once the leader brands are removed, whose networks coordinate centrally)
-and roughly seventeen times larger for Pompe Bianche, echoing the
-gestore-coordination reading of \cref{sec:survival}. Population density
-is economically negligible once brand and region are controlled. Fit is
-moderate (adjusted $R^2 = 0.25$--$0.34$), as expected for individual
-adoption decisions; diagnostics are in \cref{app:diag}.
-
-\section{Dispersion and competitiveness}
-\label{sec:dispersion}
-
-\paragraph{Province-level dispersion.}
-We compute, for each province $\times$ fuel $\times$ phase (pre:
-21--27 September; post: 28 September -- 12 October), the daily
-within-province standard deviation of effective prices, and compare
-phases. The SD rose in \textbf{214 of the 220 province--fuel cells}
-(97.3\%): on average from 51 to 87~c/l for petrol and from 65 to
-90~c/l for diesel --- a doubling. \Cref{fig:sdpre,fig:sdpost} show the
-distribution of the shift. Throughout the paper, maps use a blue--red
-scale: \emph{blue marks low values and red marks high values}. The
-province-level standard deviation rises from a median of 50~c/l
-pre-cap to 90~c/l post-cap, and the whole distribution shifts right
-(\cref{fig:sdcapdist}, top panel): 214 of the 220 province--fuel cells
-see their SD increase. \Cref{fig:sdpre,fig:sdpost} in \cref{app:maps}
-show the geography: pre-cap the map is predominantly light blue
-(typical SDs 28--150~c/l); post-cap red spreads along the Alps and the
-Apennines --- the provinces where dispersion widened most are those
-where the adopter share was intermediate, mixing cap-priced with
-above-cap stations. Provincial SDs after the cap run 71--235~c/l, and
-no province returns to its pre-cap level. The cap did not compress the
-distribution --- it split it. A mass of adopters sits exactly at the
-threshold while a non-adopter tail holds prices above it, producing a
-bimodal distribution unlike the smooth equilibrium-dispersion
-benchmarks \parencite{reinganum1979, stiglitz1982}.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.85\textwidth]{output/figures/fig_dispersion_hist.png}
-\caption{Province-level distributions before (blue) and after (red) the
-cap. Top: within-province standard deviation of effective prices.
-Bottom: non-adopters' mean gap to the provincial daily mean.}
-\label{fig:sdcapdist}
-\end{figure}
-
-The consumer reading is correspondingly uneven: where adoption was high,
-prices fell to the cap for most of the market; where the non-adopter
-tail dominated, prices barely moved. Given that adoption tracked
-population density and chain presence, the gains concentrate in urban,
-organised-firm corridors --- with distributional implications for
-car-dependent rural areas \parencite{mattioli2023}.
-
-\section{Conclusions}
-\label{sec:conclusion}
-
-A voluntary, temporary price cap announced by the Italian market leader
-achieved partial market-wide matching within days --- by 12 October 62.5\%
-of petrol and 78.0\% of gasolio station--fuel units priced at or below
-the (tax-adjusted) threshold. Adoption was primarily a firm decision --- but not only: once the
-leader brands are excluded, local spillovers emerge as a first-order
-driver, with the adoption hazard falling 7--14\% per kilometre from the
-nearest adopter and independent stations following in dense, organised
-corridors while ignoring the cap elsewhere. Pre-cap price position
-dominates everywhere: stations already pricing near the threshold
-adopted almost mechanically. The cap polarised rather than compressed
-the market: dispersion widened in almost every province, and
-non-adopters became relatively more expensive. Consumer gains are
-therefore real but geographically uneven --- visible in the north-south
-and brand gradients of the adoption maps.
-
-Three caveats. First, our window is fifteen post-cap days; the two-month
-cap horizon may produce further convergence or reversal around expiry
---- strategic pricing near sunset dates is unobservable here. Second,
-adoption is measured from communications; enforcement (actual pump
-prices versus communicated ones) is outside our data. Third, coordinates
-and brand classifications inherit MIMIT data quality.
-
-For measurement, our snapshot-bias result is a caution for official
-statistics: reference-day sampling from 8am-cut extracts mis-dated an
-entire communication wave in October 2026, overstating reference-day
-averages by 3.5--4.1~c/l. Communication-time reconstruction, as
-implemented here, is the robust alternative.
-
-\printbibliography
-
+\clearpage
 \appendix
 
-\section*{Appendix}
-\addcontentsline{toc}{section}{Appendix}
+\section{Additional tables}\label{app:tables}
+\input{paper_v2_appendix}
+\input{paper_v2_extra}
 
-\renewcommand{\thesection}{\Alph{section}}
-\setcounter{section}{0}
+\section{Levels relationship: bounds tests}\label{app:ecm}
 
-\section{Event-study coefficients}
-\label{app:es}
+The main text reports long-run elasticities as a range and leans on
+forecast validation rather than on a point estimate of long-run
+pass-through. This appendix formalises that choice. We re-estimate the
+selected models in error-correction form and apply the
+Pesaran--Shin--Smith bounds procedure \parencite{pesaran2001} to the
+null of no level relationship between the log net-of-tax price and log
+Brent in euro (case 3: unrestricted intercept, no trend), on the same
+2 January--27 September window as the counterfactual.
 
-\input{paper_appendix_es}
+\Cref{tab:ecm-bounds} reports the results. For petrol the bounds
+$F$-statistic is 1.40 and for diesel 0.92, both far below their
+$I(0)$ lower critical bounds of about 4.9; the $t$-statistics
+($-1.63$ and $-0.60$) are likewise indistinguishable from the no-level-
+relationship region. The implied error-correction coefficients are small
+and insignificant ($-0.013$ and $-0.005$ per day). Over this window,
+in short, net pump prices and Brent share no detectable levels
+relationship: pass-through works through short-run dynamics, and any
+long-run elasticity computed from the levels representation of these
+models---including the diesel main specification's
+small-denominator value of 0.10---is not an identified object. This is
+consistent with the near-unit-root persistence documented in
+\cref{sec:counterfactual} and is why the counterfactual's credibility
+rests on its validated multi-step forecasts rather than on a
+cointegration claim. A longer history including pre-2026 data might
+identify a levels relationship; within 2026, the oil shock, the spring
+excise cycle and the cap episode are too entangled to deliver one.
 
-\section{Full LPM coefficient tables}
-\label{app:lpm-full}
-
-Brand and region fixed-effect estimates for the linear probability
-models of \cref{sec:lpm} are reported in \cref{app:lpm-s1,app:lpm-s2}.
-
+\section{Additional estimates}\label{app:micro}
+\input{paper_tables_s6}
 \input{paper_appendix_lpm}
 
-\section{Model diagnostics}
-\label{app:diag}
-
-This appendix reports diagnostics for the Cox models of
-\cref{tab:cox-samples} and the LPMs of \cref{tab:lpm-core}.
-
-\paragraph{Collinearity.} The continuous covariates are close to
-orthogonal: all pairwise correlations are below 0.62, the largest VIF is
-1.6 (nearest-station distance), and the condition number of the
-covariate correlation matrix is 4.5--5.7 across samples --- far below
-conventional concern thresholds (VIF $> 10$, condition number $> 30$).
-Pre-cap gap and the distance measures thus carry independent variation;
-coefficients are not fragile to the inclusion of the others.
-
-\paragraph{Proportional hazards (Cox).} Scaled Schoenfeld-residual
-tests (\texttt{cox.zph}, KM transform) reject global PH in all samples,
-driven by \emph{chain size} and, in the universe sample, the
-\emph{pre-cap gap} (their coefficients attenuate as weaker,
-further-from-cap stations adopt over the window). The qualitative
-ranking of covariates is unaffected; the reported coefficients should
-be read as window-averaged effects.
-
-\paragraph{Functional form (Cox).} Martingale-residual correlations
-with each continuous covariate are $\le |0.08|$ in all samples ---
-no evidence of misspecified linearity for the distance, density and
-gap variables at this scale.
-
-\paragraph{LPM specification.} Pearson residuals have mean zero by
-construction and are calibrated in the aggregate (mean predicted
-adoption equals the observed share to four decimals in every sample).
-The Ramsey RESET rejects exact linearity in the universe and
-excl.-Agip/Q8 samples ($p < 0.001$), which is expected: the true
-response surface is a probability bounded in $[0,1]$, and the LPM is
-used for its readable coefficients, not for out-of-range extrapolation.
-Heteroskedasticity inherent to binary outcomes is handled by the
-gestore-clustered (Huber--White) standard errors reported throughout.
-
-\clearpage
-\section{Provincial maps by fuel}
-\label{app:maps}
-
-This appendix collects the province maps behind
-\cref{sec:dispersion}. All maps use the same blue--red scale as the
-main text: \emph{blue = low values, red = high values}.
-
-\paragraph{Average provincial price the day before the cap (27
-September).} Both fuels show the pre-cap north-west--south-east price
-gradient, petrol around 2.00--2.20~\euro/l and diesel around
-2.20--2.40~\euro/l.
-
+\section{Provincial maps}\label{app:maps}
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{output/figures/amap_price_pre_ben.png}
-\caption{Petrol: mean provincial price, 27 September 2026 (\euro/l).}
-\label{fig:ampreben}
+\includegraphics[width=0.49\linewidth]{output/figures/v2_map_adopt7_ben.png}
+\includegraphics[width=0.49\linewidth]{output/figures/v2_map_adopt7_gas.png}
+\caption{Share of station--fuel units priced below the ceiling at least
+once in the first seven days (28 September--4 October), by province:
+petrol (left) and diesel (right); common 0--100\% scale. Early diffusion
+is geographically uneven but fuel-symmetric (province medians 39--40\%).}
+\label{fig:maps}
 \end{figure}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{output/figures/amap_price_pre_gas.png}
-\caption{Diesel: mean provincial price, 27 September 2026 (\euro/l).}
-\label{fig:ampregas}
-\end{figure}
+\section{Data dictionary}\label{app:dict}
 
-\clearpage
-\paragraph{Average provincial price 7 days after the cap (5 October).}
-Petrol collapses towards 2.00--2.10~\euro/l nearly everywhere; diesel
-converges towards 2.10--2.30~\euro/l, with the reddest (highest)
-provinces in the non-adopting fringes.
+\begin{table}[H]
+\centering\footnotesize
+\caption{Variable names used in the replication materials and their
+paper terms.}
+\begin{tabular}{ll}
+\toprule
+Code name & Paper term \\
+\midrule
+\texttt{dt\_comu} / \texttt{dtComu} & communication timestamp \\
+\texttt{prezzo} & pump (gross) price, EUR/l to three decimals \\
+\texttt{eff\_mean\_gross} / \texttt{eff\_mean\_net} & national mean effective gross / net-of-tax price \\
+\texttt{cap\_threshold} & date-specific operational ceiling \\
+\texttt{at\_cap} / \texttt{compliance\_at\_cap} & indicator: effective price strictly below the ceiling \\
+\texttt{nn\_dist\_km} & distance to nearest priced competitor (km) \\
+\texttt{cap\_dist\_km\_d0} & distance to nearest below-ceiling station on 28 September (km) \\
+\texttt{pre\_gap\_vs\_cap} & pre-cap-week mean price minus nominal ceiling (EUR/l) \\
+\texttt{pop\_density\_cell} & population of the station's 1-km grid cell \\
+\texttt{n\_stations\_gestore} & number of stations under the same operator \\
+\texttt{bandiera} & brand banner (``Agip Eni'' = the initiator; ``Pompe Bianche'' = white pumps) \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{output/figures/amap_price_post7_ben.png}
-\caption{Petrol: mean provincial price, 5 October 2026 (\euro/l).}
-\label{fig:ampostben}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{output/figures/amap_price_post7_gas.png}
-\caption{Diesel: mean provincial price, 5 October 2026 (\euro/l).}
-\label{fig:ampostgas}
-\end{figure}
-
-\clearpage
-\paragraph{Price gap between future non-adopters and adopters before
-the cap (21--27 September).} Even before the cap, stations that would
-never adopt priced above those that would, by up to 200~c/l (petrol)
-and 198~c/l (diesel) in the reddest provinces --- pre-cap selection,
-not just post-cap repricing.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{output/figures/amap_gappre_ben.png}
-\caption{Petrol: pre-cap mean price of non-adopters minus adopters
-(c/l).}
-\label{fig:amgappreben}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{output/figures/amap_gappre_gas.png}
-\caption{Diesel: pre-cap mean price of non-adopters minus adopters
-(c/l).}
-\label{fig:amgappregas}
-\end{figure}
-
-\paragraph{Post-cap price gap between non-adopters and adopters
-(28 September -- 12 October).} Non-adopters price above adopters in
-every province, by 58--258~c/l (petrol) and 60--282~c/l (diesel); the
-gap is reddest (widest) where adoption was high and the provincial mean
-is anchored at the cap.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{output/figures/amap_gapadoption_ben.png}
-\caption{Petrol: mean post-cap price of non-adopters minus adopters
-(c/l).}
-\label{fig:amgapben}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{output/figures/amap_gapadoption_gas.png}
-\caption{Diesel: mean post-cap price of non-adopters minus adopters
-(c/l).}
-\label{fig:amgapgas}
-\end{figure}
-
-\clearpage
-\paragraph{Share of cap adopters 7 days after the cap.} Adoption
-spans 32--74\% of units across provinces in both fuels, with the
-reddest provinces concentrated in the central-northern corridors
-identified in \cref{fig:mapall}.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{output/figures/amap_adopt7_ben.png}
-\caption{Petrol: share of units at or below the cap, 28 September --
-5 October 2026 (\%).}
-\label{fig:amadoptben}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{output/figures/amap_adopt7_gas.png}
-\caption{Diesel: share of units at or below the cap, 28 September --
-5 October 2026 (\%).}
-\label{fig:amadoptgas}
-\end{figure}
-
-\clearpage
-\paragraph{Dispersion and the non-adopter gap across provinces
-(main-text section \ref{sec:dispersion}).} The four maps behind the
-distributions of \cref{fig:sdcapdist}: within-province price SD before
-and after the cap, and the non-adopter gap before and after.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{output/figures/map_sd_pre.png}
-\caption{Within-province standard deviation of effective prices (c/l),
-pre-cap (21--27 September); mean across the two fuels. Red = high.}
-\label{fig:sdpre}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{output/figures/map_sd_post.png}
-\caption{Within-province standard deviation of effective prices (c/l),
-post-cap (28 September -- 12 October); mean across the two fuels.
-Red = high.}
-\label{fig:sdpost}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{output/figures/map_gap_pre.png}
-\caption{Non-adopters' mean gap to the provincial daily mean (c/l),
-pre-cap. Red = large gap.}
-\label{fig:gappre}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{output/figures/map_gap_post.png}
-\caption{Non-adopters' mean gap to the provincial daily mean (c/l),
-post-cap (28 September -- 12 October). Red = large gap.}
-\label{fig:gappost}
-\end{figure}
+\printbibliography
 
 \end{document}

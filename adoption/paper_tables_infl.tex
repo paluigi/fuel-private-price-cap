@@ -1,0 +1,31 @@
+% Auto-generated: do not edit by hand.
+% Source: R/analysis_ardl.R -> output/tables/{ardl,inflation}_summary.csv
+% Fit window 2026-07-01..2026-09-27; projection 2026-09-28..2026-10-31;
+% backtest window 2026-09-14..2026-09-27.
+
+\begin{table}[htbp]
+\centering\small\setlength{\tabcolsep}{3pt}
+\caption{Month-on-month inflation on ISTAT reference days (1st, 11th, 21st): actual vs counterfactual}
+\label{tab:inflation}
+\begin{tabular}{lcccccc}
+\toprule
+ & \multicolumn{3}{c}{MoM change, Sep vs Oct avg (\%)} &
+\multicolumn{3}{c}{Contribution to headline MoM CPI (pp)} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+ & Actual & No cap & Difference & Actual & No cap & Difference \\
+\midrule
+Petrol & $-2.34$ & $+4.85$ & $-7.18$ & $-0.05$ & $+0.11$ & $-0.16$ \\
+Diesel & $+1.58$ & $+12.13$ & $-10.55$ & $+0.04$ & $+0.27$ & $-0.24$ \\
+Motor fuels (combined) & $-0.38$ & $+8.49$ & $-8.86$ & $-0.02$ & $+0.38$ & $-0.40$ \\
+\bottomrule
+\end{tabular}
+
+\medskip
+\footnotesize Monthly averages over the three ISTAT reference days
+(1, 11, 21 September vs 1, 11, 21 October 2026), national mean pump prices
+(self-service, stradale). Pre-cap reference days have no counterfactual
+(the no-cap path is the observed path). CPI contributions use the NIC 2026
+definitive weight of ECOICOP 07.2.2 ``Carburanti e lubrificanti'' (4.5219\%
+of the basket), split evenly between petrol and diesel.
+\end{table}
+

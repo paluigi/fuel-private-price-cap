@@ -20,7 +20,10 @@ d <- d[days_since_cap >= -7 & days_since_cap <= 7]  # event-study window
 #  -1 is the reference period)
 d[, id_fuel := paste(id_impianto, fuel, sep = "_")]
 d[, ev := as.integer(pmin(days_since_cap, 7))]
-d[, ev := factor(ev, levels = -1:7)]
+# levels must span the FULL event window: with levels = -1:7 the pre-period
+# values -7..-2 become NA and the leads silently vanish from the estimation
+# (revision audit A-04)
+d[, ev := factor(ev, levels = -7:7)]
 setorder(d, id_fuel, date)
 
 cat("post rows:", nrow(d), " units:", uniqueN(d$id_fuel), "\n")
@@ -57,9 +60,12 @@ iplot(m2, main = "Adoption by distance to nearest adopter (day-0)", xlab = "days
 dev.off()
 
 # 3. Price convergence: gap-to-threshold dynamics for adopters vs not
-# tax-adjusted cap: gasolio +0.061 EUR/l from day 8 (2026-10-06)
+# tax-adjusted cap: gasolio +0.061 EUR/l from day 8 (2026-10-06),
+# -0.0488 EUR/l from day 30 (2026-10-28) -> 2.212 (revision D3/D4);
+# strict compliance: prezzo < cap_thr
 d[, cap_thr := fifelse(fuel == "Benzina", 2.0,
-                       fifelse(days_since_cap >= 8, 2.261, 2.2))]
+                       fifelse(days_since_cap >= 30, 2.212,
+                       fifelse(days_since_cap >= 8, 2.261, 2.2)))]
 d[, gap := prezzo - cap_thr]
 m3 <- feols(
   gap ~ i(ev, ref = -1) * adopted | id_fuel,

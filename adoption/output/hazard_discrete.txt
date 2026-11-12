@@ -1,0 +1,68 @@
+person-period rows: 463594  events: 32974  units: 39425 
+
+===== S1_universe :  463594 rows, 32974 events =====
+GLM estimation, family = binomial, Dep. Var.: event
+Observations: 455,624
+Fixed-effects: day: 34,  bandiera: 252,  regione: 21
+Standard-errors: Clustered (gestore) 
+                Estimate Std. Error    z value   Pr(>|z|)    
+pre_gap_10c    -0.887886   0.081748 -10.861292  < 2.2e-16 ***
+nn_dist_km     -0.072212   0.010979  -6.577151 4.7955e-11 ***
+cap_dist_km_d0 -0.040080   0.004592  -8.729054  < 2.2e-16 ***
+pop_1000       -0.000078   0.004894  -0.016000 9.8723e-01    
+chain_10        0.004259   0.000882   4.828138 1.3782e-06 ***
+fuelGasolio     0.085578   0.026834   3.189133 1.4270e-03 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Log-Likelihood: -85,487.4   Adj. Pseudo R2: 0.272727
+           BIC: 175,026.9     Squared Cor.: 0.2632  
+
+===== S2_excl_leaders :  423263 rows, 20441 events =====
+GLM estimation, family = binomial, Dep. Var.: event
+Observations: 415,498
+Fixed-effects: day: 34,  bandiera: 250,  regione: 21
+Standard-errors: Clustered (gestore) 
+                Estimate Std. Error    z value   Pr(>|z|)    
+pre_gap_10c    -1.143390   0.099128 -11.534481  < 2.2e-16 ***
+nn_dist_km     -0.079745   0.010976  -7.265250 3.7235e-13 ***
+cap_dist_km_d0 -0.053021   0.005154 -10.287295  < 2.2e-16 ***
+pop_1000        0.001174   0.003348   0.350559 7.2592e-01    
+chain_10        0.002827   0.001781   1.587545 1.1239e-01    
+fuelGasolio     0.073506   0.034987   2.100913 3.5649e-02 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Log-Likelihood: -69,211.3   Adj. Pseudo R2: 0.143166
+           BIC: 142,420.2     Squared Cor.: 0.081606
+
+===== S3_white_pumps :  108599 rows, 3029 events =====
+GLM estimation, family = binomial, Dep. Var.: event
+Observations: 107,989
+Fixed-effects: day: 34,  regione: 21
+Standard-errors: Clustered (gestore) 
+                Estimate Std. Error    z value   Pr(>|z|)    
+pre_gap_10c    -1.550908   0.112861 -13.741704  < 2.2e-16 ***
+nn_dist_km     -0.158697   0.025396  -6.248927 4.1328e-10 ***
+cap_dist_km_d0 -0.050576   0.011719  -4.315691 1.5910e-05 ***
+pop_1000        0.006118   0.009217   0.663736 5.0686e-01    
+chain_10        0.057493   0.033819   1.700005 8.9130e-02 .  
+fuelGasolio    -0.075703   0.044720  -1.692808 9.0492e-02 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+Log-Likelihood: -11,208.0   Adj. Pseudo R2: 0.181264
+           BIC:  23,111.4     Squared Cor.: 0.11383 
+
+baseline hazard (universe, first 10 days):
+         sample   day      hazard n_at_risk events
+         <char> <int>       <num>     <int>  <int>
+ 1: S1_universe     0 0.211946734     39425   8356
+ 2: S1_universe     1 0.063503814     31069   1973
+ 3: S1_universe     2 0.046466868     29096   1352
+ 4: S1_universe     3 0.247044406     27744   6854
+ 5: S1_universe     4 0.081809478     20890   1709
+ 6: S1_universe     5 0.032845003     19181    630
+ 7: S1_universe     6 0.004204625     18551     78
+ 8: S1_universe     7 0.050776809     18473    938
+ 9: S1_universe     8 0.160022812     17535   2806
+10: S1_universe     9 0.066535406     14729    980
+
+Done.

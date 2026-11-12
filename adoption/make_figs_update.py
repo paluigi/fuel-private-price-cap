@@ -1,16 +1,15 @@
 """Paper figures refresh (post tax-adjustment data update).
 
-fig1_raw_adoption_share.png — exact daily at-cap share, tax marker.
+fig1_overlay.png — legacy single-panel at-cap share (paper fig 1 comes from make_fig1_v2.py).
 event_study_by_capdist.png  — exact daily share by day-0 adopter tercile.
 fig_prices_daily.png        — daily mean price, all + 5 brands, from Sep 1.
 """
 import os
 
-os.environ.setdefault(
-    "BROWSER_PATH",
-    "/home/ubuntu/.cache/ms-playwright/chromium_headless_shell-1243/"
-    "chrome-headless-shell-linux-arm64/chrome-headless-shell",
-)
+_BROWSER = ("/home/ubuntu/.cache/ms-playwright/chromium_headless_shell-1243/"
+            "chrome-headless-shell-linux-arm64/chrome-headless-shell")
+if os.path.exists(_BROWSER):  # pin the browser only on the machine that has it
+    os.environ.setdefault("BROWSER_PATH", _BROWSER)
 
 import sys
 from pathlib import Path
@@ -36,7 +35,7 @@ d = (
     .sort(["fuel", "date"])
     .collect()
 )
-fuel_names = {"Benzina": "Petrol (Benzina)", "Gasolio": "Diesel (Gasolio)"}
+fuel_names = {"Benzina": "Petrol", "Gasolio": "Diesel"}
 colors = {"Benzina": "#1f77b4", "Gasolio": "#d62728"}
 fig = go.Figure()
 for fuel in ["Benzina", "Gasolio"]:
@@ -53,7 +52,7 @@ fig.update_layout(
     xaxis_title="Date", yaxis_title="Stations at or below cap (%)",
     template="plotly_white", width=1300, height=620, font=dict(size=15),
     legend=dict(x=0.02, y=0.02))
-fig.write_image(os.path.join(FIG, "fig1_raw_adoption_share.png"), scale=2)
+fig.write_image(os.path.join(FIG, "fig1_overlay.png"), scale=2)  # legacy single-panel; paper uses the two-panel fig1 from make_fig1_v2
 print("fig1 saved; last-day shares:",
       d.filter(pl.col("date") == pl.date(2026, 10, 6))
       .select(["fuel", (pl.col("share") * 100).round(1)]).to_dicts())
@@ -99,48 +98,62 @@ for t in ["Near", "Far"]:
                         & (pl.col("date") == pl.date(2026, 10, 5))).collect()
     print(t, "Oct-5 share:", round(v["share"][0] * 100, 1))
 
-# ---------------- fig: daily mean prices by brand -------------------------
+# ---------------- fig: daily mean prices by brand, per fuel ----------
 brands = ["Agip Eni", "Q8", "Tamoil", "Api-Ip", "Pompe Bianche"]
-sel = p.filter(
-    (pl.col("date") >= pl.date(2026, 9, 1))
-    & (pl.col("fuel") == "Benzina")
-)
-daily_all = (
-    sel.group_by("date")
-    .agg(pl.col("prezzo").mean().alias("v"))
-    .with_columns(pl.lit("All stations", dtype=pl.String).alias("b"))
-    .select(["date", "b", "v"])
-)
-daily_brand = (
-    sel.filter(pl.col("bandiera").is_in(brands))
-    .group_by(["date", "bandiera"])
-    .agg(pl.col("prezzo").mean().alias("v"))
-    .select([
-        "date",
-        pl.col("bandiera").cast(pl.String).alias("b"),
-        "v",
-    ])
-)
-daily = pl.concat([daily_brand, daily_all]).sort(["b", "date"]).collect()
+DISPLAY = {"Pompe Bianche": "Independents"}  # raw value -> legend label
+FUEL_EN = {"Benzina": "petrol", "Gasolio": "diesel"}
 
-bc = {"All stations": ("#111111", 3.5),
-      "Agip Eni": ("#1b9e77", 2.2), "Q8": ("#d95f02", 2.2),
-      "Tamoil": ("#7570b3", 2.2), "Api-Ip": ("#e7298a", 2.2),
-      "Pompe Bianche": ("#66a61e", 2.2)}
-fig = go.Figure()
-for b in ["All stations"] + brands:
-    sub = daily.filter(pl.col("b") == b)
-    width, dash = (bc[b][1], None) if b != "All stations" else (bc[b][1], "dot")
-    fig.add_trace(go.Scatter(
-        x=sub["date"], y=sub["v"], mode="lines", name=b,
-        line=dict(color=bc[b][0], width=width, dash=dash)))
-fig.add_vline(x="2026-09-28", line_dash="dash", line_color="#d62728",
-              annotation_text="Voluntary cap starts", annotation_position="top left")
-fig.add_vline(x="2026-10-06", line_dash="dot", line_color="#333",
-              annotation_text="Gasolio excise +5 c/l", annotation_position="top left")
-fig.update_layout(
-    xaxis_title="Date", yaxis_title="Mean price (EUR/l, petrol/Benzina)",
-    template="plotly_white", width=1300, height=650, font=dict(size=15),
-    legend=dict(x=0.01, y=0.98))
-fig.write_image(os.path.join(FIG, "fig_prices_daily.png"), scale=2)
-print("daily price figure saved")
+for fuel_key, fname in (("Benzina", "fig_prices_daily.png"),
+                        ("Gasolio", "fig_prices_daily_diesel.png")):
+    sel = p.filter(
+        (pl.col("date") >= pl.date(2026, 9, 1))
+        & (pl.col("fuel") == fuel_key)
+    )
+    daily_all = (
+        sel.group_by("date")
+        .agg(pl.col("prezzo").mean().alias("v"))
+        .with_columns(pl.lit("All stations", dtype=pl.String).alias("b"))
+        .select(["date", "b", "v"])
+    )
+    daily_brand = (
+        sel.filter(pl.col("bandiera").is_in(brands))
+        .group_by(["date", "bandiera"])
+        .agg(pl.col("prezzo").mean().alias("v"))
+        .select([
+            "date",
+            pl.col("bandiera").replace_strict(DISPLAY,
+                                              default=pl.col("bandiera"))
+              .cast(pl.String).alias("b"),
+            "v",
+        ])
+    )
+    daily = pl.concat([daily_brand, daily_all]).sort(["b", "date"]).collect()
+
+    order = ["All stations"] + [DISPLAY.get(b, b) for b in brands]
+    bc = {"All stations": ("#111111", 3.5),
+          "Agip Eni": ("#1b9e77", 2.2), "Q8": ("#d95f02", 2.2),
+          "Tamoil": ("#7570b3", 2.2), "Api-Ip": ("#e7298a", 2.2),
+          "Independents": ("#66a61e", 2.2)}
+    fig = go.Figure()
+    for b in order:
+        sub = daily.filter(pl.col("b") == b)
+        width, dash = (bc[b][1], None) if b != "All stations" else (bc[b][1], "dot")
+        fig.add_trace(go.Scatter(
+            x=sub["date"], y=sub["v"], mode="lines", name=b,
+            line=dict(color=bc[b][0], width=width, dash=dash)))
+    fig.add_vline(x="2026-09-28", line_dash="dash", line_color="#d62728",
+                  annotation_text="Voluntary cap starts",
+                  annotation_position="top left")
+    if fuel_key == "Gasolio":
+        # the 6 Oct excise change moves only the diesel cap
+        fig.add_vline(x="2026-10-06", line_dash="dot", line_color="#333",
+                      annotation_text="Diesel excise +5 c/l<br>(cap +6.1 c/l)",
+                      annotation_position="top left")
+    fig.update_layout(
+        xaxis_title="Date",
+        yaxis_title=f"Mean pump price (\u20ac/l, {FUEL_EN[fuel_key]})",
+        template="plotly_white", width=1300, height=650, font=dict(size=15),
+        legend=dict(x=0.01, y=0.98))
+    fig.write_image(os.path.join(FIG, fname), scale=2)
+    print(f"daily price figure saved: {fname}")
+

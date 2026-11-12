@@ -9,12 +9,12 @@ Produces:
   output/tables/event_study_coefs.csv          FE event-study coefficients (appendix)
 """
 import os
+from pathlib import Path
 
-os.environ.setdefault(
-    "BROWSER_PATH",
-    "/home/ubuntu/.cache/ms-playwright/chromium_headless_shell-1243/"
-    "chrome-headless-shell-linux-arm64/chrome-headless-shell",
-)
+_BROWSER = ("/home/ubuntu/.cache/ms-playwright/chromium_headless_shell-1243/"
+            "chrome-headless-shell-linux-arm64/chrome-headless-shell")
+if Path(_BROWSER).exists():  # pin the browser only on the machine that has it
+    os.environ.setdefault("BROWSER_PATH", _BROWSER)
 
 import re
 
@@ -27,7 +27,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 TAB = os.path.join(ROOT, "output", "tables")
 FIG = os.path.join(ROOT, "output", "figures")
 CAP_DATE = pl.date(2026, 9, 28)
-END_DATE = pl.date(2026, 10, 6)
+END_DATE = pl.date(2026, 10, 31)  # analysis window end (was 10-06)
 
 p = pl.read_parquet(os.path.join(TAB, "adoption_panel.parquet"))
 post = p.filter((pl.col("date") >= CAP_DATE) & (pl.col("date") <= END_DATE))
@@ -38,7 +38,7 @@ d = (
     .agg(pl.col("at_cap").mean().alias("share"))
     .sort(["fuel", "days_since_cap"])
 )
-fuel_names = {"Benzina": "Petrol (Benzina)", "Gasolio": "Diesel (Gasolio)"}
+fuel_names = {"Benzina": "Petrol", "Gasolio": "Diesel"}
 colors = {"Benzina": "#1f77b4", "Gasolio": "#d62728"}
 fig = go.Figure()
 for fuel in ["Benzina", "Gasolio"]:

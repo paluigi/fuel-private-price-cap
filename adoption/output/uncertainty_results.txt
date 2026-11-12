@@ -1,0 +1,94 @@
+
+===== expanding-origin backtests =====
+       fuel     origin horizon     p     q n_fit rmse_ardl_cpl rmse_rw_cpl
+     <char>     <Date>   <int> <int> <int> <int>         <num>       <num>
+ 1: Benzina 2026-05-31      14     1     7   150     2.4829061   2.5400701
+ 2: Benzina 2026-05-31      28     1     7   150     4.2353788   6.3802706
+ 3: Benzina 2026-06-30      14     2     8   180     2.9595877   1.2084625
+ 4: Benzina 2026-06-30      28     2     8   180     5.1334362   5.1456451
+ 5: Benzina 2026-07-31      14     2     8   211     1.3326740   0.6717109
+ 6: Benzina 2026-07-31      28     2     8   211     1.9562880   0.8641059
+ 7: Benzina 2026-08-31      14     2     8   242     0.6583434   4.5812565
+ 8: Benzina 2026-08-31      28     2     8   242            NA          NA
+ 9: Benzina 2026-09-13      14     2     8   255     0.4471209   3.6849127
+10: Benzina 2026-09-13      28     2     8   255            NA          NA
+11: Gasolio 2026-05-31      14     1     7   150     2.6180337   3.9307372
+12: Gasolio 2026-05-31      28     1     7   150     2.9352136   8.5120149
+13: Gasolio 2026-06-30      14     1     8   180     3.6694599   2.3732816
+14: Gasolio 2026-06-30      28     1     8   180     7.1369332  11.2891770
+15: Gasolio 2026-07-31      14     1     8   211     1.6812892   0.7585394
+16: Gasolio 2026-07-31      28     1     8   211     1.9485443   2.0680648
+17: Gasolio 2026-08-31      14     1     8   242     4.7445417   4.4769623
+18: Gasolio 2026-08-31      28     1     8   242            NA          NA
+19: Gasolio 2026-09-13      14     1     8   255     0.8540481   5.0708958
+20: Gasolio 2026-09-13      28     1     8   255            NA          NA
+       fuel     origin horizon     p     q n_fit rmse_ardl_cpl rmse_rw_cpl
+    bias_ardl_cpl
+            <num>
+ 1:    2.34890833
+ 2:    3.81916734
+ 3:    2.52168710
+ 4:    4.56042313
+ 5:    1.19388010
+ 6:    1.75070575
+ 7:    0.62747761
+ 8:            NA
+ 9:    0.01155110
+10:            NA
+11:   -2.18954053
+12:    0.09452034
+13:    3.10083860
+14:    6.16638463
+15:    1.53818378
+16:    1.80160562
+17:   -3.78516020
+18:            NA
+19:   -0.17037467
+20:            NA
+    bias_ardl_cpl
+
+===== bootstrap bands (95%) on the net path =====
+      fuel net_lo_iid net_hi_iid net_lo_block net_hi_block net_lo_reest
+    <char>      <num>      <num>        <num>        <num>        <num>
+1: Benzina   1.088487   1.241046     1.089306     1.225225     1.075393
+2: Gasolio   1.275697   1.507542     1.269193     1.539918     1.261256
+   net_hi_reest
+          <num>
+1:     1.224749
+2:     1.498043
+
+===== scenario variants (October mean gap / CPI effect) =====
+       fuel                      variant     p     q mean_gap_cpl end_gap_cpl
+     <char>                       <char> <int> <int>        <num>       <num>
+ 1: Benzina      fit from Jan (baseline)     2     8    -17.44905   -22.41679
+ 2: Gasolio      fit from Jan (baseline)     1     8    -21.13113   -20.51098
+ 3: Benzina     fit from Jul (v1 window)     4     7    -16.34413   -20.44390
+ 4: Gasolio     fit from Jul (v1 window)     1     7    -24.51523   -26.54101
+ 5: Benzina fit to 24 Sep (announcement)     2     8    -16.32426   -22.10061
+ 6: Gasolio fit to 24 Sep (announcement)     1     8    -23.12485   -24.48517
+ 7: Benzina        balanced panel series     2     8    -17.56890   -22.53555
+ 8: Gasolio        balanced panel series     1     8    -21.18553   -20.48702
+ 9: Benzina     regularity sample series     2     8    -18.81105   -23.06893
+10: Gasolio     regularity sample series     1     8    -23.56108   -23.06648
+11: Benzina           Brent +5% post-cap     2     8    -19.69113   -25.34975
+12: Gasolio           Brent +5% post-cap     1     8    -24.21734   -23.80237
+13: Benzina           Brent -5% post-cap     2     8    -15.13375   -19.39767
+14: Gasolio           Brent -5% post-cap     1     8    -17.95139   -17.11922
+    cpi_effect_pp
+            <num>
+ 1:    -0.1721237
+ 2:    -0.2056793
+ 3:    -0.1614957
+ 4:    -0.2358812
+ 5:    -0.1625150
+ 6:    -0.2281371
+ 7:    -0.1733826
+ 8:    -0.2063301
+ 9:    -0.1887560
+10:    -0.2306391
+11:    -0.1937914
+12:    -0.2353329
+13:    -0.1497168
+14:    -0.1750938
+
+Done.

@@ -2,11 +2,10 @@
 gap, pre vs post cap overlaid in each panel."""
 import os
 
-os.environ.setdefault(
-    "BROWSER_PATH",
-    "/home/ubuntu/.cache/ms-playwright/chromium_headless_shell-1243/"
-    "chrome-headless-shell-linux-arm64/chrome-headless-shell",
-)
+_BROWSER = ("/home/ubuntu/.cache/ms-playwright/chromium_headless_shell-1243/"
+            "chrome-headless-shell-linux-arm64/chrome-headless-shell")
+if os.path.exists(_BROWSER):  # pin the browser only on the machine that has it
+    os.environ.setdefault("BROWSER_PATH", _BROWSER)
 
 import sys
 from pathlib import Path
@@ -26,7 +25,7 @@ sd = (
     disp.drop_nulls("provincia_istat")
     .group_by(["provincia_istat", "phase"])
     .agg(pl.col("sd").mean().alias("sd"))
-    .with_columns((pl.col("sd") * 1000).alias("sd_cl"))
+    .with_columns((pl.col("sd") * 100).alias("sd_cl"))
 )
 
 comp = pl.read_csv(os.path.join(TAB, "nonadopter_competitiveness.csv"))
@@ -34,7 +33,7 @@ gap = (
     comp.filter(pl.col("adopted") == False)  # noqa: E712
     .group_by("provincia_istat")
     .agg(pl.col("gap_pre").mean().alias("pre"), pl.col("gap_post").mean().alias("post"))
-    .with_columns([(pl.col(c) * 1000).alias(c) for c in ("pre", "post")])
+    .with_columns([(pl.col(c) * 100).alias(c) for c in ("pre", "post")])
 )
 
 fig = make_subplots(rows=2, cols=1, vertical_spacing=0.12,
@@ -42,10 +41,10 @@ fig = make_subplots(rows=2, cols=1, vertical_spacing=0.12,
                                     "Non-adopters' gap to the provincial mean (c/l), by province"))
 PRE, POST = "#2166ac", "#b2182b"
 fig.add_trace(go.Histogram(x=sd.filter(pl.col("phase") == "pre")["sd_cl"],
-                           name="pre-cap (21–27 Sep)", marker_color=PRE,
+                           name="pre-cap (1–27 Sep)", marker_color=PRE,
                            opacity=0.65, nbinsx=30), row=1, col=1)
 fig.add_trace(go.Histogram(x=sd.filter(pl.col("phase") == "post")["sd_cl"],
-                           name="post-cap (28 Sep–7 Oct)", marker_color=POST,
+                           name="post-cap (28 Sep–31 Oct)", marker_color=POST,
                            opacity=0.65, nbinsx=30), row=1, col=1)
 fig.add_trace(go.Histogram(x=gap["pre"], name="pre-cap", marker_color=PRE,
                            opacity=0.65, nbinsx=30, showlegend=False), row=2, col=1)

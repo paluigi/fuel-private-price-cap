@@ -10,16 +10,25 @@ SAMPLES = ["S1_universe", "S2_excl_agip_q8", "S3_pompe_bianche"]
 SAMPLE_LABEL = {
     "S1_universe": "(1) Universe",
     "S2_excl_agip_q8": "(2) Excl.\\ Agip Eni + Q8",
-    "S3_pompe_bianche": "(3) Pompe Bianche",
+    "S3_pompe_bianche": "(3) Independents",
 }
 ROW_LABEL = {
     "(Intercept)": "Intercept",
     "nn_dist_km": "Nearest station (km)",
     "cap_dist_km_d0": "Nearest day-0 adopter (km)",
-    "pop_density_cell": "Population per 1-km cell",
-    "pre_gap_vs_cap": "Pre-cap gap (\\euro/l)",
-    "n_stations_gestore": "Chain size (Gestore, stations)",
-    "fuelGasolio": "Gasolio",
+    "pop_density_cell": "Population (1{,}000 per km\\textsuperscript{2} cell)",
+    "pre_gap_vs_cap": "Pre-cap gap (10 c/l)",
+    "n_stations_gestore": "Chain size (10 stations)",
+    "fuelGasolio": "Diesel",
+}
+
+# Rescale coefficients to readable economic units (revision v2: report per
+# 10 cents/litre, per 10 stations and per 1,000 residents instead of raw
+# EUR/l, per-station and per-person units).
+RESCALE = {
+    "pre_gap_vs_cap": 0.1,   # EUR/l -> 10 c/l
+    "n_stations_gestore": 10.0,  # per station -> per 10 stations
+    "pop_density_cell": 1000.0,  # per resident -> per 1,000 residents
 }
 
 ROW_RE = re.compile(
@@ -97,16 +106,22 @@ for s in SAMPLES:
 head = (
     "% Auto-generated: do not edit by hand.\n"
     "% Source: R/revision_samples.R -> output/revision_{cox,lpm}.txt\n"
-    "% Panel window: 2026-09-28 .. 2026-10-07, gasolio cap tax-adjusted "
-    "(+6.1 c/l from 2026-10-06).\n\n"
+    "% Panel window: 2026-09-28 .. 2026-10-31; strict compliance rule\n"
+    "% (price < ceiling); diesel ceiling 2.200 -> 2.261 (6 Oct) -> 2.212\n"
+    "% (28 Oct). Units rescaled: pre-cap gap per 10 c/l, chain per 10 stations.\n\n"
 )
 
 
 def cox_row(name):
     cells = []
+    scale = RESCALE.get(name, 1.0)
     for s in SAMPLES:
         r = cox[s]["rows"].get(name)
-        cells.append(fmt(r["coef"], r["stars"]) if r else "--")
+        if r is None:
+            cells.append("--")
+        else:
+            digits = 3 if scale != 1.0 else 4
+            cells.append(fmt(r["coef"] * scale, r["stars"], digits))
     return f"{ROW_LABEL[name]} & " + " & ".join(cells) + r" \\"
 
 
@@ -132,7 +147,7 @@ Events & {n_ev['S1_universe'][1]:,}\\ & {n_ev['S2_excl_agip_q8'][1]:,}\\ & {n_ev
 
 \\medskip
 \\footnotesize Gestore-clustered robust standard errors. All models
-include a Gasolio dummy. The gasolio cap threshold is adjusted for the
+include a diesel dummy. The diesel cap threshold is adjusted for the
 excise change of 6 October 2026 (see \\cref{{sec:data}}).
 \\end{{table}}
 
@@ -142,10 +157,15 @@ open("paper_tables.tex", "w").write(cox_table)
 # ---- paper_tables_s6.tex (LPM core) ---------------------------------------
 def lpm_row(name, digits=4):
     cells = []
+    scale = RESCALE.get(name, 1.0)
     for s in SAMPLES:
         r = lpm[s]["rows"].get(name)
+        if r is None:
+            cells.append("--")
+            continue
         d = 0 if name == "pop_density_cell" else digits
-        cells.append(fmt(r["coef"], r["stars"], d) if r else "--")
+        digits_eff = 3 if scale != 1.0 else d
+        cells.append(fmt(r["coef"] * scale, r["stars"], digits_eff))
     return f"{ROW_LABEL.get(name, name)} & " + " & ".join(cells) + r" \\"
 
 
@@ -184,12 +204,12 @@ Adj.~$R^2$ & {fr(fits[0][2])} & {fr(fits[1][2])} & {fr(fits[2][2])} \\\\
 
 \\medskip
 \\footnotesize Dependent variable: adopted (=1 if the station--fuel unit
-priced at or below the cap on any day 28 Sep -- 7 Oct 2026; the gasolio
+priced at or below the cap on any day 28 Sep -- 31 Oct 2026; the diesel
 cap is tax-adjusted from 6 Oct). OLS with gestore-clustered standard
 errors. Brand reference: Agip Eni in columns (1), Ala in column (2);
 region reference: Abruzzo. Full brand and region coefficients in
 \\cref{{app:lpm-s1,app:lpm-s2}}. In column (3) the sample is single-brand
-(Pompe Bianche), so brand FE are undefined.
+(independents), so brand FE are undefined.
 \\end{{table}}
 
 """
@@ -201,7 +221,8 @@ txt = open(f"{DIR}/revision_lpm.txt").read()
 
 def fe_table(sample, label, note, lab=None):
     j = txt.find("SAMPLE: " + sample)
-    seg = txt[j: j + 9000]
+    k = txt.find("SAMPLE: ", j + 10)
+    seg = txt[j: k if k > 0 else len(txt)]
     rows = []
     for m in re.finditer(
         r"^(bandiera_g|bandiera|regione)?([A-Za-z0-9\-'/:.&\s]+?)\s+"
@@ -213,20 +234,37 @@ def fe_table(sample, label, note, lab=None):
             continue
         pv = float(p.replace("<", "").strip()) if "<" not in p else 1e-16
         st = 3 if pv < 0.001 else 2 if pv < 0.01 else 1 if pv < 0.05 else 0
+        raw = name.strip()
+        if raw == "Pompe Bianche":
+            disp_name = "Independents"
+        elif raw == "":  # unassigned-region dummy (relevelled reference)
+            disp_name = "(no region)"
+        else:
+            disp_name = raw
         rows.append(("bandiera" if kind.startswith("bandiera") else "regione",
-                     name.strip(), float(coef), st))
-    body = "\n".join(
-        f"{'Brand' if k == 'bandiera' else 'Region'}: {n} & {fmt(c, st)} \\\\"
-        for k, n, c, st in rows
-    )
+                     disp_name, float(coef), st))
+    # two side-by-side halves so the table fits one page
+    half = (len(rows) + 1) // 2
+    left, right = rows[:half], rows[half:]
+    lines = []
+    for i in range(half):
+        lk, ln, lc, lst = left[i]
+        cell_l = f"{'Brand' if lk == 'bandiera' else 'Region'}: {ln} & {fmt(lc, lst)}"
+        if i < len(right):
+            rk, rn, rc, rst = right[i]
+            cell_r = f"{'Brand' if rk == 'bandiera' else 'Region'}: {rn} & {fmt(rc, rst)}"
+        else:
+            cell_r = " & "
+        lines.append(cell_l + " & " + cell_r + " \\\\")
+    body = "\n".join(lines)
     labline = f"\\label{{{lab}}}" if lab else ""
     return f"""{head}\\begin{{table}}[htbp]
 \\centering
 \\caption{{{label}}}
 {labline}
-\\begin{{tabular}}{{lr}}
+\\begin{{tabular}}{{lrlr}}
 \\toprule
- & Coefficient \\\\
+ & Coefficient & & Coefficient \\\\
 \\midrule
 {body}
 \\bottomrule

@@ -1,0 +1,15 @@
+fuel,group,n,delta_cpl,p31,share_below_28,share_below_31
+Gasolio,Eni,3741,-0.03,2.19,0.988,0.99
+Gasolio,Q8,2584,-3.76,2.216,0.016,0.782
+Gasolio,Api-Ip,3385,-2.69,2.229,0.051,0.596
+Gasolio,Esso,1890,-2.44,2.25,0.08,0.317
+Gasolio,Tamoil,1374,-3.42,2.24,0.027,0.222
+Gasolio,Other brands,4032,-1.56,2.271,0.087,0.198
+Gasolio,White pumps,2584,-1.78,2.286,0.097,0.152
+Benzina,Eni,3744,-0.01,1.99,0.987,0.987
+Benzina,Q8,2583,-0.07,1.995,0.965,0.969
+Benzina,Api-Ip,3387,-0.43,2.01,0.794,0.815
+Benzina,Tamoil,1405,-0.58,2.009,0.703,0.802
+Benzina,Esso,1892,-0.92,2.01,0.71,0.795
+Benzina,Other brands,4056,-0.73,2.018,0.695,0.746
+Benzina,White pumps,2592,-1.21,2.035,0.503,0.565

@@ -5,11 +5,10 @@ gasolio only, so the fuel panels are split instead of overlaid.
 """
 import os
 
-os.environ.setdefault(
-    "BROWSER_PATH",
-    "/home/ubuntu/.cache/ms-playwright/chromium_headless_shell-1243/"
-    "chrome-headless-shell-linux-arm64/chrome-headless-shell",
-)
+_BROWSER = ("/home/ubuntu/.cache/ms-playwright/chromium_headless_shell-1243/"
+            "chrome-headless-shell-linux-arm64/chrome-headless-shell")
+if os.path.exists(_BROWSER):  # pin the browser only on the machine that has it
+    os.environ.setdefault("BROWSER_PATH", _BROWSER)
 
 import sys
 from pathlib import Path
@@ -53,13 +52,13 @@ fig.add_vline(x="2026-10-06", line_dash="dot", line_color="#333", row=2, col=1,
               annotation_text="Gasolio excise +5 c/l<br>(cap +6.1 c/l)",
               annotation_position="top left", annotation_font=dict(size=13))
 
-fig.update_yaxes(title_text="At or below cap (%)", range=[15, 75], row=1, col=1)
-fig.update_yaxes(title_text="At or below cap (%)", range=[15, 75], row=2, col=1)
+fig.update_yaxes(title_text="At or below cap (%)", range=[15, 95], row=1, col=1)
+fig.update_yaxes(title_text="At or below cap (%)", range=[15, 95], row=2, col=1)
 pass  # no x-axis title (report figure)
 fig.update_layout(template="plotly_white", width=1150, height=820,
                   font=dict(size=15), margin=dict(t=60))
 OUT = os.environ.get("FIG1_OUT", os.path.join(FIG, "fig1_raw_adoption_share.png"))
 fig.write_image(OUT, scale=2)
 print("fig1 v2 saved; final-day:",
-      d.filter(pl.col("date") == pl.date(2026, 10, 7))
+      d.filter(pl.col("date") == config.ANALYSIS_TO)
       .select(["fuel", (pl.col("share") * 100).round(1)]).to_dicts())

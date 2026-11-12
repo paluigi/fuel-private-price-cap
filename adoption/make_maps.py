@@ -171,7 +171,7 @@ sd = attach_fid(
     .pivot(index="provincia_istat", on="phase", values="sd")
 )
 for phase, fname in [("pre", "map_sd_pre.png"), ("post", "map_sd_post.png")]:
-    g = sd.with_columns((pl.col(phase) * 1000).alias("pcl"))
+    g = sd.with_columns((pl.col(phase) * 100).alias("pcl"))
     choropleth(g["fid"], g["pcl"], float(g["pcl"].min()),
                float(g["pcl"].max()), fname, "SD (c/l)")
 
@@ -181,7 +181,7 @@ na = comp.filter(pl.col("adopted") == False)  # noqa: E712
 for col, fname in [("gap_pre", "map_gap_pre.png"),
                    ("gap_post", "map_gap_post.png")]:
     g = attach_fid(
-        na.with_columns((pl.col(col) * 1000).alias("pcl"))
+        na.with_columns((pl.col(col) * 100).alias("pcl"))
         .group_by("provincia_istat")
         .agg(pl.col("pcl").mean().alias("v"))
     )
@@ -226,7 +226,7 @@ for fuel, tag in [("Benzina", "ben"), ("Gasolio", "gas")]:
         .collect()
         .pivot(on="adopted", index="provincia_istat", values="m")
         .drop_nulls(["false", "true"])
-        .with_columns(((pl.col("false") - pl.col("true")) * 1000)
+        .with_columns(((pl.col("false") - pl.col("true")) * 100)
                       .alias("gap"))
     )
     mpre = attach_fid(gpre)
@@ -242,7 +242,7 @@ for fuel, tag in [("Benzina", "ben"), ("Gasolio", "gas")]:
         .collect()
         .pivot(on="adopted", index="provincia_istat", values="m")
         .drop_nulls(["false", "true"])
-        .with_columns(((pl.col("false") - pl.col("true")) * 1000)
+        .with_columns(((pl.col("false") - pl.col("true")) * 100)
                       .alias("gap"))
     )
     m = attach_fid(g)

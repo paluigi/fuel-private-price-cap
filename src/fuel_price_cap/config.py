@@ -37,17 +37,26 @@ FUELS: tuple[str, ...] = ("Benzina", "Gasolio")
 VAT_RATE = 0.22  # prezzo = (net + excise) * (1 + VAT)
 THRESHOLDS: dict[str, float] = {"Benzina": 2.0, "Gasolio": 2.2}  # gross EUR/l
 
-# Gasolio cap tracks the excise calendar: D.L. 162/2026 removed the remaining
-# 5 c/l discount on 2026-10-06 (622.90 -> 672.90 EUR/1000 l), so the cap rises
-# by 5 * 1.22 = 6.1 c/l incl. VAT (2.200 -> 2.261). Benzina is unaffected.
+# Gasolio cap tracks the excise calendar (mechanical VAT translation):
+# D.L. 162/2026 removed the remaining 5 c/l discount on 2026-10-06
+# (622.90 -> 672.90 EUR/1000 l), so the cap rises by 5 * 1.22 = 6.1 c/l
+# (2.200 -> 2.261); the 2026-10-28 excise cut (672.90 -> 632.90) lowers it
+# by 0.04 * 1.22 = 4.88 c/l (2.261 -> 2.212 on the 3-decimal grid). Benzina
+# is unaffected. Compliance is STRICT: prezzo < threshold (revision D3/D4),
+# so exact 2.000/2.200/2.261/2.212 prices are NOT compliant.
 GASOLIO_EXCISE_STEP = dt.date(2026, 10, 6)
 GASOLIO_CAP_AFTER = 2.261  # gross EUR/l from GASOLIO_EXCISE_STEP (included)
+GASOLIO_EXCISE_CUT = dt.date(2026, 10, 28)
+GASOLIO_CAP_FINAL = 2.212  # gross EUR/l from GASOLIO_EXCISE_CUT (included)
 
 
 def cap_threshold(fuel: str, day: dt.date) -> float:
     """Gross EUR/l cap for `fuel` effective on `day` (excise-aware)."""
-    if fuel == "Gasolio" and day >= GASOLIO_EXCISE_STEP:
-        return GASOLIO_CAP_AFTER
+    if fuel == "Gasolio":
+        if day >= GASOLIO_EXCISE_CUT:
+            return GASOLIO_CAP_FINAL
+        if day >= GASOLIO_EXCISE_STEP:
+            return GASOLIO_CAP_AFTER
     return THRESHOLDS[fuel]
 
 
@@ -55,7 +64,9 @@ def threshold_expr(date_col: str = "date") -> pl.Expr:
     """Polars expression: per-row cap threshold keyed on fuel and date."""
     thr = pl.col("fuel").replace_strict(THRESHOLDS, return_dtype=pl.Float64)
     return (
-        pl.when((pl.col("fuel") == "Gasolio") & (pl.col(date_col) >= GASOLIO_EXCISE_STEP))
+        pl.when((pl.col("fuel") == "Gasolio") & (pl.col(date_col) >= GASOLIO_EXCISE_CUT))
+        .then(pl.lit(GASOLIO_CAP_FINAL))
+        .when((pl.col("fuel") == "Gasolio") & (pl.col(date_col) >= GASOLIO_EXCISE_STEP))
         .then(pl.lit(GASOLIO_CAP_AFTER))
         .otherwise(thr)
     )
