@@ -59,3 +59,35 @@ short-run one, and levels long-run elasticities are not identified ---
 which is why the paper reports elasticity ranges and rests the
 counterfactual on forecast validation.
 \end{table}
+
+\begin{table}[htbp]
+\centering\small
+\caption{Discrete-time logit hazard of first pricing below the ceiling}
+\label{tab:hazard-dt}
+\begin{tabular}{lccc}
+\toprule
+ & (1) Universe & (2) Excl.\ Eni + Q8 & (3) White pumps \\
+\midrule
+Pre-cap gap (10 c/l) & -0.888$^{***}$ & -1.143$^{***}$ & -1.551$^{***}$ \\
+Nearest station (km) & -0.072$^{***}$ & -0.080$^{***}$ & -0.159$^{***}$ \\
+Nearest day-0 adopter (km) & -0.040$^{***}$ & -0.053$^{***}$ & -0.051$^{***}$ \\
+Population (1{,}000 per km\textsuperscript{2} cell) & -0.000 & +0.001 & +0.006 \\
+Chain size (10 stations) & +0.004$^{***}$ & +0.003 & +0.057 \\
+Diesel & +0.086$^{**}$ & +0.074$^{*}$ & -0.076 \\
+\midrule
+Day fixed effects & Yes & Yes & Yes \\
+Brand fixed effects & Yes & Yes & -- (single brand) \\
+Region fixed effects & Yes & Yes & Yes \\
+\bottomrule
+\end{tabular}
+
+\medskip
+\footnotesize One row per station--fuel unit per day at risk (463,594
+unit-days; 32,974 adoptions); the event is the first day below the
+ceiling. Log-odds; gestore-clustered standard errors suppressed for
+readability (all starred coefficients significant at 0.1\% or better;
+population insignificant everywhere). Day fixed effects absorb the
+baseline hazard, which makes no proportional-hazards assumption
+necessary; the estimated baseline spikes on the 1 October repricing
+wave and the 6 October excise step.
+\end{table}

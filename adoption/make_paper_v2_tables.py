@@ -388,5 +388,61 @@ which is why the paper reports elasticity ranges and rests the
 counterfactual on forecast validation.
 \\end{{table}}
 """
+
+# ------------------------------------------------- discrete-time hazard table
+hz = pl.read_csv(TAB / "hazard_discrete.csv")
+HZ_LABEL = {
+    "pre_gap_10c": "Pre-cap gap (10 c/l)",
+    "nn_dist_km": "Nearest station (km)",
+    "cap_dist_km_d0": "Nearest day-0 adopter (km)",
+    "pop_1000": "Population (1{,}000 per km\\textsuperscript{2} cell)",
+    "chain_10": "Chain size (10 stations)",
+    "fuelGasolio": "Diesel",
+}
+HZ_SAMPLES = ["S1_universe", "S2_excl_leaders", "S3_white_pumps"]
+hz_rows = []
+for v, lab in HZ_LABEL.items():
+    cells = []
+    for sm in HZ_SAMPLES:
+        r = hz.filter((pl.col("sample") == sm) & (pl.col("variable") == v))
+        if r.height == 0:
+            cells.append("--")
+            continue
+        rr = r.row(0, named=True)
+        stars = "***" if rr["p"] < 0.001 else "**" if rr["p"] < 0.01 else \
+            "*" if rr["p"] < 0.05 else ""
+        cells.append(f"{rr['coef']:+.3f}$^{{{stars}}}$" if stars
+                     else f"{rr['coef']:+.3f}")
+    hz_rows.append(f"{lab} & " + " & ".join(cells) + r" \\")
+hz_text = f"""
+\\begin{{table}}[htbp]
+\\centering\\small
+\\caption{{Discrete-time logit hazard of first pricing below the ceiling}}
+\\label{{tab:hazard-dt}}
+\\begin{{tabular}}{{lccc}}
+\\toprule
+ & (1) Universe & (2) Excl.\\ Eni + Q8 & (3) White pumps \\\\
+\\midrule
+{chr(10).join(hz_rows)}
+\\midrule
+Day fixed effects & Yes & Yes & Yes \\\\
+Brand fixed effects & Yes & Yes & -- (single brand) \\\\
+Region fixed effects & Yes & Yes & Yes \\\\
+\\bottomrule
+\\end{{tabular}}
+
+\\medskip
+\\footnotesize One row per station--fuel unit per day at risk (463,594
+unit-days; 32,974 adoptions); the event is the first day below the
+ceiling. Log-odds; gestore-clustered standard errors suppressed for
+readability (all starred coefficients significant at 0.1\\% or better;
+population insignificant everywhere). Day fixed effects absorb the
+baseline hazard, which makes no proportional-hazards assumption
+necessary; the estimated baseline spikes on the 1 October repricing
+wave and the 6 October excise step.
+\\end{{table}}
+"""
+
+extra_tex += hz_text
 Path("paper_v2_extra.tex").write_text(extra_tex)
 print("wrote paper_v2_extra.tex")

@@ -83,3 +83,13 @@ range-reporting + forecast-validation stance.
 Author confirmed the January fit as the baseline (item 1 of the memo);
 July remains the shown sensitivity. Title reorder and map pair also
 confirmed.
+
+## D11 — Additions round (13 Nov 2026, author)
+Author instructions: include the discrete-time hazard model (placement
+decided on results) and keep one province-map pair in the appendix;
+November data dropped from scope. Outcome: hazard model confirmatory
+(every Cox gradient intact; baseline spikes at the 1 Oct wave and the
+6 Oct excise step) -> appendix table tab:hazard-dt + one section-7
+sentence. Maps restyled (make_v2_maps.py, sequential blues, common
+scale); old amap_* files retained on disk for the audit trail but no
+longer referenced.

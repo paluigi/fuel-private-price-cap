@@ -526,7 +526,14 @@ per kilometre) and from the nearest day-zero adopter ($-0.03$ to
 $-0.06$ per kilometre), and larger chains adopt sooner (the global
 proportional-hazards restriction is rejected, so these are
 time-averaged associations rather than constant hazards; we read them as
-descriptive propagation gradients, not causal effects). The
+descriptive propagation gradients, not causal effects). A discrete-time
+logit hazard with day fixed effects, which requires no
+proportional-hazards assumption, reproduces every gradient
+(\cref{tab:hazard-dt}): per ten cents of pre-cap gap the daily odds of
+adopting fall by a factor of about 0.41 in the universe and 0.21 among
+white pumps, with the distance and chain gradients likewise intact, and
+its baseline hazard spikes exactly at the 1 October repricing wave and
+the 6 October excise step. The
 station-fixed-effects event study (\cref{tab:es-leads}) shows flat
 pre-cap coefficients ($-0.002$ to $-0.004$, an order of magnitude
 smaller than the day-zero jump of $+0.19$) and a plateau after four to
@@ -659,10 +666,12 @@ excise cycle and the cap episode are too entangled to deliver one.
 \section{Provincial maps}\label{app:maps}
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.49\linewidth]{output/figures/amap_adopt7_ben.png}
-\includegraphics[width=0.49\linewidth]{output/figures/amap_adopt7_gas.png}
-\caption{Share of station--fuel units below the ceiling within seven days
-of implementation, by province: petrol (left) and diesel (right).}
+\includegraphics[width=0.49\linewidth]{output/figures/v2_map_adopt7_ben.png}
+\includegraphics[width=0.49\linewidth]{output/figures/v2_map_adopt7_gas.png}
+\caption{Share of station--fuel units priced below the ceiling at least
+once in the first seven days (28 September--4 October), by province:
+petrol (left) and diesel (right); common 0--100\% scale. Early diffusion
+is geographically uneven but fuel-symmetric (province medians 39--40\%).}
 \label{fig:maps}
 \end{figure}
 

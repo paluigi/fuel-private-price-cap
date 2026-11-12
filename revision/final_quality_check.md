@@ -66,11 +66,18 @@ both referenced from the main text without breakage.
 
 ## Remaining items deliberately NOT done (with reasons)
 
-- November 2026 data: outside the fixed analysis window; post-window
-  commitments unclear (author D5).
-- Discrete-time hazard re-estimation of the Cox model: PH violation is
-  disclosed and coefficients are read as time-averaged associations;
-  a full discrete-time model is a candidate referee response, not a
-  precondition (reviewer's own proportionality principle).
+- November 2026 data: out of scope by author decision (13 Nov round).
 - Refined-product price indicator: not available without proprietary data
   (pack Step 08 allows skipping).
+
+## Additions round (13 November 2026)
+
+- Discrete-time hazard model: build_person_period.py (463,594 unit-days,
+  32,974 events; sanity assert events = adopted units) + R/
+  analysis_hazard_discrete.R (feglm logit, day+brand+region FE,
+  gestore-clustered; 3 samples). Appendix table tab:hazard-dt; section 7
+  sentence with odds-ratio reading; PH caveat now paired with the
+  assumption-free confirmation.
+- Province maps restyled: make_v2_maps.py -> v2_map_adopt7_{ben,gas}.png
+  (sequential blues, common 0-100% scale); the only map pair in the
+  paper.

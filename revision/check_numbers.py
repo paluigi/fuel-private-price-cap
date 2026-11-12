@@ -156,6 +156,16 @@ check("bounds F diesel", fg, ["0.92"], 2)
 must_contain("brand Eni level", "2.190")
 must_contain("brand Q8 compliance", "78\\%")
 must_contain("calendar-day recovery", "covers every calendar day")
+# --- discrete-time hazard (D11) -------------------------------------------------
+hz = pl.read_csv(TAB / "hazard_discrete.csv")
+h_pg = hz.filter((pl.col("sample") == "S1_universe")
+                 & (pl.col("variable") == "pre_gap_10c"))["coef"][0]
+h_wp = hz.filter((pl.col("sample") == "S3_white_pumps")
+                 & (pl.col("variable") == "pre_gap_10c"))["coef"][0]
+check("hazard odds universe", __import__("math").exp(h_pg), ["0.41"], 2)
+check("hazard odds white pumps", __import__("math").exp(h_wp), ["0.21"], 2)
+must_contain("hazard table referenced", "tab:hazard-dt")
+must_contain("map pair swapped", "v2_map_adopt7_ben.png")
 
 for frag in ["25 September", "28 September", "30 days" if "thirty days" not in TEX
              else "thirty days", "2.261", "2.212", "4.5219",

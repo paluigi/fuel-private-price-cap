@@ -33,6 +33,7 @@ uv run python adoption/build_oil_series.py            # cached FRED inputs
 (cd adoption && uv run python build_distances.py)     # micro window (Jul-Oct)
 (cd adoption && uv run python build_panel.py)         # adoption panel, survival input
 (cd adoption && uv run python build_definitions_series.py)   # Step 04 series
+(cd adoption && uv run python build_person_period.py)        # hazard model input
 (cd adoption && uv run python -I tests/test_price_arithmetic.py)
 
 # econometrics
@@ -44,11 +45,13 @@ Rscript R/analysis_ardl.R                            # ARDL + placebo + inflatio
 Rscript R/spec_robustness.R                          # floors / DL / AR grid
 Rscript R/uncertainty_ardl.R                         # origins + bootstraps + scenarios
 Rscript R/ecm_bounds.R                               # PSS bounds tests (D9 appendix)
+Rscript R/analysis_hazard_discrete.R                 # discrete-time hazard (D11)
 
 # decomposition and exhibits
 uv run python -I analysis_decomposition.py           # 6-Oct, endings, groups, dispersion, brand-28Oct
 uv run python make_fig1_v2.py make_figs_update.py make_maps.py   # legacy figs (appendix maps)
 uv run python make_paper_v2_figs.py                  # Figures 1-4
+uv run python make_v2_maps.py                        # appendix map pair
 uv run python make_tables.py                         # Cox/LPM tables (rescaled units)
 uv run python make_paper_v2_tables.py                # macro + appendix tables
 

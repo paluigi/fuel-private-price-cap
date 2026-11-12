@@ -47,13 +47,20 @@ immaterial. Headlines after the 34-day rerun: gaps 17.45/21.13 c/l,
 endpoint gaps 22.4/20.5, NIC −0.378 pp (sensitivities −0.374/−0.381/
 −0.411).
 
-## Suggested referee-response-ready extras (not in the paper)
+## Additions completed in this round (13 November)
 
-- Discrete-time hazard model (PH rejection is disclosed).
-- November data pull to document post-commitment behaviour (outside the
-  fixed window by design).
-- Province-level maps: kept to one appendix pair; the full catalogue can
-  be reintroduced if requested.
+- **Discrete-time hazard model** (\cref{tab:hazard-dt} in the appendix,
+  one sentence in section 7): logit hazard with day fixed effects on
+  463,594 unit-days reproduces every Cox gradient without the PH
+  assumption (odds ratios 0.41/0.21 per 10 c/l of pre-gap; baseline
+  spikes at the 1 Oct repricing wave and the 6 Oct excise step).
+- **Province maps**: one restyled pair in the appendix (adoption within
+  seven days, common 0-100% scale, sequential colour-blind-safe blues).
+
+## Out of scope (author decision)
+
+- November 2026 data: outside the fixed analysis window; dropped from
+  the extension list.
 
 ## Reproduction
 
