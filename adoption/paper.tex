@@ -73,8 +73,7 @@ Answering that question requires measuring three things. First, the
 \emph{observed} national price path, which we construct from the complete
 registry of Italian station price communications---12.4 million
 station--fuel--day observations covering 21{,}766 stations over
-2026---reconstructing for every station and day the price actually in force
-rather than the price recorded by the daily extract. Second, a
+2026---reconstructing for every station and day the price actually in force. Second, a
 \emph{conditional no-cap path}: an econometric model of how national
 net-of-tax pump prices passed through the Brent price before the cap,
 projected over the cap window on the actual oil path with the actual
@@ -141,12 +140,12 @@ response propagated across stations, brands and geography.
 
 \section{Institutional setting}\label{sec:setting}
 
-Italian road fuel is sold through roughly 21{,}000 reporting roadside
-(\emph{stradale}) stations under a mix of brand banners---Eni's network,
-the other large brands (Q8, Api-Ip, Eni's former competitors Esso and
-Tamoil among them)---and unbranded ``white pump'' independents, alongside
-some 2{,}000 motorway stations whose prices are regulated at higher levels
-and which we exclude throughout. Since 2005 every price change must be
+Italian road fuel is sold through roughly 21{,}000 roadside
+stations under a mix of brand banners: Eni's network,
+ other large brands (Q8, Api-Ip, Esso and
+Tamoil among them), and unbranded ``white pump'' independents, alongside
+some 2{,}000 motorway stations whose prices generally follow different dynamics
+and which we exclude throughout. Since mid 2023 every price change must be
 communicated to the Ministry of Enterprises (MIMIT), which publishes the
 full registry daily as open data; the price in force at any moment is
 therefore a matter of public record. Italy's consumer-price statistics
@@ -190,11 +189,11 @@ date were less specific, and we do not analyse them.
 \subsection{Sources}
 
 We use four sources. The MIMIT price registry, as daily extracts covering
-1 January to 5 November 2026: 307 extract days (16--17 October were never
-published, the only gap) and 12.4 million rows for self-service petrol and
+1 January to 5 November 2026: 307 extract days (on 16 and 17 October our 
+data acquisition failed, the only gap) and 12.4 million rows for self-service petrol and
 diesel. Weekly station snapshots provide each station's banner, operator,
 type and location. The statutory excise calendar, obtained from the
-historical tax registry back to 2005, gives every application date and
+historical tax registry, gives every application date and
 rate. Brent in euro is the FRED Brent spot price converted at the
 USD/euro reference rate, forward-filled to calendar days.
 \Cref{tab:data} summarises the resulting samples.
@@ -221,13 +220,13 @@ never carried forward indefinitely. The practical stakes are large. On
 cut off mid-wave; a reference-day statistic built on extract-time prices
 would overstate that day's price by that amount. All our price series are
 effective-price series; we return to the measurement implications in
-\Cref{sec:inflation}. MIMIT published no extracts for 16--17 October
+\Cref{sec:inflation}. Our data acquisition routines failed on 16 and 17 October
 2026; because prices are assigned by communication date, the effective
 price of those two days is recovered from the communications carried by
 the surrounding extracts, so the reconstructed path covers every calendar
 day of the window.\footnote{The only information possibly lost to the
 missing downloads is a price change communicated and fully superseded
-within the two-day gap; such same-week double repricing is rare, and the
+within the two-day gap; such high-frequency double repricing is rare, and the
 reconstructed 16--17 October means move smoothly between their
 neighbours. The loss of information is marginal and does not affect any
 result in the paper.}
@@ -244,7 +243,7 @@ on day $t$. Netting the tax removes every 2026 excise step---the spring
 cut, its phased reinstatement, the pre-cap diesel steps and the two
 post-cap diesel steps---from both sides of the pass-through relationship
 by construction, so no tax dummy belongs in the model. The net-of-tax
-price is a price received along the supply chain, not a retail margin:
+price is a price received along the supply chain:
 the wedge between it and the wholesale cost is shared between refining,
 distribution and retailing, and we make no claim about that split. The
 national series we analyse are equal-weighted means of effective prices
@@ -459,10 +458,9 @@ ISTAT measures fuel prices for the consumer-price index (NIC) on the
 compute month-on-month September-to-October changes of the mean reference
 day price for each fuel, once as observed and once along the no-cap path,
 and aggregate with explicit assumptions: the ECOICOP 07.2.2 class
-``carburanti e lubrificanti'' carries a 2026 basket weight of 4.5219\%
-(verified against the published weighting structure; the class includes
-lubricants, a small residual we do not separately model), and we split it
-evenly between petrol and diesel, reflecting their approximately equal
+``Fuels and lubricants for personal transport equipment'' carries a 2026 basket weight of 4.5219\%, and we split it
+evenly between petrol and diesel\footnote{We do not separately model the lubricant component nor other fuels.
+However, their weight is marginal compared to petrol and diesel.}, reflecting their approximately equal
 contributions to the class. Station observations enter with equal
 weights; a regularity-filtered variant mimicking the office's preference
 for stations with a consistent communication history serves as the
