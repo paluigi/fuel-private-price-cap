@@ -84,9 +84,10 @@ for r in infl.iter_rows(named=True):
     )
 infl_rows.append("\\midrule")
 scen_label = {
+    "split 50/50, universe": "Equal 50/50 split of the class weight",
     "split 45/55, universe": "Weight split 45/55 (petrol/diesel)",
     "split 55/45, universe": "Weight split 55/45 (petrol/diesel)",
-    "split 50/50, regularity sample": "Regularity-filtered stations (50/50)",
+    "official split, regularity sample": "Regularity-filtered stations (published weights)",
 }
 for lbl in scen_label:
     rows_ = sens.filter(pl.col("scenario") == lbl)
@@ -127,7 +128,7 @@ Item & Value & Notes \\\\
 \\medskip
 \\footnotesize Dependent variable: log national mean net-of-tax price
 (self-service, roadside); regressors: own lags and contemporaneous plus
-lagged log Brent in \\euro. Estimation 2 Jan--27 Sep 2026 (261 observations
+lagged log Brent in euro. Estimation 2 Jan--27 Sep 2026 (261 observations
 after lags); BIC over $p\\in[0,21]$, $q\\in[7,21]$. Backtest: refit to
 13 Sep, recursive projection over 14--27 Sep, compared with a no-change
 random walk. Gap: actual minus counterfactual gross price, days available
@@ -136,13 +137,13 @@ random walk. Gap: actual minus counterfactual gross price, days available
 
 \\begin{{table}}[htbp]
 \\centering\\small
-\\caption{{Reference-day inflation: actual versus no-cap, and the estimated contribution to headline NIC inflation}}
+\\caption{{Reference-day inflation: actual versus no-cap, and the estimated contribution to headline HICP inflation}}
 \\label{{tab:inflation}}
 \\begin{{tabular}}{{lcccc}}
 \\toprule
  & \\multicolumn{{3}}{{c}}{{Sep--Oct change (\\%)}} & Contribution \\\\
 \\cmidrule(lr){{2-4}}
- & Actual & No cap & Difference & (pp of NIC) \\\\
+ & Actual & No cap & Difference & (pp of HICP) \\\\
 \\midrule
 {chr(10).join(infl_rows)}
 \\bottomrule
@@ -151,8 +152,8 @@ random walk. Gap: actual minus counterfactual gross price, days available
 \\medskip
 \\footnotesize Month-on-month changes over the 1st/11th/21st reference days,
 national mean gross prices, equal station weights. Contributions use the
-NIC 2026 weight of ECOICOP 07.2.2 (4.5219\\%, verified from ISTAT's
-published weighting structure) split evenly between petrol and diesel.
+published Eurostat 2026 HICP item weights (ECOICOP v2 class CP0722:
+petrol 2.339 and diesel 2.099 per mille of the basket).
 September no-cap prices equal observed prices by construction.
 \\end{{table}}
 """
@@ -243,11 +244,11 @@ station--fuel fixed effects; gestore-clustered errors; day $-1$
 
 \\begin{{table}}[htbp]
 \\centering\\footnotesize
-\\caption{{Specification grid and scenarios: October mean gaps and implied NIC effects}}
+\\caption{{Specification grid and scenarios: October mean gaps and implied HICP effects}}
 \\label{{tab:spec-range}}
 \\begin{{tabular}}{{llcccc}}
 \\toprule
- & & Order & Backtest & Mean gap & NIC \\\\
+ & & Order & Backtest & Mean gap & HICP \\\\
  & & (BIC) & RMSE (c/l) & (c/l) & effect (pp) \\\\
 \\midrule
 {chr(10).join(spec_rows)}
@@ -259,8 +260,8 @@ station--fuel fixed effects; gestore-clustered errors; day $-1$
 autoregression-only extremes (all re-selected by BIC on the extended
 window, max lag 21). Lower block: fit window, sample and Brent-path
 scenarios. The autoregression-only row is a mechanical persistence
-benchmark, not an admissible no-oil counterfactual. NIC effects per fuel
-use the 50/50 split.
+benchmark, not an admissible no-oil counterfactual. HICP effects use the
+published per-fuel item weights.
 \\end{{table}}
 
 \\begin{{table}}[htbp]

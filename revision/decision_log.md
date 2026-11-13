@@ -93,3 +93,42 @@ November data dropped from scope. Outcome: hazard model confirmatory
 sentence. Maps restyled (make_v2_maps.py, sequential blues, common
 scale); old amap_* files retained on disk for the audit trail but no
 longer referenced.
+
+## D12a — Author copy edits on paper.tex (13 Nov 2026, uncommitted hand edits)
+Recorded verbatim-relevant points so regenerated prose never reverts them:
+16-17 October is OUR data-acquisition failure (not MIMIT non-publication);
+communication duty since mid 2023; motorway stations "generally follow
+different dynamics" (not regulated higher); net-of-tax "is a price received
+along the supply chain" (dropped the 'not a retail margin' clause);
+ECOICOP class named in English with a lubricant/other-fuels footnote;
+spec table labels "fit from Jul" (no 'v1 window'); intro sentence trimmed.
+
+## D12 — Final adjustment round (13 Nov 2026, author)
+Seven author-requested changes, all implemented:
+1. **No-region stations dropped** from hazard + LPM (prep() filter in
+   revision_samples.R; build_person_period.py): 49 of 39,425 units
+   (0.12%). "(no region)" rows gone from LPM tables; hazard fixed effects
+   now 20 regions.
+2. **NIC → HICP.** New adoption/download_hicp.py fetches Eurostat
+   `prc_hicp_iw` (weights) and `prc_hicp_minr` (monthly index/rates) for
+   ECOICOP v2 class CP0722 + children CP07221 (diesel) / CP07222
+   (petrol), geo IT, cached in data/external/. 2026 item weights (per
+   mille): class 47.03, petrol 23.39, diesel 20.99, other fuels 2.22,
+   lubricants 0.43. The published petrol/diesel weights REPLACE the 50/50
+   assumption (equal/45-55/55-45 splits remain sensitivities). New
+   headline: CPI effect −0.369 pp (petrol −0.178, diesel −0.191);
+   sensitivities −0.39/−0.40/−0.39/−0.40; spec range −0.37…−0.41;
+   AR-only −0.29. Validation: our Aug–Sep reference-day MoM (+4.79/+5.96%)
+   vs official HICP September rates (+4.8/+6.0%) — within 0.1 pp. October
+   fuel items unpublished at writing time.
+3. **Abstract rewritten** to main messages (3 magnitudes: ~20 c/l, 0.4 pp,
+   measurement correction clause).
+4. **Conclusion close rewritten** macro-coherent (measurability of a
+   voluntary cap's inflation effect via public registry + transparent
+   projection); operational registry details removed.
+5. **Maps zoomed** to tight Italy bounds (6.7–18.6E, 36.4–47.15N; Pelagie
+   cut, Sicily+Sardinia kept), portrait aspect, caption notes islands.
+6. **Euro symbol out of prose** (spelled "euro per litre/barrel"; ~9
+   sites); tables untouched except the one note rewritten.
+7. **Appendix E (data dictionary) dropped** — replication package lives in
+   the GitHub repo; appendix now ends at D.

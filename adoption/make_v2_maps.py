@@ -99,10 +99,16 @@ def panel(df: pl.DataFrame, fname: str, title: str) -> None:
         template="plotly_white",
         font=dict(family="Helvetica, Arial, sans-serif", size=16),
         title=dict(text=title, x=0.5, font=dict(size=20)),
-        margin=dict(l=0, r=0, t=40, b=90),
-        width=1100, height=980,
-        map=dict(style="white-bg", center=dict(lat=41.4, lon=12.55),
-                 zoom=4.4),
+        margin=dict(l=0, r=0, t=36, b=86),
+        # tight Italy frame: keeps Sicily and Sardinia; outer minor
+        # islands (Pelagie) fall outside the bounds (D12). Canvas aspect
+        # must exceed the bbox aspect (h/w ~1.22 at Italy's latitude) or
+        # the map overflows and clips the Alpine border.
+        width=880, height=1250,
+        map=dict(
+            style="white-bg",
+            bounds=dict(west=6.6, east=18.7, south=36.3, north=47.2),
+        ),
     )
     fig.write_image(FIG / fname, scale=2)
     rng = f"{df['pct'].min():.0f}-{df['pct'].max():.0f}"

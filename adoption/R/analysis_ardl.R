@@ -33,12 +33,16 @@
 # expanding-origin backtests: R/uncertainty_ardl.R.
 #
 # ISTAT reference days (1st/11th/21st): actual vs counterfactual Sep->Oct MoM
-# changes and the implied contribution to headline CPI using the NIC 2026
-# definitive weight of ECOICOP 07.2.2 'Carburanti e lubrificanti' (45,219 per
-# 10,000 = 4.5219%; data/external/istat_ponderazioni_2026.xlsx, verified
-# programmatically in the revision). Fuel-split sensitivities (45/55, 55/55)
-# and the regularity-filtered sample variant are written to
-# output/tables/inflation_sensitivity.csv.
+# changes and the implied contribution to headline HICP inflation using the
+# Eurostat 2026 item weights for ECOICOP v2 class CP0722 'Fuels and
+# lubricants for personal transport equipment' and its children CP07222
+# (petrol, 23.39 per mille) and CP07221 (diesel, 20.99) - data flow
+# prc_hicp_iw, download_hicp.py -> data/external/eurostat_hicp_weights_2026.csv.
+# The published petrol/diesel item weights REPLACE the former 50/50
+# assumption (D12). Split sensitivities (50/50, 45/55, 55/45 of the class
+# weight) and the regularity-filtered sample variant are written to
+# output/tables/inflation_sensitivity.csv. Official monthly HICP rates for
+# validation come from data flow prc_hicp_minr (eurostat_hicp_monthly.csv).
 #
 # Inputs:  output/tables/fuel_daily_prices.csv (build_fuel_daily.py)
 #          output/tables/oil_fx_daily_ffill.csv (build_oil_series.py)
@@ -79,7 +83,13 @@ MIN_OIL_Q <- 7L  # main spec: >= 7 oil lags (one week of Brent dynamics)
 N_SIM <- 2000L
 SEED <- 20260928
 VAT <- 1.22
-W_CARBURANTI <- 0.045219 # NIC 2026 definitive weight, ECOICOP 07.2.2
+# HICP 2026 item weights (share of basket; per mille in the CSV)
+HICP_W <- fread("../data/external/eurostat_hicp_weights_2026.csv")
+W_BENZINA <- HICP_W[item == "petrol", weight_permille] / 1000
+W_GASOLIO <- HICP_W[item == "diesel", weight_permille] / 1000
+W_CARBURANTI <- HICP_W[item == "class", weight_permille] / 1000  # whole CP0722 class
+stopifnot(W_BENZINA > 0, W_GASOLIO > 0, W_CARBURANTI >= W_BENZINA + W_GASOLIO)
+W_FUEL <- c(Benzina = W_BENZINA, Gasolio = W_GASOLIO)
 REF_DAYS <- as.Date(c(
   "2026-09-01", "2026-09-11", "2026-09-21",
   "2026-10-01", "2026-10-11", "2026-10-21"
@@ -309,10 +319,10 @@ inflation_tables <- function(cf_all, dall) {
     oct_a <- mean(oct$actual_gross); oct_c <- mean(oct$cf_gross)
     mom_a <- (oct_a / sep_a - 1) * 100
     mom_c <- (oct_c / sep_c - 1) * 100
-    # ECOICOP 07.2.2 covers all motor fuels: split its NIC weight evenly
-    # across petrol and diesel (documented assumption; ISTAT publishes no
-    # public sub-class split)
-    w_f <- W_CARBURANTI / length(unique(days_long$fuel))
+    # published HICP item weights per fuel (Eurostat prc_hicp_iw, ECOICOP
+    # v2 children of CP0722); other fuels + lubricants (0.265 per mille)
+    # are not separately modelled
+    w_f <- W_FUEL[[f]]
     data.table(
       fuel = f,
       sep_avg_actual = sep_a, sep_avg_cf = sep_c,
@@ -324,16 +334,20 @@ inflation_tables <- function(cf_all, dall) {
       cpi_effect_pp = w_f * (mom_a - mom_c)
     )
   }))
-  # combined row: equal-weight blend of the two fuels (same 50/50 split)
+  # combined row: unweighted average rates for display; contributions use
+  # the published per-fuel item weights
   comb <- summ[, .(
     fuel = "TOT carburanti",
     sep_avg_actual = mean(sep_avg_actual), sep_avg_cf = mean(sep_avg_cf),
     oct_avg_actual = mean(oct_avg_actual), oct_avg_cf = mean(oct_avg_cf),
     mom_actual_pct = mean(mom_actual_pct), mom_cf_pct = mean(mom_cf_pct),
     cap_effect_pp = mean(cap_effect_pp),
-    cpi_actual_pp = W_CARBURANTI * mean(mom_actual_pct),
-    cpi_cf_pp = W_CARBURANTI * mean(mom_cf_pct),
-    cpi_effect_pp = W_CARBURANTI * mean(mom_actual_pct - mom_cf_pct)
+    cpi_actual_pp = W_BENZINA * summ[fuel == "Benzina", mom_actual_pct] +
+      W_GASOLIO * summ[fuel == "Gasolio", mom_actual_pct],
+    cpi_cf_pp = W_BENZINA * summ[fuel == "Benzina", mom_cf_pct] +
+      W_GASOLIO * summ[fuel == "Gasolio", mom_cf_pct],
+    cpi_effect_pp = W_BENZINA * summ[fuel == "Benzina", mom_actual_pct - mom_cf_pct] +
+      W_GASOLIO * summ[fuel == "Gasolio", mom_actual_pct - mom_cf_pct]
   )]
   summ <- rbind(summ, comb)
   fwrite(summ, INFL_SUMMARY_CSV)
@@ -341,7 +355,8 @@ inflation_tables <- function(cf_all, dall) {
   cat("\n===== ISTAT reference days (1/11/21) =====\n")
   print(days_long)
   cat("\nSep avg vs Oct avg, actual vs counterfactual "
-      , "(weight carburanti = ", W_CARBURANTI, ", split 50/50):\n", sep = "")
+      , "(HICP item weights: petrol ", W_BENZINA, ", diesel ", W_GASOLIO,
+      "):\n", sep = "")
   print(summ)
 }
 
@@ -350,9 +365,9 @@ inflation_tables <- function(cf_all, dall) {
 # ---------------------------------------------------------------- #
 
 inflation_sensitivity <- function(cf_all, dall) {
-  # Scenarios: petrol/diesel NIC-weight split (baseline 50/50 is in
-  # inflation_summary.csv) x observed-series sample (universe eff_* vs the
-  # ISTAT-like regularity-filtered reg_* aggregates). The no-cap path is the
+  # Scenarios: petrol/diesel weight split (baseline = published item
+  # weights, in inflation_summary.csv) x observed-series sample (universe
+  # eff_* vs the ISTAT-like regularity-filtered reg_* aggregates). The no-cap path is the
   # baseline model's counterfactual in every scenario (its Sep base equals
   # the observed Sep base by construction); the regularity refit of the
   # counterfactual itself is a specification variant in uncertainty_ardl.R.
@@ -375,9 +390,15 @@ inflation_sensitivity <- function(cf_all, dall) {
     ))
   }
   out <- rbindlist(list(
+    scen("split 50/50, universe", "eff_mean_gross", 0.50),
     scen("split 45/55, universe", "eff_mean_gross", 0.45),
     scen("split 55/45, universe", "eff_mean_gross", 0.55),
-    scen("split 50/50, regularity sample", "reg_mean_gross", 0.50)
+    rbindlist(list(
+      fuel_row("Benzina", "reg_mean_gross", W_BENZINA,
+               "official split, regularity sample"),
+      fuel_row("Gasolio", "reg_mean_gross", W_GASOLIO,
+               "official split, regularity sample")
+    ))
   ))
   fwrite(out, INFL_SENS_CSV)
   cat("\n===== inflation sensitivities (split and sample) =====\n")

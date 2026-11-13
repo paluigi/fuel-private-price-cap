@@ -40,6 +40,14 @@ def main() -> int:
         chain_10=pl.col("n_stations_gestore") / 10,
         pop_1000=pl.col("pop_cell") / 1000,
     )
+    # drop stations with no region (failed province attribution): a handful
+    # of units whose empty-string level would otherwise form a spurious
+    # fixed effect in the hazard model (D12)
+    n_sv0 = sv.height
+    sv = sv.filter(
+        pl.col("regione").is_not_null() & (pl.col("regione").str.strip_chars() != "")
+    )
+    print(f"no-region drop: {n_sv0 - sv.height:,} of {n_sv0:,} units removed")
 
     # first below-ceiling day and last observed day per unit
     firsts = (
@@ -56,6 +64,11 @@ def main() -> int:
         end_day=pl.when(pl.col("adopt_day").is_not_null())
         .then(pl.col("adopt_day"))
         .otherwise(pl.col("last_day")),
+    )
+    # keep only units that survive the region filter (covariate frame)
+    spans = spans.join(
+        sv.select("id_impianto", "fuel").unique(), on=["id_impianto", "fuel"],
+        how="semi",
     )
 
     # day grid per unit, event flag on the terminal day for adopters

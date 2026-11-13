@@ -186,7 +186,7 @@ Index: <fuel>
 11: 2026-10-21 Benzina     2.022986 2.212066 -18.90804
 12: 2026-10-21 Gasolio     2.258053 2.474910 -21.68572
 
-Sep avg vs Oct avg, actual vs counterfactual (weight carburanti = 0.045219, split 50/50):
+Sep avg vs Oct avg, actual vs counterfactual (HICP item weights: petrol 0.02339, diesel 0.02099):
              fuel sep_avg_actual sep_avg_cf oct_avg_actual oct_avg_cf
            <char>          <num>      <num>          <num>      <num>
 1:        Benzina       2.090743   2.090743       2.041954   2.201120
@@ -194,31 +194,35 @@ Sep avg vs Oct avg, actual vs counterfactual (weight carburanti = 0.045219, spli
 3: TOT carburanti       2.156797   2.156797       2.149987   2.330677
    mom_actual_pct mom_cf_pct cap_effect_pp cpi_actual_pp cpi_cf_pp
             <num>      <num>         <num>         <num>     <num>
-1:     -2.3335426   5.279349     -7.612892   -0.05276023 0.1193635
-2:      1.5821854  10.679214     -9.097028    0.03577242 0.2414517
-3:     -0.3756786   7.979282     -8.354960   -0.01698781 0.3608151
+1:     -2.3335426   5.279349     -7.612892   -0.05458156 0.1234840
+2:      1.5821854  10.679214     -9.097028    0.03321007 0.2241567
+3:     -0.3756786   7.979282     -8.354960   -0.02137149 0.3476407
    cpi_effect_pp
            <num>
-1:    -0.1721237
-2:    -0.2056793
-3:    -0.3778029
+1:    -0.1780655
+2:    -0.1909466
+3:    -0.3690122
 
 ===== inflation sensitivities (split and sample) =====
-                         scenario    fuel mom_actual_pct mom_cf_pct
-                           <char>  <char>          <num>      <num>
-1:          split 45/55, universe Benzina     -2.3335426   5.279349
-2:          split 45/55, universe Gasolio      1.5821854  10.679214
-3:          split 55/45, universe Benzina     -2.3335426   5.279349
-4:          split 55/45, universe Gasolio      1.5821854  10.679214
-5: split 50/50, regularity sample Benzina     -3.1858626   5.251201
-6: split 50/50, regularity sample Gasolio      0.7939502  10.539050
+                            scenario    fuel mom_actual_pct mom_cf_pct
+                              <char>  <char>          <num>      <num>
+1:             split 50/50, universe Benzina     -2.3335426   5.279349
+2:             split 50/50, universe Gasolio      1.5821854  10.679214
+3:             split 45/55, universe Benzina     -2.3335426   5.279349
+4:             split 45/55, universe Gasolio      1.5821854  10.679214
+5:             split 55/45, universe Benzina     -2.3335426   5.279349
+6:             split 55/45, universe Gasolio      1.5821854  10.679214
+7: official split, regularity sample Benzina     -3.1858626   5.251201
+8: official split, regularity sample Gasolio      0.7939502  10.539050
    cpi_effect_pp
            <num>
-1:    -0.1549113
-2:    -0.2262472
-3:    -0.1893361
-4:    -0.1851113
-5:    -0.1907578
-6:    -0.2203318
+1:    -0.1790172
+2:    -0.2139166
+3:    -0.1611154
+4:    -0.2353083
+5:    -0.1969189
+6:    -0.1925250
+7:    -0.1973429
+8:    -0.2045496
 
 Done.

@@ -118,7 +118,7 @@ run_ar_only <- function(d, fuel_name) {
   oct_c <- mean(m[substr(format(date), 1, 7) == "2026-10"]$cf)
   mom_a <- (oct_a / sep_a - 1) * 100
   mom_c <- (oct_c / sep_a - 1) * 100
-  w_f <- W_CARBURANTI / 2
+  w_f <- W_FUEL[[fuel_name]]
 
   cat(sprintf("%-10s %-9s BIC (%d,.) | NO OIL TERM | N %d | R2 %.4f\n",
               "V6_ar_only", fuel_name, p_b,
@@ -173,7 +173,7 @@ run_variant <- function(d, fuel_name, var) {
   oct_c <- mean(m[substr(format(date), 1, 7) == "2026-10"]$cf)
   mom_a <- (oct_a / sep_a - 1) * 100
   mom_c <- (oct_c / sep_a - 1) * 100
-  w_f <- W_CARBURANTI / 2
+  w_f <- W_FUEL[[fuel_name]]
 
   cat(sprintf("%-10s %-9s BIC (%d,%d) | lr_elas %.3f | N %d | R2 %.4f\n",
               var$key, fuel_name,

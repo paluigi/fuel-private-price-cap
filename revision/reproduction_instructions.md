@@ -20,6 +20,9 @@ uv run python -I adoption/make_prices_full.py          # data/prices_full_2026.p
 
 # 2. excise calendar from MongoDB (cached values verified unchanged)
 uv run python -I adoption/refresh_tax.py
+
+# 3. Eurostat HICP weights + monthly data (ECOICOP v2 CP0722 family)
+uv run python -I adoption/download_hicp.py
 ```
 
 ## Full chain (from repository root)

@@ -22,6 +22,10 @@ prep <- function(x) {
   tab <- x[, .N, by = bandiera_g]
   rare <- tab[N < 100, bandiera_g]
   x[bandiera_g %in% rare, bandiera_g := "OTHER"]
+  # drop stations with no region (failed province attribution): a handful
+  # of units whose empty-string level otherwise surfaces as a "(no region)"
+  # fixed effect (D12)
+  x <- x[!is.na(regione) & trimws(as.character(regione)) != ""]
   # drop singleton-factor levels that would break the PH/AFT fits
   x
 }

@@ -64,9 +64,25 @@ both referenced from the main text without breakage.
   with time-averaged reading.
 - No welfare, margin or causal-chain claims anywhere in the text.
 
+## D12 round (13 November 2026)
+
+- No-region units (49) dropped from hazard + LPM; "(no region)" gone.
+- NIC → HICP with Eurostat prc_hicp_iw published item weights (petrol
+  23.39, diesel 20.99 per mille; replaces the 50/50 assumption);
+  headline −0.369 pp; validated against prc_hicp_minr September rates
+  (within 0.1 pp of our Aug–Sep reference-day estimates); October items
+  unpublished at writing time.
+- Abstract reduced to main messages; conclusion close rewritten;
+  euro symbol out of prose; appendix E dropped (replication = GitHub
+  repo); maps zoomed to tight Italy bounds.
+- Checker extended (63 checks) and passing.
+
 ## Remaining items deliberately NOT done (with reasons)
 
-- November 2026 data: out of scope by author decision (13 Nov round).
+- November 2026 data: out of scope by author decision.
+- make_tables_cf.py still carries NIC strings in its legacy v1 outputs
+  (paper_tables_cf/paper_tables_infl.tex); those files are no longer
+  \input by the paper - regeneration optional, not required.
 - Refined-product price indicator: not available without proprietary data
   (pack Step 08 allows skipping).
 

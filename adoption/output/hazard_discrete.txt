@@ -1,68 +1,68 @@
-person-period rows: 463594  events: 32974  units: 39425 
+person-period rows: 462693  events: 32945  units: 39376 
 
-===== S1_universe :  463594 rows, 32974 events =====
+===== S1_universe :  462693 rows, 32945 events =====
 GLM estimation, family = binomial, Dep. Var.: event
-Observations: 455,624
-Fixed-effects: day: 34,  bandiera: 252,  regione: 21
+Observations: 454,791
+Fixed-effects: day: 34,  bandiera: 252,  regione: 20
 Standard-errors: Clustered (gestore) 
                 Estimate Std. Error    z value   Pr(>|z|)    
-pre_gap_10c    -0.887886   0.081748 -10.861292  < 2.2e-16 ***
-nn_dist_km     -0.072212   0.010979  -6.577151 4.7955e-11 ***
-cap_dist_km_d0 -0.040080   0.004592  -8.729054  < 2.2e-16 ***
-pop_1000       -0.000078   0.004894  -0.016000 9.8723e-01    
-chain_10        0.004259   0.000882   4.828138 1.3782e-06 ***
-fuelGasolio     0.085578   0.026834   3.189133 1.4270e-03 ** 
+pre_gap_10c    -0.886183   0.081864 -10.825087  < 2.2e-16 ***
+nn_dist_km     -0.072232   0.010991  -6.571746 4.9729e-11 ***
+cap_dist_km_d0 -0.040230   0.004595  -8.754698  < 2.2e-16 ***
+pop_1000       -0.000120   0.004894  -0.024614 9.8036e-01    
+chain_10        0.004256   0.000883   4.820335 1.4332e-06 ***
+fuelGasolio     0.085751   0.026861   3.192404 1.4109e-03 ** 
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-Log-Likelihood: -85,487.4   Adj. Pseudo R2: 0.272727
-           BIC: 175,026.9     Squared Cor.: 0.2632  
+Log-Likelihood: -85,394.1   Adj. Pseudo R2: 0.272685
+           BIC: 174,826.7     Squared Cor.: 0.263197
 
-===== S2_excl_leaders :  423263 rows, 20441 events =====
+===== S2_excl_leaders :  422453 rows, 20423 events =====
 GLM estimation, family = binomial, Dep. Var.: event
-Observations: 415,498
-Fixed-effects: day: 34,  bandiera: 250,  regione: 21
+Observations: 414,756
+Fixed-effects: day: 34,  bandiera: 250,  regione: 20
 Standard-errors: Clustered (gestore) 
                 Estimate Std. Error    z value   Pr(>|z|)    
-pre_gap_10c    -1.143390   0.099128 -11.534481  < 2.2e-16 ***
-nn_dist_km     -0.079745   0.010976  -7.265250 3.7235e-13 ***
-cap_dist_km_d0 -0.053021   0.005154 -10.287295  < 2.2e-16 ***
-pop_1000        0.001174   0.003348   0.350559 7.2592e-01    
-chain_10        0.002827   0.001781   1.587545 1.1239e-01    
-fuelGasolio     0.073506   0.034987   2.100913 3.5649e-02 *  
+pre_gap_10c    -1.141913   0.099212 -11.509874  < 2.2e-16 ***
+nn_dist_km     -0.079756   0.010989  -7.258032 3.9276e-13 ***
+cap_dist_km_d0 -0.053214   0.005157 -10.318806  < 2.2e-16 ***
+pop_1000        0.001120   0.003351   0.334185 7.3824e-01    
+chain_10        0.002831   0.001783   1.588137 1.1226e-01    
+fuelGasolio     0.073499   0.035022   2.098637 3.5849e-02 *  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-Log-Likelihood: -69,211.3   Adj. Pseudo R2: 0.143166
-           BIC: 142,420.2     Squared Cor.: 0.081606
+Log-Likelihood: -69,132.0   Adj. Pseudo R2: 0.143197
+           BIC: 142,248.2     Squared Cor.: 0.081697
 
-===== S3_white_pumps :  108599 rows, 3029 events =====
+===== S3_white_pumps :  108257 rows, 3025 events =====
 GLM estimation, family = binomial, Dep. Var.: event
-Observations: 107,989
-Fixed-effects: day: 34,  regione: 21
+Observations: 107,715
+Fixed-effects: day: 34,  regione: 20
 Standard-errors: Clustered (gestore) 
                 Estimate Std. Error    z value   Pr(>|z|)    
-pre_gap_10c    -1.550908   0.112861 -13.741704  < 2.2e-16 ***
-nn_dist_km     -0.158697   0.025396  -6.248927 4.1328e-10 ***
-cap_dist_km_d0 -0.050576   0.011719  -4.315691 1.5910e-05 ***
-pop_1000        0.006118   0.009217   0.663736 5.0686e-01    
-chain_10        0.057493   0.033819   1.700005 8.9130e-02 .  
-fuelGasolio    -0.075703   0.044720  -1.692808 9.0492e-02 .  
+pre_gap_10c    -1.549606   0.112900 -13.725413  < 2.2e-16 ***
+nn_dist_km     -0.160274   0.025462  -6.294582 3.0823e-10 ***
+cap_dist_km_d0 -0.050479   0.011717  -4.308278 1.6453e-05 ***
+pop_1000        0.005930   0.009215   0.643506 5.1990e-01    
+chain_10        0.057541   0.033804   1.702201 8.8718e-02 .  
+fuelGasolio    -0.077255   0.044701  -1.728285 8.3937e-02 .  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-Log-Likelihood: -11,208.0   Adj. Pseudo R2: 0.181264
-           BIC:  23,111.4     Squared Cor.: 0.11383 
+Log-Likelihood: -11,187.9   Adj. Pseudo R2: 0.181494
+           BIC:  23,059.4     Squared Cor.: 0.11389 
 
 baseline hazard (universe, first 10 days):
          sample   day      hazard n_at_risk events
          <char> <int>       <num>     <int>  <int>
- 1: S1_universe     0 0.211946734     39425   8356
- 2: S1_universe     1 0.063503814     31069   1973
- 3: S1_universe     2 0.046466868     29096   1352
- 4: S1_universe     3 0.247044406     27744   6854
- 5: S1_universe     4 0.081809478     20890   1709
- 6: S1_universe     5 0.032845003     19181    630
- 7: S1_universe     6 0.004204625     18551     78
- 8: S1_universe     7 0.050776809     18473    938
- 9: S1_universe     8 0.160022812     17535   2806
-10: S1_universe     9 0.066535406     14729    980
+ 1: S1_universe     0 0.212032710     39376   8349
+ 2: S1_universe     1 0.063493087     31027   1970
+ 3: S1_universe     2 0.046494821     29057   1351
+ 4: S1_universe     3 0.247238865     27706   6850
+ 5: S1_universe     4 0.081942846     20856   1709
+ 6: S1_universe     5 0.032903327     19147    630
+ 7: S1_universe     6 0.004212345     18517     78
+ 8: S1_universe     7 0.050707739     18439    935
+ 9: S1_universe     8 0.160134826     17504   2803
+10: S1_universe     9 0.066526087     14701    978
 
 Done.

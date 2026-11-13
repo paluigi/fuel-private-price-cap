@@ -44,7 +44,7 @@ Diesel & (1,8) & 261 & 0.85 & 5.07 & -0.17 & $-21.1$ & $-20.5$ \\
 \medskip
 \footnotesize Dependent variable: log national mean net-of-tax price
 (self-service, roadside); regressors: own lags and contemporaneous plus
-lagged log Brent in \euro. Estimation 2 Jan--27 Sep 2026 (261 observations
+lagged log Brent in euro. Estimation 2 Jan--27 Sep 2026 (261 observations
 after lags); BIC over $p\in[0,21]$, $q\in[7,21]$. Backtest: refit to
 13 Sep, recursive projection over 14--27 Sep, compared with a no-change
 random walk. Gap: actual minus counterfactual gross price, days available
@@ -53,28 +53,29 @@ random walk. Gap: actual minus counterfactual gross price, days available
 
 \begin{table}[htbp]
 \centering\small
-\caption{Reference-day inflation: actual versus no-cap, and the estimated contribution to headline NIC inflation}
+\caption{Reference-day inflation: actual versus no-cap, and the estimated contribution to headline HICP inflation}
 \label{tab:inflation}
 \begin{tabular}{lcccc}
 \toprule
  & \multicolumn{3}{c}{Sep--Oct change (\%)} & Contribution \\
 \cmidrule(lr){2-4}
- & Actual & No cap & Difference & (pp of NIC) \\
+ & Actual & No cap & Difference & (pp of HICP) \\
 \midrule
-Petrol & $-2.33$ & $+5.28$ & $-7.6$ & $-0.17$ \\
-Diesel & $+1.58$ & $+10.68$ & $-9.1$ & $-0.21$ \\
-Motor fuels (combined) & $-0.38$ & $+7.98$ & $-8.4$ & $-0.38$ \\
+Petrol & $-2.33$ & $+5.28$ & $-7.6$ & $-0.18$ \\
+Diesel & $+1.58$ & $+10.68$ & $-9.1$ & $-0.19$ \\
+Motor fuels (combined) & $-0.38$ & $+7.98$ & $-8.4$ & $-0.37$ \\
 \midrule
-\multicolumn{4}{l}{\emph{Weight split 45/55 (petrol/diesel)}} & $-0.38$ \\
-\multicolumn{4}{l}{\emph{Weight split 55/45 (petrol/diesel)}} & $-0.37$ \\
-\multicolumn{4}{l}{\emph{Regularity-filtered stations (50/50)}} & $-0.41$ \\
+\multicolumn{4}{l}{\emph{Equal 50/50 split of the class weight}} & $-0.39$ \\
+\multicolumn{4}{l}{\emph{Weight split 45/55 (petrol/diesel)}} & $-0.40$ \\
+\multicolumn{4}{l}{\emph{Weight split 55/45 (petrol/diesel)}} & $-0.39$ \\
+\multicolumn{4}{l}{\emph{Regularity-filtered stations (published weights)}} & $-0.40$ \\
 \bottomrule
 \end{tabular}
 
 \medskip
 \footnotesize Month-on-month changes over the 1st/11th/21st reference days,
 national mean gross prices, equal station weights. Contributions use the
-NIC 2026 weight of ECOICOP 07.2.2 (4.5219\%, verified from ISTAT's
-published weighting structure) split evenly between petrol and diesel.
+published Eurostat 2026 HICP item weights (ECOICOP v2 class CP0722:
+petrol 2.339 and diesel 2.099 per mille of the basket).
 September no-cap prices equal observed prices by construction.
 \end{table}

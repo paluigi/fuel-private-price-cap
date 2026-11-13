@@ -7,61 +7,60 @@ SAMPLE: S1_universe
 t test of coefficients:
 
                                        Estimate  Std. Error  t value  Pr(>|t|)
-(Intercept)                          1.2110e+00  2.4955e-02  48.5280 < 2.2e-16
-nn_dist_km                          -2.2856e-02  2.5051e-03  -9.1238 < 2.2e-16
-cap_dist_km_d0                      -1.1516e-02  1.1363e-03 -10.1355 < 2.2e-16
-pop_density_cell                    -8.2794e-07  6.4672e-07  -1.2802 0.2004811
-pre_gap_vs_cap                      -1.0787e+00  1.2658e-01  -8.5221 < 2.2e-16
-n_stations_gestore                   2.0590e-05  1.6800e-05   1.2255 0.2203766
-fuelGasolio                         -2.4018e-02  6.8464e-03  -3.5081 0.0004518
-bandiera_gAla                       -4.0986e-01  1.6387e-02 -25.0108 < 2.2e-16
-bandiera_gApi-Ip                    -1.0944e-01  1.6720e-02  -6.5453 6.010e-11
-bandiera_gAquila                     9.7980e-04  2.6203e-02   0.0374 0.9701724
-bandiera_gBeyfin                    -1.2349e-01  6.0374e-02  -2.0455 0.0408128
-bandiera_gCOIL                      -1.0552e-01  4.2007e-02  -2.5119 0.0120136
-bandiera_gCONAD                     -5.1920e-02  2.0749e-02  -2.5023 0.0123438
-bandiera_gCostantin                 -4.1354e-02  2.4515e-02  -1.6869 0.0916319
-bandiera_gEgo                       -1.8094e-01  5.5610e-02  -3.2538 0.0011396
-bandiera_gEnergas                   -2.8186e-02  4.7722e-02  -0.5906 0.5547728
-bandiera_gEnerpetroli               -1.0094e-01  1.0761e-02  -9.3797 < 2.2e-16
-bandiera_gEsso                      -1.4837e-01  1.6442e-02  -9.0236 < 2.2e-16
-bandiera_gEuropam                   -9.2418e-02  5.8980e-02  -1.5669 0.1171350
-bandiera_gGiap                      -2.3037e-01  1.2119e-02 -19.0099 < 2.2e-16
-bandiera_gItala Petroli             -2.0846e-01  5.5958e-02  -3.7254 0.0001953
-bandiera_gKEROPETROL                -4.2341e-01  4.5734e-02  -9.2579 < 2.2e-16
-bandiera_gLoro                      -5.4313e-01  4.5048e-02 -12.0568 < 2.2e-16
-bandiera_gOTHER                     -2.5260e-01  1.9585e-02 -12.8973 < 2.2e-16
-bandiera_gPetrol Gamma              -3.9345e-01  1.0595e-01  -3.7136 0.0002047
-bandiera_gPompe Bianche             -3.8719e-01  1.2505e-02 -30.9629 < 2.2e-16
-bandiera_gQ8                        -1.8175e-02  1.4330e-02  -1.2683 0.2046881
-bandiera_gRetitalia                 -2.6683e-01  4.1850e-02  -6.3758 1.840e-10
-bandiera_gSan Marco Petroli         -6.7019e-01  2.0459e-02 -32.7572 < 2.2e-16
-bandiera_gShell                     -1.2279e-01  2.7769e-02  -4.4218 9.816e-06
-bandiera_gSia fuel                  -4.8903e-02  2.2030e-02  -2.2199 0.0264335
-bandiera_gSommese Petroli           -3.6819e-01  6.9844e-02  -5.2716 1.359e-07
-bandiera_gTamoil                    -1.3553e-01  1.7335e-02  -7.8186 5.473e-15
-bandiera_gToil                      -2.6824e-01  9.4950e-02  -2.8251 0.0047295
-bandiera_gVega                      -1.5206e-02  8.0152e-03  -1.8971 0.0578228
-regione                             -1.2412e-01  8.5188e-02  -1.4570 0.1451294
-regioneBasilicata                   -5.5005e-02  3.0335e-02  -1.8132 0.0698022
-regioneCalabria                     -2.6488e-02  2.1570e-02  -1.2280 0.2194506
-regioneCampania                     -4.2882e-02  1.8675e-02  -2.2963 0.0216648
-regioneEmilia-Romagna                5.3831e-03  1.7651e-02   0.3050 0.7603866
-regioneFriuli-Venezia Giulia        -6.6087e-02  2.5409e-02  -2.6009 0.0093013
-regioneLazio                         1.3620e-02  1.7619e-02   0.7730 0.4395176
-regioneLiguria                       2.5254e-02  1.9844e-02   1.2726 0.2031562
-regioneLombardia                     3.8691e-02  1.6744e-02   2.3108 0.0208494
-regioneMarche                        6.8216e-03  2.0489e-02   0.3329 0.7391875
-regioneMolise                       -8.4804e-02  3.2778e-02  -2.5873 0.0096778
-regionePiemonte                      4.8498e-02  2.1507e-02   2.2550 0.0241409
-regionePuglia                       -1.2722e-02  2.3357e-02  -0.5447 0.5859937
-regioneSardegna                      5.4936e-02  2.0226e-02   2.7161 0.0066089
-regioneSicilia                      -2.7919e-03  2.0791e-02  -0.1343 0.8931796
-regioneToscana                      -1.0220e-02  1.8787e-02  -0.5440 0.5864444
-regioneTrentino-Alto Adige/Südtirol  1.6619e-02  2.7739e-02   0.5991 0.5490897
-regioneUmbria                        2.6206e-02  2.0934e-02   1.2518 0.2106474
-regioneValle d'Aosta/Vallée d'Aoste  7.4444e-02  3.8011e-02   1.9585 0.0501780
-regioneVeneto                        1.7605e-02  1.8477e-02   0.9528 0.3407098
+(Intercept)                          1.2105e+00  2.4879e-02  48.6570 < 2.2e-16
+nn_dist_km                          -2.2845e-02  2.5091e-03  -9.1049 < 2.2e-16
+cap_dist_km_d0                      -1.1557e-02  1.1359e-03 -10.1739 < 2.2e-16
+pop_density_cell                    -8.4208e-07  6.4578e-07  -1.3040 0.1922519
+pre_gap_vs_cap                      -1.0750e+00  1.2570e-01  -8.5524 < 2.2e-16
+n_stations_gestore                   2.0277e-05  1.6844e-05   1.2038 0.2286747
+fuelGasolio                         -2.4086e-02  6.8520e-03  -3.5152 0.0004399
+bandiera_gAla                       -4.0979e-01  1.6385e-02 -25.0105 < 2.2e-16
+bandiera_gApi-Ip                    -1.0922e-01  1.6751e-02  -6.5201 7.111e-11
+bandiera_gAquila                     1.0552e-03  2.6197e-02   0.0403 0.9678697
+bandiera_gBeyfin                    -1.2348e-01  6.0385e-02  -2.0448 0.0408770
+bandiera_gCOIL                      -1.0536e-01  4.2003e-02  -2.5083 0.0121353
+bandiera_gCONAD                     -5.1724e-02  2.0747e-02  -2.4931 0.0126676
+bandiera_gCostantin                 -4.1332e-02  2.4521e-02  -1.6855 0.0918917
+bandiera_gEgo                       -1.8086e-01  5.5606e-02  -3.2526 0.0011446
+bandiera_gEnergas                   -2.2344e-02  4.3937e-02  -0.5085 0.6110743
+bandiera_gEnerpetroli               -1.0076e-01  1.0755e-02  -9.3684 < 2.2e-16
+bandiera_gEsso                      -1.4877e-01  1.6493e-02  -9.0201 < 2.2e-16
+bandiera_gEuropam                   -9.2282e-02  5.9008e-02  -1.5639 0.1178508
+bandiera_gGiap                      -2.3028e-01  1.2103e-02 -19.0258 < 2.2e-16
+bandiera_gItala Petroli             -2.0053e-01  5.1840e-02  -3.8682 0.0001098
+bandiera_gKEROPETROL                -4.2343e-01  4.5742e-02  -9.2568 < 2.2e-16
+bandiera_gLoro                      -5.4303e-01  4.5051e-02 -12.0536 < 2.2e-16
+bandiera_gOTHER                     -2.5273e-01  1.9511e-02 -12.9533 < 2.2e-16
+bandiera_gPetrol Gamma              -3.9330e-01  1.0595e-01  -3.7121 0.0002058
+bandiera_gPompe Bianche             -3.8703e-01  1.2510e-02 -30.9382 < 2.2e-16
+bandiera_gQ8                        -1.7711e-02  1.4311e-02  -1.2375 0.2158944
+bandiera_gRetitalia                 -2.6679e-01  4.1843e-02  -6.3759 1.839e-10
+bandiera_gSan Marco Petroli         -6.7021e-01  2.0452e-02 -32.7695 < 2.2e-16
+bandiera_gShell                     -1.2273e-01  2.7778e-02  -4.4183 9.976e-06
+bandiera_gSia fuel                  -4.8963e-02  2.2021e-02  -2.2234 0.0261936
+bandiera_gSommese Petroli           -3.6812e-01  6.9845e-02  -5.2706 1.367e-07
+bandiera_gTamoil                    -1.3533e-01  1.7280e-02  -7.8318 4.928e-15
+bandiera_gToil                      -2.6801e-01  9.4945e-02  -2.8227 0.0047639
+bandiera_gVega                      -1.5093e-02  7.9815e-03  -1.8910 0.0586307
+regioneBasilicata                   -5.4952e-02  3.0342e-02  -1.8111 0.0701340
+regioneCalabria                     -2.6684e-02  2.1576e-02  -1.2367 0.2161932
+regioneCampania                     -4.3042e-02  1.8690e-02  -2.3029 0.0212882
+regioneEmilia-Romagna                5.4211e-03  1.7663e-02   0.3069 0.7589063
+regioneFriuli-Venezia Giulia        -6.6084e-02  2.5413e-02  -2.6004 0.0093141
+regioneLazio                         1.3599e-02  1.7628e-02   0.7714 0.4404566
+regioneLiguria                       2.5304e-02  1.9854e-02   1.2746 0.2024749
+regioneLombardia                     3.8740e-02  1.6756e-02   2.3120 0.0207833
+regioneMarche                        6.9530e-03  2.0496e-02   0.3392 0.7344280
+regioneMolise                       -8.4812e-02  3.2801e-02  -2.5856 0.0097242
+regionePiemonte                      4.8568e-02  2.1513e-02   2.2576 0.0239778
+regionePuglia                       -1.2845e-02  2.3386e-02  -0.5493 0.5828222
+regioneSardegna                      5.5093e-02  2.0233e-02   2.7229 0.0064741
+regioneSicilia                      -2.7034e-03  2.0792e-02  -0.1300 0.8965516
+regioneToscana                      -1.0155e-02  1.8791e-02  -0.5404 0.5889123
+regioneTrentino-Alto Adige/Südtirol  1.6671e-02  2.7745e-02   0.6009 0.5479420
+regioneUmbria                        2.6261e-02  2.0945e-02   1.2538 0.2099258
+regioneValle d'Aosta/Vallée d'Aoste  7.4440e-02  3.7994e-02   1.9592 0.0500921
+regioneVeneto                        1.7684e-02  1.8484e-02   0.9567 0.3387313
                                        
 (Intercept)                         ***
 nn_dist_km                          ***
@@ -98,7 +97,6 @@ bandiera_gSommese Petroli           ***
 bandiera_gTamoil                    ***
 bandiera_gToil                      ** 
 bandiera_gVega                      .  
-regione                                
 regioneBasilicata                   .  
 regioneCalabria                        
 regioneCampania                     *  
@@ -122,7 +120,7 @@ regioneVeneto
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 
-N = 39326, R2 = 0.2455, adj. R2 = 0.2445
+N = 39279, R2 = 0.2453, adj. R2 = 0.2443
 
 
 ==================================================
@@ -132,59 +130,58 @@ SAMPLE: S2_excl_agip_q8
 t test of coefficients:
 
                                        Estimate  Std. Error  t value  Pr(>|t|)
-(Intercept)                          8.7050e-01  5.1157e-02  17.0162 < 2.2e-16
-nn_dist_km                          -2.4923e-02  3.4265e-03  -7.2737 3.594e-13
-cap_dist_km_d0                      -1.6200e-02  1.4564e-03 -11.1233 < 2.2e-16
-pop_density_cell                    -4.9347e-07  9.3103e-07  -0.5300 0.5961004
-pre_gap_vs_cap                      -1.3664e+00  2.6140e-01  -5.2274 1.732e-07
-n_stations_gestore                   9.3541e-05  3.5973e-05   2.6003 0.0093184
-fuelGasolio                         -4.0039e-02  9.5121e-03  -4.2093 2.570e-05
-bandiera_gApi-Ip                     2.8872e-01  1.9176e-02  15.0567 < 2.2e-16
-bandiera_gAquila                     4.1770e-01  2.8124e-02  14.8520 < 2.2e-16
-bandiera_gBeyfin                     2.8907e-01  6.1954e-02   4.6659 3.088e-06
-bandiera_gCOIL                       2.8349e-01  4.4458e-02   6.3765 1.842e-10
-bandiera_gCONAD                      3.4326e-01  3.1071e-02  11.0476 < 2.2e-16
-bandiera_gCostantin                  3.7085e-01  3.4303e-02  10.8112 < 2.2e-16
-bandiera_gEgo                        2.2096e-01  6.0316e-02   3.6634 0.0002494
-bandiera_gEnergas                    3.7267e-01  4.8946e-02   7.6141 2.744e-14
-bandiera_gEnerpetroli                3.0224e-01  2.0996e-02  14.3951 < 2.2e-16
-bandiera_gEsso                       2.5734e-01  2.5124e-02  10.2429 < 2.2e-16
-bandiera_gEuropam                    2.9877e-01  6.0273e-02   4.9570 7.205e-07
-bandiera_gGiap                       1.9107e-01  2.4373e-02   7.8394 4.694e-15
-bandiera_gItala Petroli              1.9836e-01  5.8841e-02   3.3712 0.0007496
-bandiera_gKEROPETROL                -2.4083e-02  4.7071e-02  -0.5116 0.6089094
-bandiera_gLoro                      -1.3519e-01  4.6954e-02  -2.8792 0.0039906
-bandiera_gOTHER                      1.5669e-01  2.7632e-02   5.6708 1.436e-08
-bandiera_gPetrol Gamma               2.1796e-02  9.8800e-02   0.2206 0.8253967
-bandiera_gPompe Bianche              2.1107e-02  2.2226e-02   0.9496 0.3423072
-bandiera_gRetitalia                  1.3754e-01  4.4447e-02   3.0945 0.0019737
-bandiera_gSan Marco Petroli         -2.3791e-01  2.8365e-02  -8.3876 < 2.2e-16
-bandiera_gShell                      2.6851e-01  2.9843e-02   8.9975 < 2.2e-16
-bandiera_gSia fuel                   3.6271e-01  2.9418e-02  12.3293 < 2.2e-16
-bandiera_gSommese Petroli            2.1134e-02  7.1130e-02   0.2971 0.7663735
-bandiera_gTamoil                     2.4976e-01  2.8969e-02   8.6216 < 2.2e-16
-bandiera_gToil                       1.4508e-01  9.3232e-02   1.5561 0.1196854
-bandiera_gVega                       3.7365e-01  2.3260e-02  16.0638 < 2.2e-16
-regione                             -1.1168e-01  1.0834e-01  -1.0308 0.3026423
-regioneBasilicata                   -7.6676e-02  3.9490e-02  -1.9417 0.0521888
-regioneCalabria                     -4.2304e-02  2.9859e-02  -1.4168 0.1565470
-regioneCampania                     -4.7561e-02  2.4713e-02  -1.9245 0.0542968
-regioneEmilia-Romagna                1.1173e-02  2.4847e-02   0.4497 0.6529589
-regioneFriuli-Venezia Giulia        -1.5551e-01  4.5922e-02  -3.3863 0.0007093
-regioneLazio                         1.2781e-02  2.5160e-02   0.5080 0.6114653
-regioneLiguria                       3.9272e-02  2.8603e-02   1.3730 0.1697690
-regioneLombardia                     5.6671e-02  2.3509e-02   2.4106 0.0159311
-regioneMarche                        6.8594e-03  2.6973e-02   0.2543 0.7992635
-regioneMolise                       -1.2422e-01  4.2890e-02  -2.8961 0.0037808
-regionePiemonte                      6.8883e-02  2.9301e-02   2.3509 0.0187363
-regionePuglia                       -2.1379e-02  3.3309e-02  -0.6418 0.5209874
-regioneSardegna                      7.6207e-02  3.0297e-02   2.5154 0.0118972
-regioneSicilia                      -1.6783e-02  2.9548e-02  -0.5680 0.5700503
-regioneToscana                      -1.8185e-02  2.7744e-02  -0.6554 0.5121919
-regioneTrentino-Alto Adige/Südtirol -9.0083e-03  4.5232e-02  -0.1992 0.8421419
-regioneUmbria                        4.1201e-02  2.7718e-02   1.4864 0.1371767
-regioneValle d'Aosta/Vallée d'Aoste  8.3650e-02  5.2795e-02   1.5844 0.1131062
-regioneVeneto                        1.6207e-02  2.6858e-02   0.6034 0.5462249
+(Intercept)                          8.7030e-01  5.1064e-02  17.0433 < 2.2e-16
+nn_dist_km                          -2.4913e-02  3.4347e-03  -7.2533 4.178e-13
+cap_dist_km_d0                      -1.6250e-02  1.4545e-03 -11.1716 < 2.2e-16
+pop_density_cell                    -5.1530e-07  9.3088e-07  -0.5536 0.5798839
+pre_gap_vs_cap                      -1.3638e+00  2.6051e-01  -5.2351 1.661e-07
+n_stations_gestore                   9.3363e-05  3.5973e-05   2.5954 0.0094547
+fuelGasolio                         -4.0181e-02  9.5157e-03  -4.2226 2.424e-05
+bandiera_gApi-Ip                     2.8888e-01  1.9177e-02  15.0634 < 2.2e-16
+bandiera_gAquila                     4.1770e-01  2.8115e-02  14.8567 < 2.2e-16
+bandiera_gBeyfin                     2.8902e-01  6.1966e-02   4.6642 3.114e-06
+bandiera_gCOIL                       2.8356e-01  4.4457e-02   6.3784 1.818e-10
+bandiera_gCONAD                      3.4334e-01  3.1067e-02  11.0516 < 2.2e-16
+bandiera_gCostantin                  3.7081e-01  3.4313e-02  10.8068 < 2.2e-16
+bandiera_gEgo                        2.2099e-01  6.0323e-02   3.6634 0.0002494
+bandiera_gEnergas                    3.7849e-01  4.5527e-02   8.3134 < 2.2e-16
+bandiera_gEnerpetroli                3.0237e-01  2.0995e-02  14.4018 < 2.2e-16
+bandiera_gEsso                       2.5684e-01  2.5179e-02  10.2007 < 2.2e-16
+bandiera_gEuropam                    2.9886e-01  6.0297e-02   4.9564 7.224e-07
+bandiera_gGiap                       1.9103e-01  2.4375e-02   7.8372 4.779e-15
+bandiera_gItala Petroli              2.0623e-01  5.5063e-02   3.7453 0.0001805
+bandiera_gKEROPETROL                -2.4118e-02  4.7080e-02  -0.5123 0.6084589
+bandiera_gLoro                      -1.3516e-01  4.6957e-02  -2.8785 0.0039991
+bandiera_gOTHER                      1.5646e-01  2.7600e-02   5.6688 1.453e-08
+bandiera_gPetrol Gamma               2.1915e-02  9.8795e-02   0.2218 0.8244535
+bandiera_gPompe Bianche              2.1168e-02  2.2244e-02   0.9517 0.3412801
+bandiera_gRetitalia                  1.3755e-01  4.4450e-02   3.0944 0.0019740
+bandiera_gSan Marco Petroli         -2.3799e-01  2.8373e-02  -8.3877 < 2.2e-16
+bandiera_gShell                      2.6849e-01  2.9862e-02   8.9909 < 2.2e-16
+bandiera_gSia fuel                   3.6260e-01  2.9430e-02  12.3208 < 2.2e-16
+bandiera_gSommese Petroli            2.1148e-02  7.1132e-02   0.2973 0.7662375
+bandiera_gTamoil                     2.4987e-01  2.8950e-02   8.6309 < 2.2e-16
+bandiera_gToil                       1.4529e-01  9.3216e-02   1.5587 0.1190893
+bandiera_gVega                       3.7366e-01  2.3263e-02  16.0623 < 2.2e-16
+regioneBasilicata                   -7.6563e-02  3.9500e-02  -1.9383 0.0525985
+regioneCalabria                     -4.2527e-02  2.9862e-02  -1.4241 0.1544305
+regioneCampania                     -4.7722e-02  2.4730e-02  -1.9297 0.0536509
+regioneEmilia-Romagna                1.1209e-02  2.4861e-02   0.4509 0.6520811
+regioneFriuli-Venezia Giulia        -1.5544e-01  4.5913e-02  -3.3855 0.0007116
+regioneLazio                         1.2738e-02  2.5171e-02   0.5061 0.6128197
+regioneLiguria                       3.9326e-02  2.8616e-02   1.3743 0.1693741
+regioneLombardia                     5.6726e-02  2.3526e-02   2.4111 0.0159093
+regioneMarche                        6.9962e-03  2.6979e-02   0.2593 0.7953945
+regioneMolise                       -1.2421e-01  4.2920e-02  -2.8941 0.0038057
+regionePiemonte                      6.8954e-02  2.9312e-02   2.3524 0.0186602
+regionePuglia                       -2.1545e-02  3.3351e-02  -0.6460 0.5182660
+regioneSardegna                      7.6512e-02  3.0302e-02   2.5250 0.0115766
+regioneSicilia                      -1.6545e-02  2.9560e-02  -0.5597 0.5756848
+regioneToscana                      -1.8097e-02  2.7743e-02  -0.6523 0.5142113
+regioneTrentino-Alto Adige/Südtirol -8.8282e-03  4.5240e-02  -0.1951 0.8452818
+regioneUmbria                        4.1265e-02  2.7730e-02   1.4881 0.1367300
+regioneValle d'Aosta/Vallée d'Aoste  8.3616e-02  5.2766e-02   1.5847 0.1130531
+regioneVeneto                        1.6288e-02  2.6863e-02   0.6063 0.5442994
                                        
 (Intercept)                         ***
 nn_dist_km                          ***
@@ -219,7 +216,6 @@ bandiera_gSommese Petroli
 bandiera_gTamoil                    ***
 bandiera_gToil                         
 bandiera_gVega                      ***
-regione                                
 regioneBasilicata                   .  
 regioneCalabria                        
 regioneCampania                     .  
@@ -243,7 +239,7 @@ regioneVeneto
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 
-N = 26647, R2 = 0.2154, adj. R2 = 0.2139
+N = 26613, R2 = 0.2153, adj. R2 = 0.2138
 
 
 ==================================================
@@ -253,33 +249,32 @@ SAMPLE: S3_pompe_bianche
 t test of coefficients:
 
                                        Estimate  Std. Error t value  Pr(>|t|)
-(Intercept)                          8.6081e-01  6.3866e-02 13.4784 < 2.2e-16
-nn_dist_km                          -2.8547e-02  8.5472e-03 -3.3399 0.0008441
-cap_dist_km_d0                      -1.6799e-02  2.6676e-03 -6.2974 3.278e-10
-pop_density_cell                     1.9854e-06  3.0786e-06  0.6449 0.5190182
-pre_gap_vs_cap                      -1.0458e+00  2.6553e-01 -3.9384 8.310e-05
-n_stations_gestore                   2.7955e-04  3.8857e-04  0.7194 0.4718990
-fuelGasolio                         -4.6515e-02  1.5758e-02 -2.9518 0.0031733
-regione                             -7.5335e-02  1.6527e-01 -0.4558 0.6485223
-regioneBasilicata                   -2.1087e-01  6.4576e-02 -3.2654 0.0011002
-regioneCalabria                     -1.8807e-01  6.4208e-02 -2.9290 0.0034154
-regioneCampania                     -4.1219e-02  5.0484e-02 -0.8165 0.4142609
-regioneEmilia-Romagna                7.4107e-02  5.8752e-02  1.2614 0.2072397
-regioneFriuli-Venezia Giulia        -1.0124e-01  1.0193e-01 -0.9932 0.3206510
-regioneLazio                         7.5228e-02  5.7851e-02  1.3004 0.1935323
-regioneLiguria                      -1.5485e-02  1.7302e-01 -0.0895 0.9286893
-regioneLombardia                     4.8848e-02  5.5418e-02  0.8815 0.3781135
-regioneMarche                       -1.0721e-02  6.5546e-02 -0.1636 0.8700748
-regioneMolise                       -1.2596e-01  9.7285e-02 -1.2947 0.1954694
-regionePiemonte                      1.3667e-01  6.9245e-02  1.9737 0.0484686
-regionePuglia                       -4.4692e-02  5.9301e-02 -0.7536 0.4510975
-regioneSardegna                     -1.5411e-01  6.5752e-02 -2.3437 0.0191298
-regioneSicilia                      -5.7590e-02  5.6636e-02 -1.0168 0.3092755
-regioneToscana                       1.1053e-02  6.7859e-02  0.1629 0.8706232
-regioneTrentino-Alto Adige/Südtirol -1.5424e-01  1.1238e-01 -1.3725 0.1699566
-regioneUmbria                       -5.1265e-02  7.9196e-02 -0.6473 0.5174537
-regioneValle d'Aosta/Vallée d'Aoste -2.7717e-02  1.6331e-01 -0.1697 0.8652356
-regioneVeneto                        5.5829e-03  6.0082e-02  0.0929 0.9259694
+(Intercept)                          8.6122e-01  6.3857e-02 13.4866 < 2.2e-16
+nn_dist_km                          -2.8842e-02  8.5957e-03 -3.3554 0.0007982
+cap_dist_km_d0                      -1.6770e-02  2.6694e-03 -6.2824 3.609e-10
+pop_density_cell                     1.9370e-06  3.0795e-06  0.6290 0.5293662
+pre_gap_vs_cap                      -1.0428e+00  2.6463e-01 -3.9406 8.235e-05
+n_stations_gestore                   2.8705e-04  3.8845e-04  0.7390 0.4599652
+fuelGasolio                         -4.7231e-02  1.5771e-02 -2.9949 0.0027585
+regioneBasilicata                   -2.1058e-01  6.4583e-02 -3.2606 0.0011188
+regioneCalabria                     -1.8809e-01  6.4190e-02 -2.9301 0.0034030
+regioneCampania                     -4.1342e-02  5.0479e-02 -0.8190 0.4128248
+regioneEmilia-Romagna                7.4084e-02  5.8741e-02  1.2612 0.2072897
+regioneFriuli-Venezia Giulia        -1.0131e-01  1.0188e-01 -0.9943 0.3201048
+regioneLazio                         7.5236e-02  5.7834e-02  1.3009 0.1933532
+regioneLiguria                      -1.5552e-02  1.7302e-01 -0.0899 0.9283815
+regioneLombardia                     4.8708e-02  5.5413e-02  0.8790 0.3794361
+regioneMarche                       -1.0621e-02  6.5518e-02 -0.1621 0.8712265
+regioneMolise                       -1.2601e-01  9.7173e-02 -1.2968 0.1947645
+regionePiemonte                      1.3664e-01  6.9267e-02  1.9727 0.0485794
+regionePuglia                       -4.4775e-02  5.9295e-02 -0.7551 0.4502090
+regioneSardegna                     -1.5396e-01  6.5761e-02 -2.3413 0.0192565
+regioneSicilia                      -5.7706e-02  5.6630e-02 -1.0190 0.3082535
+regioneToscana                       1.1166e-02  6.7853e-02  0.1646 0.8692997
+regioneTrentino-Alto Adige/Südtirol -1.5413e-01  1.1238e-01 -1.3716 0.1702471
+regioneUmbria                       -5.1350e-02  7.9147e-02 -0.6488 0.5165018
+regioneValle d'Aosta/Vallée d'Aoste -2.7791e-02  1.6336e-01 -0.1701 0.8649222
+regioneVeneto                        5.5298e-03  6.0068e-02  0.0921 0.9266551
                                        
 (Intercept)                         ***
 nn_dist_km                          ***
@@ -288,7 +283,6 @@ pop_density_cell
 pre_gap_vs_cap                      ***
 n_stations_gestore                     
 fuelGasolio                         ** 
-regione                                
 regioneBasilicata                   ** 
 regioneCalabria                     ** 
 regioneCampania                        
@@ -312,4 +306,4 @@ regioneVeneto
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 
-N = 5168, R2 = 0.1953, adj. R2 = 0.1912
+N = 5158, R2 = 0.1954, adj. R2 = 0.1914

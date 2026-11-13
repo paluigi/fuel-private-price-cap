@@ -216,7 +216,7 @@ variant_gap_cpi <- function(dall, label, fit_from = FIT_FROM,
     mom_c <- (mean(cfr[substr(rd$date, 1, 7) == "2026-10"]) / sep_a - 1) * 100
     data.table(fuel = f, variant = label, p = sel$best_bic$p,
                q = sel$best_bic$q, mean_gap_cpl = mean(gap),
-               end_gap_cpl = tail(gap, 1), cpi_effect_pp = W_CARBURANTI / 2 *
+               end_gap_cpl = tail(gap, 1), cpi_effect_pp = W_FUEL[[f]] *
                  (mom_a - mom_c))
   }))
 }

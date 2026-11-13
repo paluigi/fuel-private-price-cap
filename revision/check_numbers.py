@@ -67,18 +67,26 @@ infl = pl.read_csv(TAB / "inflation_summary.csv")
 tot = infl.filter(pl.col("fuel") == "TOT carburanti").row(0, named=True)
 pb = infl.filter(pl.col("fuel") == "Benzina").row(0, named=True)
 pg = infl.filter(pl.col("fuel") == "Gasolio").row(0, named=True)
-check("cpi effect total", tot["cpi_effect_pp"], ["$-0.38$"], 2)
+check("cpi effect total", tot["cpi_effect_pp"], ["$-0.37$"], 2)
 check("petrol mom actual", pb["mom_actual_pct"], ["-2.3\\%", "fell 2.3\\%"], 1)
 check("petrol mom cf", pb["mom_cf_pct"], ["5.3\\%", "+5.3\\%"], 1)
 check("diesel mom actual", pg["mom_actual_pct"], ["1.6\\%", "+1.6\\%"], 1)
 check("diesel mom cf", pg["mom_cf_pct"], ["10.7\\%", "+10.7\\%"], 1)
 sens = pl.read_csv(TAB / "inflation_sensitivity.csv")
+s5050 = sens.filter(pl.col("scenario") == "split 50/50, universe")["cpi_effect_pp"].sum()
 s4555 = sens.filter(pl.col("scenario") == "split 45/55, universe")["cpi_effect_pp"].sum()
 s5545 = sens.filter(pl.col("scenario") == "split 55/45, universe")["cpi_effect_pp"].sum()
-sreg = sens.filter(pl.col("scenario") == "split 50/50, regularity sample")["cpi_effect_pp"].sum()
-check("sens 45/55", s4555, ["-0.381"], 3)
-check("sens 55/45", s5545, ["-0.374"], 3)
-check("sens regularity", sreg, ["-0.411"], 3)
+sreg = sens.filter(pl.col("scenario") == "official split, regularity sample")["cpi_effect_pp"].sum()
+check("sens 50/50", s5050, ["-0.39"], 2)
+check("sens 45/55", s4555, ["-0.40"], 2)
+check("sens 55/45", s5545, ["-0.39"], 2)
+check("sens regularity", sreg, ["-0.40"], 2)
+hicp_w = pl.read_csv(ROOT / "data" / "external" / "eurostat_hicp_weights_2026.csv")
+wp = hicp_w.filter(pl.col("item") == "petrol")["weight_permille"][0]
+wg = hicp_w.filter(pl.col("item") == "diesel")["weight_permille"][0]
+check("HICP weight petrol", wp, ["2.339"], 3)
+check("HICP weight diesel", wg, ["2.099"], 3)
+must_contain("HICP validation", "officially published monthly rates of 4.8 and 6.0")
 
 # --- reference day gaps ------------------------------------------------------
 rd = pl.read_csv(TAB / "inflation_days.csv")
@@ -168,7 +176,7 @@ must_contain("hazard table referenced", "tab:hazard-dt")
 must_contain("map pair swapped", "v2_map_adopt7_ben.png")
 
 for frag in ["25 September", "28 September", "30 days" if "thirty days" not in TEX
-             else "thirty days", "2.261", "2.212", "4.5219",
+             else "thirty days", "2.261", "2.212", "4.703",
              "0.45~\\cl", "0.85~\\cl", "eleven of sixteen"]:
     must_contain(f"contains {frag[:24]}", frag)
 
